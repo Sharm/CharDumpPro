@@ -16,10 +16,10 @@ local blizzfunctions = {
 	GetSpellTabInfo,
 	GetSpellName,
 	GetSpellLink,
-	GetGlyphSocketInfo,
-	GetNumCompanions,
-	GetCompanionInfo,
-	GetAchievementInfo,
+	--GetGlyphSocketInfo,
+	--GetNumCompanions,
+	--GetCompanionInfo,
+	--GetAchievementInfo,
 	GetFactionInfo,
 	GetInventoryItemLink,
 	GetInventoryItemCount,
@@ -95,6 +95,7 @@ function private.GetSpellData()
 	return retTbl;
 end
 
+--[[--
 function private.GetGlyphData()
 	local retTbl = {}
 	for i=1,GetNumTalentGroups() do
@@ -105,7 +106,7 @@ function private.GetGlyphData()
 			if not retTbl[i][glyphType] then 
 				retTbl[i][glyphType] = {} 
 			end
-			retTbl[i][glyphType][curid[glyphType]]=glyphSpellID;
+			retTbl[i][glyphType][curid[glyphType]]--[[=glyphSpellID;
 			curid[glyphType]=curid[glyphType]+1;
 		end
 	end
@@ -144,7 +145,7 @@ function private.GetAchievements()
 	end
 	return retTbl;
 end
-
+]]
 --[[
 -- Achievements Progress.
 function private.GetAchievementsProgress()
@@ -277,12 +278,12 @@ function private.CreateCharDump()
 	private.dmp.inv = private.trycall(private.GetInvData,private.ErrLog) or {};
 	private.dmp.bag = private.trycall(private.GetBagData,private.ErrLog) or {};
 	private.dmp.spell = private.trycall(private.GetSpellData,private.ErrLog) or {};
-	private.dmp.glyph = private.trycall(private.GetGlyphData,private.ErrLog) or {};
-	private.dmp.critter = private.trycall(private.GetCritterData,private.ErrLog) or {};
-	private.dmp.mount = private.trycall(private.GetMountData,private.ErrLog) or {};
+	--private.dmp.glyph = private.trycall(private.GetGlyphData,private.ErrLog) or {};
+	--private.dmp.critter = private.trycall(private.GetCritterData,private.ErrLog) or {};
+	--private.dmp.mount = private.trycall(private.GetMountData,private.ErrLog) or {};
 	private.dmp.skill = private.trycall(private.GetSkillData,private.ErrLog) or {};
 	private.dmp.rep = private.trycall(private.GetRepData,private.ErrLog) or {};
-	private.dmp.achievement = private.trycall(private.GetAchievements,private.ErrLog) or {};
+	--private.dmp.achievement = private.trycall(private.GetAchievements,private.ErrLog) or {};
 	--private.dmp.achievementprogress = private.trycall(private.GetAchievementsProgress,private.ErrLog) or {};
 end
 
@@ -294,15 +295,15 @@ function private.GetCharDump()
 end
 
 function private.Log(str_in)
-	print("\124c0080C0FF  "..str_in.."\124r");
+	--print("\124c0080C0FF  "..str_in.."\124r");
 end
 function private.ErrLog(err_in)
 	private.errlog = private.errlog or ""
 	private.errlog = private.errlog .. "err=" .. b64_enc(err_in) .. "\n"	
-	print("\124c00FF0000"..(err_in or "nil").."\124r");
+	--print("\124c00FF0000"..(err_in or "nil").."\124r");
 end
 function private.ILog(str_in)
-	print("\124c0080FF80"..str_in.."\124r");
+	--print("\124c0080FF80"..str_in.."\124r");
 end
 function private.trycall(f,herr)
 	local status, result = xpcall(f,herr)
@@ -321,13 +322,13 @@ function private.Encode(tbl_in)
 	--		tbl_in["aux"] = tbl_in["aux"] .. b64_enc(string.dump(j));
 	--	end
 	--end
- local i = 1
+ --[[local i = 1
  tbl_in.queststatus = {}
  while GetQuestLogTitle(i) do
   local questTitle, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(i)
   tbl_in.queststatus[questID]={["id"]=questID, ["isComplete"]=isComplete};
   i = i + 1
- end
+ end]]
 	--local S=myJSON.encode(tbl_in);
 	--cryptkey = Sha1(S);
 	--local cipher = aeslua.encrypt(cryptkey,S);	
@@ -373,8 +374,8 @@ function private.LoadCharData()
 	local id = 0;
 	local skillInf = {};
 	local section = "";
-	if data == {} then
-		print("Character dump not found");
+	if data == {} then id = 0;
+		--print("Character dump not found");
 	else
 		for section, tbl in pairs(data) do
 			if section == "spell" then
@@ -438,11 +439,8 @@ function private.LoadCharData()
 					end]]
 				end
 			elseif section=="uinf" then
-				if tbl["specs"] == 1 then
 					SendChatMessage(".modify money "..tbl["money"],"SAY", nil, nil);
-				else
-					SendChatMessage(".modify money "..tbl["money"]+10000000,"SAY", nil, nil);
-				end
+				
 				for tid, _ in pairs(tbl["titles"]) do
 					SendChatMessage(".titles add "..tid, "SAY", nil, nil);
 				end
@@ -519,7 +517,7 @@ function private.TradeSkillFrame_OnShow_Hook(frame, force)
 			private.dmp = private.dmp or {};
 			private.dmp.skilllink = private.dmp.skilllink or {};
 			private.dmp.skilllink[skillname] = link;
-			print("TradeSkillFrame_Show",skillname,link)
+			--print("TradeSkillFrame_Show",skillname,link)
 			private.SaveCharData(private.Encode(private.GetCharDump()))
 		end
 	end 
@@ -533,9 +531,9 @@ SlashCmdList["CHDMP"] = function(msg)
 		return;
 	elseif msg == "help" then
 		-- display help here
-		print("/chardump - make a dump");
-		print("/chardump help - you see it now");
-		print("/chardump load - load dump and apply it to your target(Admin rights needed)");
+		--print("/chardump - make a dump");
+		--print("/chardump help - you see it now");
+		--print("/chardump load - load dump and apply it to your target(Admin rights needed)");
 		return;
 	elseif msg == "load" then
 		--loading SavedVariable and create GM commands
