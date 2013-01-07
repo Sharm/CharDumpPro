@@ -1,0 +1,9 @@
+## Author: Letswow Team
+## Interface: 40300
+## Title: LetsCharDump
+## Version: 1.0
+## SavedVariables: CHDMP_DATA
+FrameMain.xml
+FrameMain.lua
+datastore.lua
+chardump.lua

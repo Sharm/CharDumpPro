@@ -1,0 +1,26 @@
+<Bindings>
+	<Binding name="EXAMINER_OPEN" header="EXAMINER">
+		Examiner_Open();
+	</Binding>
+	<Binding name="EXAMINER_TARGET">
+		if (Examiner:IsVisible()) then
+			HideUIPanel(Examiner);
+		else
+			Examiner_InspectUnit("target");
+		end
+	</Binding>
+	<Binding name="EXAMINER_MOUSEOVER">
+		local unit = "mouseover";
+		-- See if mouseover == unitframe unit
+		local mouseFocus = GetMouseFocus();
+		if (mouseFocus) then
+			unit = (mouseFocus:GetAttribute("unit") or unit);
+		end
+		-- Show/Hide
+		if (not UnitExists(unit)) then
+			HideUIPanel(Examiner);
+		else
+			Examiner_InspectUnit(unit);
+		end
+	</Binding>
+</Bindings>
