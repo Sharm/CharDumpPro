@@ -1,5 +1,7 @@
 ### Must have:
 
+* Отличный, а главное очень быстрый мануал по Lua: http://zserge.wordpress.com/2012/02/23/lua-%D0%B7%D0%B0-60-%D0%BC%D0%B8%D0%BD%D1%83%D1%82/
+
 * Среда разработки представляет из себя аддон для VS2010: ASWOW_VS2010.rar
 
 * Blizzard Toolkit: http://us.media.blizzard.com/wow/interface/WoW_Interface_art.zip
