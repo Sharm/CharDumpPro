@@ -210,13 +210,22 @@ function private.GetInvData()
 	local retTbl = {}
 	for i=1,74 do 
 		itemLink = GetInventoryItemLink("player", i) 
+		
 		if itemLink then 
 			count = GetInventoryItemCount("player",i) 
 			--durability,durabilitymax = GetInventoryItemDurability("player",i);
 			--print(i,itemLink,count--[[,durability.."/"..durabilitymax]]) 
-			for entry,chant,gem1,gem2,gem3,unk1,unk2,unk3,lvl1 in string.gmatch(itemLink,".-Hitem:(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+).*") do 
+			
+			-- ПРИМЕР:
+			-- Hitem:31052:425:525:525:525:525:0:0
+			-- linkType, itemId, enchantId, jewelId1, jewelId2, jewelId3, jewelId4, rest
+			--
+
+			for entry,chant,gem1,gem2,gem3,unk1,unk2,unk3,lvl1 in string.gmatch(itemLink,".*Hitem:(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+).*") do 
 				--                                                                                                      entry^ chant^  gem^  gem^  gem^  unk^  unk^  unk^  lvl^
+
 				retTbl[i]= {["slot"]=i,["entry"]=entry,["chant"]=chant,["gem1"]=gem1,["gem2"]=gem2,["gem3"]=gem3,["unk1"]=unk1,["unk2"]=unk2,["unk3"]=unk3,["lvl"]=lvl1,["count"]=count};
+				DEFAULT_CHAT_FRAME:AddMessage(itemLink);
 			end
 		end 
 	end 
