@@ -4,11 +4,13 @@
 
 * Среда разработки представляет из себя аддон для VS2010: ASWOW_VS2010.rar
 
-* Blizzard Toolkit: http://us.media.blizzard.com/wow/interface/WoW_Interface_art.zip
+* Blizzard Toolkit для 2.4.3 + Dev AddOns: https://sourceforge.net/projects/sharm/files/WoW_AddOns_DEV/
 
-* Дебаг аддон: http://www.wowinterface.com/downloads/fileinfo.php?id=3999
+* Дебаг аддон: http://www.wowinterface.com/downloads/fileinfo.php?id=3999 (включен в пак аддонов выше)
 
-* Аддон для сбора и вывода ошибок аддонов: http://www.wowinterface.com/downloads/info5995-BugSack.html
+* Аддон для сбора и вывода ошибок аддонов: http://www.wowinterface.com/downloads/info5995-BugSack.html (включен в пак аддонов выше)
+
+* Документация по ACE: http://www.wowace.com/addons/ace3/pages/
 
 
 ### Дополнительно можно посмотреть:
