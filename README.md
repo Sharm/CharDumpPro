@@ -15,4 +15,6 @@
 
 * Куча девелоперских утелит и аддонов: http://www.wowinterface.com/downloads/cat35.html
 
+* Куча девелоперских утелит и аддонов: http://www.curse.com/addons/wow/category/development-tools
+
 * Доп текстуры и материалы: http://code.google.com/p/recui/source/browse/

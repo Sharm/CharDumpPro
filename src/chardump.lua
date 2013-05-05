@@ -533,32 +533,3 @@ function private.TradeSkillFrame_OnShow_Hook(frame, force)
 	end 
 end
 
---SLASH_CHDMP1 = "/chardump";
-
---SlashCmdList["CHDMP"] = function(msg)
---	if msg == "done" then
---		private.done = true;
---		-- kinda unhook.
---		return;
---	elseif msg == "help" then
---		-- display help here
---		--print("/chardump - make a dump");
---		--print("/chardump help - you see it now");
---		--print("/chardump load - load dump and apply it to your target(Admin rights needed)");
---		return;
---	elseif msg == "load" then
---		--loading SavedVariable and create GM commands
---		private.LoadCharData();
---	else
---		private.done = false;
---	end
-	
---	if not private.tradeskillframehooked then
---		hooksecurefunc(_G, "ShowUIPanel", private.TradeSkillFrame_OnShow_Hook);
---		private.tradeskillframehooked = true;
---	end
-
-	
---	private.CreateCharDump();
---	private.SaveCharData(private.Encode(private.GetCharDump()))
---end
