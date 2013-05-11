@@ -26,12 +26,51 @@ function logScroll_OnVerticalScroll()
 	
 end
 
-function frameMain_OnLoad()
-	frameMain:RegisterForDrag("LeftButton");
-	Log:init(frameMain)
-	
-	-- CreateFrame("LogArea", nil, FrameTest);
-	
+function testInit()
+	info = {
+		text = '12312313123';
+		func = nil;
+	};
+	UIDropDownMenu_AddButton(info);
+	UIDropDownMenu_AddButton(info);
+	UIDropDownMenu_AddButton(info);
+	UIDropDownMenu_AddButton(info);
+end
 
-	-- DEFAULT_CHAT_FRAME:AddMessage(logText:GetHeight());
+function frameMain_OnLoad()
+	frameMain:RegisterForDrag("LeftButton")
+	Log:init(frameMain)
+
+	UIDropDownMenu_Initialize(test, testInit);
+end
+
+function tabDump_OnClick()
+	tabDump:setActive(not tabDump:isActive())
+end
+
+function frameMain_OnShow()
+	tabDump:setActive(false);
+end
+
+function HighlightTab_Initialize(self)
+
+	function self:isActive()
+		return self._isActive
+	end
+	
+	function self:setActive(isActive)
+		self._isActive = isActive
+		if (isActive) then
+			local texture = self:CreateTexture()
+			texture:SetWidth(90)
+			texture:SetHeight(13)
+			texture:SetBlendMode("ADD")
+			texture:SetPoint("TOPLEFT", 15, -8)
+			texture:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+			self:SetNormalTexture(texture)
+		else
+			self:SetNormalTexture(nil)
+		end
+	end
+
 end
