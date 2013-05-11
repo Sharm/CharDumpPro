@@ -20,9 +20,7 @@
 			<AbsDimension x="510" y="422" />
 		</Size>
 		<Anchors>
-			<Anchor point="CENTER">
-				<Offset x="-5" y="46" />
-			</Anchor>
+			<Anchor point="CENTER" />
 		</Anchors>
 		<TitleRegion setAllPoints="true">
 			<Size>
@@ -100,13 +98,53 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<Button name="test" inherits="UIDropDownMenuTemplate" text="Button1">
+				<Size>
+					<AbsDimension x="173" y="64" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="136" y="-234" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="tabDump" inherits="HighlightTab" text="Dump character">
+				<Size>
+					<AbsDimension x="130" y="32" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="64" y="-8" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						tab_OnClick(self, tabRestore)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="tabRestore" inherits="HighlightTab" text="Restore character">
+				<Size>
+					<AbsDimension x="130" y="32" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="329" y="-8" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						tab_OnClick(self, tabDump)
+					</OnClick>
+				</Scripts>
+			</Button>
 			<Frame name="header">
 				<Size>
 					<AbsDimension x="294" y="66" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOP">
-						<Offset y="12" />
+						<Offset y="11" />
 					</Anchor>
 				</Anchors>
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Header" edgeFile="">
@@ -132,31 +170,6 @@
 					</Layer>
 				</Layers>
 			</Frame>
-			<Button name="test" inherits="UIDropDownMenuTemplate" text="Button1">
-				<Size>
-					<AbsDimension x="173" y="64" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset x="136" y="-234" />
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="tabDump" inherits="HighlightTab" text="Dump character">
-				<Size>
-					<AbsDimension x="130" y="32" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset x="22" y="-8" />
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						tabDump_OnClick()
-					</OnClick>
-				</Scripts>
-			</Button>
 		</Frames>
 		<Scripts>
 			<OnLoad>
