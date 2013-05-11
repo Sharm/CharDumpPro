@@ -21,6 +21,10 @@
 	<Script file="LogArea.lua"/>
 	<Script file="datastore.lua"/>
 	<Script file="chardump.lua"/>
+	<Include file="FrameDump.xml"/>
+	<Script file="FrameDump.lua"/>
+	<Include file="FrameRestore.xml"/>
+	<Script file="FrameRestore.lua"/>
 	<Include file="FrameMain.xml"/>
 	<Script file="FrameMain.lua"/>
 

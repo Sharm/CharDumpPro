@@ -1,0 +1,25 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="FrameDump.lua" />
+	<Frame name="frameRestore" virtual="true" parent="">
+		<Size>
+			<AbsDimension x="482" y="200" />
+		</Size>
+		<Backdrop bgFile="" edgeFile="">
+			<BackgroundInsets>
+				<AbsInset xsi:nil="true" />
+			</BackgroundInsets>
+		</Backdrop>
+		<Frames>
+			<Button inherits="UIPanelButtonTemplate" text="RESTORE BUTTON">
+				<Size>
+					<AbsDimension x="75" y="23" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="86" y="-60" />
+					</Anchor>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

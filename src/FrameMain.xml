@@ -54,16 +54,6 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<Texture file="Interface\QuestFrame\UI-QuestTitleHighlight">
-					<Size>
-						<AbsDimension x="222" y="17" />
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset x="46" y="-326" />
-						</Anchor>
-					</Anchors>
-				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
@@ -73,7 +63,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="BOTTOM" relativeTo="frameMain">
-						<Offset x="40" y="302" />
+						<Offset x="45" y="303" />
 					</Anchor>
 				</Anchors>
 				<Scripts>

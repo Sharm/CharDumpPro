@@ -20,6 +20,20 @@
     <Content Include="embeds.xml">
       <SubType>Frame</SubType>
     </Content>
+    <Content Include="FrameDump.lua">
+      <SubType>Code</SubType>
+      <DependentUpon>FrameDump.xml</DependentUpon>
+    </Content>
+    <Content Include="FrameDump.xml">
+      <SubType>Frame</SubType>
+    </Content>
+    <Content Include="FrameRestore.lua">
+      <SubType>Code</SubType>
+      <DependentUpon>FrameRestore.xml</DependentUpon>
+    </Content>
+    <Content Include="FrameRestore.xml">
+      <SubType>Frame</SubType>
+    </Content>
     <Content Include="LogArea.lua">
       <SubType>Code</SubType>
     </Content>
@@ -40,7 +54,7 @@
       <DependentUpon>FrameMain.xml</DependentUpon>
     </Content>
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <Content Include="Libs/LibStub/LibStub.lua">
       <SubType>Code</SubType>
     </Content>

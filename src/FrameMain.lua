@@ -19,8 +19,12 @@ function HighlightTab_Initialize(self)
 			texture:SetPoint("TOPLEFT", 15, -8)
 			texture:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
 			self:SetNormalTexture(texture)
+			
+			_G["frame"..self._tabType]:Show()
+			
 		else
 			self:SetNormalTexture(nil)
+			_G["frame"..self._tabType]:Hide()
 		end
 	end
 	
@@ -32,39 +36,54 @@ function HighlightTab_Initialize(self)
 	_G[self:GetName().."Left"]:Show()
 	_G[self:GetName().."Middle"]:Show()
 	
+	if self == tabDump then
+		self._tabType = "Dump"
+	elseif self == tabRestore then
+		self._tabType = "Restore"
+	end
+	
 end
 
 
 --
--- Main frame loaded
+-- On Load functions
 --
 function frameMain_OnLoad()
 	frameMain:RegisterForDrag("LeftButton")
 
 	-- Create log scrollframe
 	Log:init(frameMain)
+	
+	-- Create dump and restore frames
+	local frame = CreateFrame("Frame", "frameDump", frameMain, "frameDump")
+	frame:SetPoint("TOPLEFT",14,-46)
+	frame:Hide()
+	
+	local frame = CreateFrame("Frame", "frameRestore", frameMain, "frameRestore")
+	frame:SetPoint("TOPLEFT",14,-46)
+	frame:Hide()
+	
 
 	UIDropDownMenu_Initialize(test, testInit)
 end
 
 
 --
--- Load and prepare components
+-- Events on frame
 --
 function frameMain_OnShow()
 	tabDump:setActive(true)
 	tabRestore:setActive(false)
 end
 
-
---
--- Events on frame
---
 function tab_OnClick(self, otherTab)
 	self:setActive(true)
 	otherTab:setActive(not self:isActive())
 end
 
+function btnClose_OnClick()
+	frameMain:Hide();
+end
 
 function btnDump_OnClick()
 
@@ -75,9 +94,7 @@ function btnDump_OnClick()
 	-- private:SaveCharData(private.Encode(private.GetCharDump()))
 end
 
-function btnClose_OnClick()
-	frameMain:Hide();
-end
+
 
 
 function testInit()
@@ -90,3 +107,5 @@ function testInit()
 	UIDropDownMenu_AddButton(info);
 	UIDropDownMenu_AddButton(info);
 end
+
+
