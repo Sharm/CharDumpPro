@@ -1,10 +1,10 @@
 ﻿
 
-CharDump = LibStub("AceAddon-3.0"):NewAddon("CharDump", "AceConsole-3.0")
+Addon = LibStub("AceAddon-3.0"):NewAddon("CharDump", "AceConsole-3.0")
 
-CharDump:RegisterChatCommand("cd", "slash")
+Addon:RegisterChatCommand("cd", "slash")
 
-function CharDump:slash(input)
+function Addon:slash(input)
 	if frameMain:IsShown() then
 		frameMain:Hide();
 	else
@@ -12,16 +12,16 @@ function CharDump:slash(input)
 	end
 end
 
-function CharDump:OnInitialize()
+function Addon:OnInitialize()
   -- Code that you want to run when the addon is first loaded goes here.
 	self:Print("OnInitialize");
 	self.db = LibStub("AceDB-3.0"):New("CharDumpDB")
 end
 
-function CharDump:OnEnable()
+function Addon:OnEnable()
     -- Called when the addon is enabled
 end
 
-function CharDump:OnDisable()
+function Addon:OnDisable()
     -- Called when the addon is disabled
 end
