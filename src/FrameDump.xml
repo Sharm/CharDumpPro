@@ -10,15 +10,34 @@
 			</BackgroundInsets>
 		</Backdrop>
 		<Frames>
-			<Button inherits="UIPanelButtonTemplate" text="DUMP BUTTON">
+			<Button name="btnDumpMainInfo" inherits="UIPanelButtonTemplate" text="Dump main info">
 				<Size>
-					<AbsDimension x="75" y="23" />
+					<AbsDimension x="126" y="25" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="136" y="-73" />
+						<Offset x="82" y="-37" />
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>
+						btnDumpMainInfo_OnClick()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="checkDumpMainInfo" inherits="UIPanelButtonTemplate" text="">
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="51" y="-37" />
+					</Anchor>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<PushedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+				<HighlightTexture file="" alphaMode="ADD" />
 			</Button>
 		</Frames>
 	</Frame>

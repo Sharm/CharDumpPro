@@ -17,6 +17,9 @@
     <Content Include="chardump.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="dumper.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="embeds.xml">
       <SubType>Frame</SubType>
     </Content>
@@ -52,6 +55,9 @@
     <Content Include="FrameMain.lua">
       <SubType>Code</SubType>
       <DependentUpon>FrameMain.xml</DependentUpon>
+    </Content>
+    <Content Include="restorer.lua">
+      <SubType>Code</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
