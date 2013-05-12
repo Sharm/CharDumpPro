@@ -144,7 +144,7 @@
 				</Backdrop>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="headerText" inherits="GameFontNormal" text="CD-Pro v1.1">
+						<FontString name="headerText" inherits="GameFontNormal" text="CD-Pro">
 							<Size>
 								<AbsDimension x="131" y="20" />
 							</Size>
@@ -162,18 +162,12 @@
 			</Frame>
 		</Frames>
 		<Scripts>
-			<OnLoad>
-				frameMain_OnLoad()
-			</OnLoad>
 			<OnDragStart>
 				self:StartMoving();
 			</OnDragStart>
 			<OnDragStop>
 				self:StopMovingOrSizing();
 			</OnDragStop>
-			<OnShow>
-				frameMain_OnShow()
-			</OnShow>
 		</Scripts>
 	</Frame>
 </Ui>

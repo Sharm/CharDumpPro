@@ -46,9 +46,9 @@ end
 
 
 --
--- On Load functions
+-- Initialize
 --
-function frameMain_OnLoad()
+function frameMain_Init()
 	frameMain:RegisterForDrag("LeftButton")
 
 	-- Create log scrollframe
@@ -62,20 +62,19 @@ function frameMain_OnLoad()
 	local frame = CreateFrame("Frame", "frameRestore", frameMain, "frameRestore")
 	frame:SetPoint("TOPLEFT",14,-46)
 	frame:Hide()
-	
 
 	UIDropDownMenu_Initialize(test, testInit)
+
+	headerText:SetText(ADDONNAME)
+	
+	tabDump:setActive(true)
+	tabRestore:setActive(false)
 end
 
 
 --
 -- Events on frame
 --
-function frameMain_OnShow()
-	tabDump:setActive(true)
-	tabRestore:setActive(false)
-end
-
 function tab_OnClick(self, otherTab)
 	self:setActive(true)
 	otherTab:setActive(not self:isActive())

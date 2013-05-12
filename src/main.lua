@@ -1,6 +1,8 @@
 ﻿
+VERSION = "v1.1"
+ADDONNAME = "CharDump-PRO "..VERSION
 
-Addon = LibStub("AceAddon-3.0"):NewAddon("CharDump", "AceConsole-3.0")
+Addon = LibStub("AceAddon-3.0"):NewAddon(ADDONNAME, "AceConsole-3.0")
 
 Addon:RegisterChatCommand("cd", "slash")
 
@@ -13,9 +15,13 @@ function Addon:slash(input)
 end
 
 function Addon:OnInitialize()
-  -- Code that you want to run when the addon is first loaded goes here.
-	self:Print("OnInitialize");
+	
 	self.db = LibStub("AceDB-3.0"):New("CharDumpDB")
+
+	frameMain_Init()
+	frameDump_Init()
+
+	self:Print("Ready");
 end
 
 function Addon:OnEnable()
@@ -24,4 +30,8 @@ end
 
 function Addon:OnDisable()
     -- Called when the addon is disabled
+end
+
+function table.join(t1, t2)
+	for k,v in ipairs(t2) do table.insert(t1, v) end return t1
 end
