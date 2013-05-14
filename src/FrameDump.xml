@@ -9,6 +9,20 @@
 				<AbsInset xsi:nil="true" />
 			</BackgroundInsets>
 		</Backdrop>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="textDumpMainInfo" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="253" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="201" y="-37" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 		<Frames>
 			<Button name="btnDumpMainInfo" inherits="UIPanelButtonTemplate" text="Dump main info">
 				<Size>
@@ -16,12 +30,12 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="82" y="-37" />
+						<Offset x="56" y="-37" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						btnDumpMainInfo_OnClick()
+						btnDump_OnClick(self)
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -31,9 +45,14 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="51" y="-37" />
+						<Offset x="25" y="-37" />
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:Disable();
+					</OnLoad>
+				</Scripts>
 				<NormalTexture file="Interface\Buttons\UI-CheckBox-Check" />
 				<PushedTexture file="Interface\Buttons\UI-CheckBox-Check" />
 				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />

@@ -84,15 +84,6 @@ function btnClose_OnClick()
 	frameMain:Hide();
 end
 
-function btnDump_OnClick()
-
-	Log:msg("123123123 " .. Log.scrollFrame:GetVerticalScrollRange() .. " - " .. Log.scrollFrame:GetVerticalScroll())
-	
-	
-	-- private:CreateCharDump();
-	-- private:SaveCharData(private.Encode(private.GetCharDump()))
-end
-
 
 
 

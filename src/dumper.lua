@@ -5,36 +5,50 @@ Dumper = {
 }
 
 function Dumper:init()
-	-- Init save table
 	local realmName = GetRealmName()
 	local name = UnitName("player")
+
+	Addon.db.global[realmName.." - "..name] = {}
 	Addon.db.global[realmName.." - "..name] = {
 		mainInfo = {
 			realmName = realmName,
 			name = name
 		}
 	}
+	
 	self._db = Addon.db.global[realmName.." - "..name]
-	return self;
+end
+
+function Dumper:isInited()
+	return self._db
 end
 
 function Dumper:dumpMainInfo()
-	local version, build, date, tocversion = GetBuildInfo();
+	if not self:isInited() then
+		return false, "Dumper not inited yet!"
+	end
+
+	local _, build, _, _ = GetBuildInfo()
+	local _, class = UnitClass("player")
+	local _,race = UnitRace("player")
 
 	local mainInfo = {
+		realmName = self._db.mainInfo.realmName,
+		name = self._db.mainInfo.name,
 		charDumpVersion = VERSION,
 		realmlist = GetCVar("realmList"),
 		clientbuild = build,
 		guid = UnitGUID("player"),
-		_, class = UnitClass("player"),
+		class = class,
 		level=UnitLevel("player"),
-		_,race = UnitRace("player"),
+		race = race,
 		gender=UnitSex("player"),
 		honorableKills = GetPVPLifetimeStats(),
 		honor = GetHonorCurrency(),
 		arenapoints = GetArenaCurrency(),
 		money = GetMoney()
 	}
+
 
 --	retTbl.specs = GetNumTalentGroups();
 
@@ -45,8 +59,9 @@ function Dumper:dumpMainInfo()
 --		end
 --	end
 
-	self._db.mainInfo = table.join(self._db.mainInfo, mainInfo)
-	Log:msg("dumpMainInfo() success! "..self._db.mainInfo.name)
+	self._db.mainInfo = mainInfo
+
+	return true, self._db.mainInfo.class.." "..self._db.mainInfo.name .." "..self._db.mainInfo.level.."lvl"
 end
 
 function Dumper:dumpInventory()
