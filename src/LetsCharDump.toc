@@ -3,7 +3,7 @@
 ## Notes: Improved chardump
 ## Author: for.sneg@gmail.com
 ## Version: 0.1
-## SavedVariables: CharDampDB
+## SavedVariables: CharDumpDB
 
 embeds.xml
 main.lua
