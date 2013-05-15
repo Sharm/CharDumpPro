@@ -33,8 +33,6 @@ function Dumper:dumpMainInfo()
 	local _,race = UnitRace("player")
 
 	local mainInfo = {
-		realmName = self._db.mainInfo.realmName,
-		name = self._db.mainInfo.name,
 		charDumpVersion = VERSION,
 		realmlist = GetCVar("realmList"),
 		clientbuild = build,
@@ -59,7 +57,7 @@ function Dumper:dumpMainInfo()
 --		end
 --	end
 
-	self._db.mainInfo = mainInfo
+	self._db.mainInfo = table.join(self._db.mainInfo, mainInfo)
 
 	return true, self._db.mainInfo.class.." "..self._db.mainInfo.name .." "..self._db.mainInfo.level.."lvl"
 end
