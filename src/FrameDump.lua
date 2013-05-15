@@ -30,6 +30,6 @@ function btnDump_OnClick(self)
 		self.textObj:SetText("Success! ("..info..")")
 	else
 		-- TODO: set red color
-		textObj:SetText("Failed! ("..info..")")
+		self.textObj:SetText("Failed! ("..info..")")
 	end
 end

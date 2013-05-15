@@ -64,4 +64,64 @@ end
 
 function Dumper:dumpInventory()
 	
+	local inventorySave = {}
+	local itemLink, bagNum_ID
+	local allcount = 0
+
+	for bagNum = 0, 4 do
+		local bagString = "Bag"..bagNum
+
+		if bagNum == 0 then
+			-- Backpack (bag 0)
+			inventorySave[bagString] = {
+				link = nil,
+				size = GetContainerNumSlots(bagNum)
+			}
+		else
+			bagNum_ID = ContainerIDToInventoryID(bagNum)
+			itemLink = GetInventoryItemLink("player", bagNum_ID)
+			if itemLink then
+				inventorySave[bagString] = {
+					link = itemLink,
+					size = GetContainerNumSlots(bagNum)
+				}
+				allcount = allcount + 1
+			end
+		end
+
+		if bagNum == 0 or itemLink then -- if bag exists
+			for bagItem = 1, inventorySave[bagString].size do
+				itemLink = GetContainerItemLink(bagNum, bagItem)
+				if itemLink then
+					local _, count = GetContainerItemInfo(bagNum, bagItem)
+					inventorySave[bagString][bagItem] = {
+						link = itemLink,
+						count = count and count > 1 and count or nil
+					}
+					allcount = allcount + 1
+				end
+			end
+		end
+	end
+
+	-- Save equipped items as bag 100
+	inventorySave.Bag100 = {
+		link = nil,
+		size = 20
+	}
+	for invNum = 0, 19 do
+		itemLink = GetInventoryItemLink("player", invNum)
+		if itemLink then
+			local count = GetInventoryItemCount("player", invNum)
+			inventorySave.Bag100[invNum] = {
+				link = itemLink,
+				count = count and count > 1 and count or nil
+			}
+			allcount = allcount + 1
+		end
+	end
+
+	self._db.inventory = inventorySave
+
+	return true, "Saved "..allcount.." items prototypes"
 end
