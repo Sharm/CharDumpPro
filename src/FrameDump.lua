@@ -9,6 +9,8 @@ function frameDump_Init()
 	btnDumpMainInfo.dumpFunction = "dumpMainInfo"
 
 	dumper:init()
+
+	Addon:RegisterEvent("PLAYER_ENTERING_WORLD", function() frameDump_PLAYER_ENTERING_WORLD() end)
 end
 
 function btnDumpInventory_OnClick()
@@ -32,4 +34,8 @@ function btnDump_OnClick(self)
 		-- TODO: set red color
 		self.textObj:SetText("Failed! ("..info..")")
 	end
+end
+
+function frameDump_PLAYER_ENTERING_WORLD()
+	btnDumpMainInfo:Click()
 end

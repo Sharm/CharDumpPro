@@ -2,7 +2,7 @@
 VERSION = "v1.1"
 ADDONNAME = "CharDump-PRO "..VERSION
 
-Addon = LibStub("AceAddon-3.0"):NewAddon(ADDONNAME, "AceConsole-3.0")
+Addon = LibStub("AceAddon-3.0"):NewAddon(ADDONNAME, "AceConsole-3.0", "AceEvent-3.0")
 
 Addon:RegisterChatCommand("cd", "slash")
 
