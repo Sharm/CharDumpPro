@@ -146,13 +146,13 @@
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString inherits="GameFontNormal" text="Dump only main bag (backpack)">
+				<FontString inherits="GameFontNormal" text="Dump only main bag (backpack) and equipped">
 					<Size>
-						<AbsDimension x="107" y="32" />
+						<AbsDimension x="106" y="46" />
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="71" y="-43" />
+							<Offset x="72" y="-34" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -195,7 +195,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="23" y="-43" />
+						<Offset x="22" y="-41" />
 					</Anchor>
 				</Anchors>
 			</CheckButton>

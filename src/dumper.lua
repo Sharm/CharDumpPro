@@ -62,14 +62,15 @@ function Dumper:dumpMainInfo()
 	return true, self._db.mainInfo.class.." "..self._db.mainInfo.name .." "..self._db.mainInfo.level.."lvl"
 end
 
-function Dumper:dumpInventory()
+function Dumper:dumpInventory(options)
 	
 	local inventorySave = {}
-	local itemLink, bagNum_ID
+	local itemLink
 	local allcount = 0
 
 	for bagNum = 0, 4 do
 		local bagString = "Bag"..bagNum
+		itemLink = nil
 
 		if bagNum == 0 then
 			-- Backpack (bag 0)
@@ -77,8 +78,8 @@ function Dumper:dumpInventory()
 				link = nil,
 				size = GetContainerNumSlots(bagNum)
 			}
-		else
-			bagNum_ID = ContainerIDToInventoryID(bagNum)
+		elseif not options.isOneBag then
+			local bagNum_ID = ContainerIDToInventoryID(bagNum)
 			itemLink = GetInventoryItemLink("player", bagNum_ID)
 			if itemLink then
 				inventorySave[bagString] = {

@@ -14,6 +14,9 @@ function btnDump_Constructor(self)
 	function self:showOptions()
 		_G["frame"..self.type.."Options"]:ShowOnParent(frameDump)
 	end
+
+	-- Create table for store dump otions
+	self.dumpOptions = {}
 end
 
 function frameDump_Init()
@@ -35,7 +38,7 @@ function btnDump_OnClick(self)
 	self.checkObj:Disable()
 	self.textObj:SetText("Proceeding...")
 
-	local success, info = dumper[self.dumpFunction](dumper)
+	local success, info = dumper[self.dumpFunction](dumper, self.dumpOptions)
 	if success then
 		self.checkObj:Enable()
 		self.textObj:SetText("Success! ("..info..")")
@@ -50,6 +53,8 @@ function btnDumpInventory_OnClick()
 end
 
 function btnOkayInventory_OnClick(self)
+	btnDumpInventory.dumpOptions.isOneBag = optionInventoryOneBag:GetChecked()
+
 	btnDump_OnClick(btnDumpInventory)
 	btnCancelDialog_OnClick(self)
 end
