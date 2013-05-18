@@ -3,7 +3,7 @@
 --
 -- Components initialize and definitions
 --
-function HighlightTab_Initialize(self)
+function HighlightTab_Constructor(self)
 
 	function self:isActive()
 		return self._isActive

@@ -11,7 +11,7 @@
 		</Anchors>
 		<Scripts>
 			<OnLoad>
-				HighlightTab_Initialize(self)
+				HighlightTab_Constructor(self)
 			</OnLoad>
 		</Scripts>
 	</Button>
