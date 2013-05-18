@@ -6,4 +6,3 @@
 ## SavedVariables: CharDumpDB
 
 embeds.xml
-main.lua

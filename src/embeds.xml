@@ -18,6 +18,8 @@
 	<!--<Include file="Libs\AceTab-3.0\AceTab-3.0.xml"/>-->
 	<!--<Include file="Libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>-->
 
+	<Script file="addon.lua"/>
+
 	<Script file="LogArea.lua"/>
 	<Script file="datastore.lua"/>
 	<Script file="chardump.lua"/>
@@ -29,5 +31,7 @@
 	<Script file="FrameRestore.lua"/>
 	<Include file="FrameMain.xml"/>
 	<Script file="FrameMain.lua"/>
+
+	<Script file="main.lua"/>
 
 </Ui>
