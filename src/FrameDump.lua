@@ -10,6 +10,10 @@ function btnDump_Constructor(self)
 		self.textObj = _G["textDump"..self.type]
 		self.dumpFunction = "dump"..self.type
 	end
+
+	function self:showOptions()
+		_G["frame"..self.type.."Options"]:ShowOnParent(frameDump)
+	end
 end
 
 function frameDump_Init()
@@ -20,6 +24,7 @@ function frameDump_Init()
 	dumper:init()
 
 	Addon:RegisterEvent("PLAYER_ENTERING_WORLD", function() frameDump_PLAYER_ENTERING_WORLD() end)
+	-- frameDump:RegisterEvent("PLAYER_ENTERING_WORLD")
 end
 
 function frameDump_PLAYER_ENTERING_WORLD()
@@ -40,6 +45,15 @@ function btnDump_OnClick(self)
 	end
 end
 
-function frameDump_PLAYER_ENTERING_WORLD()
-	btnDumpMainInfo:Click()
+function btnDumpInventory_OnClick()
+	btnDumpInventory:showOptions()
+end
+
+function btnOkayInventory_OnClick(self)
+	btnDump_OnClick(btnDumpInventory)
+	btnCancelDialog_OnClick(self)
+end
+
+function btnCancelDialog_OnClick(self)
+	self:GetParent():Hide()
 end
