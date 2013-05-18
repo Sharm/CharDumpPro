@@ -17,8 +17,10 @@
 	<!--<Include file="Libs\AceComm-3.0\AceComm-3.0.xml"/>-->
 	<!--<Include file="Libs\AceTab-3.0\AceTab-3.0.xml"/>-->
 	<!--<Include file="Libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>-->
-
 	<Script file="addon.lua"/>
+
+	<Script file="data\factions.lua"/>
+	<Script file="data\init.lua"/>
 
 	<Script file="LogArea.lua"/>
 	<Script file="datastore.lua"/>
@@ -35,5 +37,4 @@
 	<Script file="FrameMain.lua"/>
 
 	<Script file="main.lua"/>
-
 </Ui>

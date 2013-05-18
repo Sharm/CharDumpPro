@@ -20,6 +20,10 @@
     <Content Include="chardump.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Data\init.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Data\factions.lua" />
     <Content Include="dumper.lua">
       <SubType>Code</SubType>
     </Content>
@@ -274,6 +278,7 @@
     <Folder Include="Libs\AceTimer-3.0\" />
     <Folder Include="Libs\CallbackHandler-1.0\" />
     <Folder Include="Libs\LibStub\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(DevEnvDir)\Extensions\Tools\MSBuild\Microsoft\WowAddonStudio\3.0\WowAddonStudio.targets" />
   <!--
