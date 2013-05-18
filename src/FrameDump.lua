@@ -2,24 +2,28 @@
 
 local dumper = Dumper
 
+function btnDump_Constructor(self)
+	function self:init()
+		self.type = string.gsub(self:GetName(),"btnDump","",1)
+		Addon:Print("Type: "..self.type)
+		self.checkObj = _G["checkDump"..self.type]
+		self.textObj = _G["textDump"..self.type]
+		self.dumpFunction = "dump"..self.type
+	end
+end
+
 function frameDump_Init()
 	-- link dump rows
-	btnDumpMainInfo.checkObj = checkDumpMainInfo
-	btnDumpMainInfo.textObj = textDumpMainInfo
-	btnDumpMainInfo.dumpFunction = "dumpMainInfo"
+	btnDumpMainInfo:init()
+	btnDumpInventory:init()
 
 	dumper:init()
 
 	Addon:RegisterEvent("PLAYER_ENTERING_WORLD", function() frameDump_PLAYER_ENTERING_WORLD() end)
 end
 
-function btnDumpInventory_OnClick()
-	
-end
-
-function btnDumpMainInfo_OnClick()
-
-		
+function frameDump_PLAYER_ENTERING_WORLD()
+	btnDumpMainInfo:Click()
 end
 
 function btnDump_OnClick(self)
