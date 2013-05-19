@@ -23,6 +23,7 @@ function frameDump_Init()
 	-- link dump rows
 	btnDumpMainInfo:init()
 	btnDumpInventory:init()
+	btnDumpReputation:init()
 
 	dumper:init()
 

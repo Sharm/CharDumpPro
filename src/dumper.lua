@@ -126,3 +126,63 @@ function Dumper:dumpInventory(options)
 
 	return true, "Saved "..allcount.." items prototypes"
 end
+
+-- return factionid, errorstring
+function Dumper:_getFactionId(name)
+	local locale = GetLocale()
+	if locale ~= "ruRU" and locale ~= "enUS" then
+		return nil, "Can't get faction id! Wrong client locale!"
+	end
+	for k,v in pairs(DB.Factions) do
+		if name == v["name_"..locale] then
+			return k, nil
+		end
+	end
+	return nil, "Can't get faction id! Faction not found ("..name..")"
+end
+
+function Dumper:dumpReputation()
+	if not self:isInited() then
+		return false, "Dumper not inited yet!"
+	end
+
+	-- Expand all faction first. Otherwise we get wrong GetNumFactions()
+	local collapsed = {}
+	for i=1,GetNumFactions() do 
+		local _,_,_,_,_,_,_,_,isHeader,isCollapsed = GetFactionInfo(i) 
+		if isHeader and isCollapsed then
+			table.insert(collapsed, i)
+		end
+	end
+	for k,v in pairs(collapsed) do
+		ExpandFactionHeader(v)
+	end
+
+	local reputation, count = {}, 0
+
+	for i=1,GetNumFactions() do 
+		local name,_,_,_,_,earnedValue,_,_,isHeader,isCollapsed = GetFactionInfo(i) 
+
+		if not isHeader then
+			local factionId, error = self:_getFactionId(name)
+
+			if error then
+				Addon:Print(error)
+				return false, error
+			end
+
+			reputation[factionId] = {
+				factionId = factionId,
+				earnedValue = earnedValue,
+				side = DB.Factions[factionId].side
+			}
+
+			count = count + 1
+		end
+	end
+
+	self._db.reputation = reputation
+
+	return true, "Saved "..count.." reputations"
+
+end

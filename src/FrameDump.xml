@@ -51,6 +51,26 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString inherits="DialogButtonHighlightText" text="Reputation" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="119" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="37" y="-80" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="textDumpReputation" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="243" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="233" y="-80" />
+						</Anchor>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
@@ -128,6 +148,43 @@
 					</OnLoad>
 				</Scripts>
 			</Button>
+			<Button name="checkDumpReputation" inherits="UIPanelButtonTemplate" text="">
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="6" y="-80" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:Disable();
+					</OnLoad>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<PushedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+				<HighlightTexture file="" alphaMode="ADD" />
+			</Button>
+			<Button name="btnDumpReputation" inherits="UIPanelButtonTemplate" text="ReDump">
+				<Size>
+					<AbsDimension x="65" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="162" y="-80" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						btnDump_OnClick(self)
+					</OnClick>
+					<OnLoad>
+						btnDump_Constructor(self)
+					</OnLoad>
+				</Scripts>
+			</Button>
 		</Frames>
 		<Scripts>
 			<OnEvent>
@@ -190,9 +247,6 @@
 				</Scripts>
 			</Button>
 			<CheckButton name="optionInventoryOneBag" inherits="UICheckButtonTemplate" text="CheckButton1">
-				<Size>
-					<AbsDimension x="32" y="32" />
-				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset x="22" y="-41" />

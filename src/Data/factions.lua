@@ -10,8 +10,8 @@ DB.Factions.Fields = {
 	{name = "repListId", type = "number"},	-- reputation list id		
 	{name = "team",		 type = "number"},	-- team
 	{name = "side",		 type = "number"},	-- side (1 - Alliance,  2 - Horde)
-	{name = "name_en",	 type = "string"},	-- english title
-	{name = "name_ru",	 type = "string"}	-- russian title
+	{name = "name_enUS", type = "string"},	-- english title
+	{name = "name_ruRU", type = "string"}	-- russian title
 }
 DB.Factions.KeyField = "id"
 DB.Factions.Data = [[
