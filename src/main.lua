@@ -1,14 +1,12 @@
 ﻿-- Author: for.sneg@gmail.com
 
-Addon:RegisterChatCommand("cd", "slash")
-
-function Addon:slash(input)
+Addon:RegisterChatCommand("cd", function()
 	if frameMain:IsShown() then
 		frameMain:Hide();
 	else
 		frameMain:Show();
 	end
-end
+end)
 
 function Addon:OnInitialize()
 	
@@ -16,7 +14,7 @@ function Addon:OnInitialize()
 
 	frameMain_Init()
 	frameDump_Init()
-
+	
 	self:Print("Ready");
 end
 
@@ -26,6 +24,13 @@ end
 
 function Addon:OnDisable()
     -- Called when the addon is disabled
+end
+
+function string:split(sep)
+    local sep, fields = sep or ":", {}
+    local pattern = string.format("([^%s]+)", sep)
+    self:gsub(pattern, function(c) fields[#fields+1] = c end)
+    return fields
 end
 
 function table.join(t1, t2)

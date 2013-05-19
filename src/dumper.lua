@@ -63,7 +63,10 @@ function Dumper:dumpMainInfo()
 end
 
 function Dumper:dumpInventory(options)
-	
+	if not self:isInited() then
+		return false, "Dumper not inited yet!"
+	end
+
 	local inventorySave = {}
 	local itemLink
 	local allcount = 0

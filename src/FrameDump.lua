@@ -5,7 +5,6 @@ local dumper = Dumper
 function btnDump_Constructor(self)
 	function self:init()
 		self.type = string.gsub(self:GetName(),"btnDump","",1)
-		Addon:Print("Type: "..self.type)
 		self.checkObj = _G["checkDump"..self.type]
 		self.textObj = _G["textDump"..self.type]
 		self.dumpFunction = "dump"..self.type
