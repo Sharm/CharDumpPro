@@ -190,6 +190,9 @@
 			<OnEvent>
 				frameDump_OnEvent(self, event, ...)
 			</OnEvent>
+			<OnShow>
+				frameDump_OnShow()
+			</OnShow>
 		</Scripts>
 	</Frame>
 	<Frame name="frameInventoryOptions" inherits="ModalDialog">
