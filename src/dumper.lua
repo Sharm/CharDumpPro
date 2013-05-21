@@ -23,6 +23,10 @@ function Dumper:isInited()
 	return self._db
 end
 
+-- =================
+-- Main info
+-- =================
+
 function Dumper:dumpMainInfo()
 	if not self:isInited() then
 		return false, "Dumper not inited yet!"
@@ -61,6 +65,10 @@ function Dumper:dumpMainInfo()
 
 	return true, self._db.mainInfo.class.." "..self._db.mainInfo.name .." "..self._db.mainInfo.level.."lvl"
 end
+
+-- =================
+-- Inventory
+-- =================
 
 function Dumper:dumpInventory(options)
 	if not self:isInited() then
@@ -130,6 +138,10 @@ function Dumper:dumpInventory(options)
 	return true, "Saved "..allcount.." items prototypes"
 end
 
+-- =================
+-- Reputation
+-- =================
+
 -- return factionid, errorstring
 function Dumper:_getFactionId(name)
 	local locale = GetLocale()
@@ -150,15 +162,11 @@ function Dumper:dumpReputation()
 	end
 
 	-- Expand all faction first. Otherwise we get wrong GetNumFactions()
-	local collapsed = {}
-	for i=1,GetNumFactions() do 
+	for i=GetNumFactions(),1,-1 do 
 		local _,_,_,_,_,_,_,_,isHeader,isCollapsed = GetFactionInfo(i) 
 		if isHeader and isCollapsed then
-			table.insert(collapsed, i)
+			ExpandFactionHeader(i)
 		end
-	end
-	for k,v in pairs(collapsed) do
-		ExpandFactionHeader(v)
 	end
 
 	local reputation, count = {}, 0
@@ -170,14 +178,12 @@ function Dumper:dumpReputation()
 			local factionId, error = self:_getFactionId(name)
 
 			if error then
-				Addon:Print(error)
 				return false, error
 			end
 
 			reputation[factionId] = {
 				factionId = factionId,
-				earnedValue = earnedValue,
-				side = DB.Factions[factionId].side
+				earnedValue = earnedValue
 			}
 
 			count = count + 1

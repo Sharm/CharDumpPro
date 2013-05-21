@@ -6,12 +6,12 @@
 DB = DB or {}
 DB.Factions = {}
 DB.Factions.Fields = {
-	{name = "id",		 type = "number"},	-- faction index
-	{name = "repListId", type = "number"},	-- reputation list id		
-	{name = "team",		 type = "number"},	-- team
-	{name = "side",		 type = "number"},	-- side (1 - Alliance,  2 - Horde)
-	{name = "name_enUS", type = "string"},	-- english title
-	{name = "name_ruRU", type = "string"}	-- russian title
+	{name = "id",		 type = "number"},  -- faction index
+	{name = "repListId", type = "number"},  -- reputation list id		
+	{name = "team",		 type = "number"},  -- team
+	{name = "side",		 type = "number"},  -- side (1 - Alliance,  2 - Horde)
+	{name = "name_enUS", type = "string"},  -- english title
+	{name = "name_ruRU", type = "string"}   -- russian title
 }
 DB.Factions.KeyField = "id"
 DB.Factions.Data = [[
