@@ -24,6 +24,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Data\factions.lua" />
+    <Content Include="Data\skills.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="dumper.lua">
       <SubType>Code</SubType>
     </Content>
