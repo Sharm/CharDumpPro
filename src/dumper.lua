@@ -189,3 +189,87 @@ function Dumper:dumpReputation()
 	return true, "Saved "..count.." reputations"
 
 end
+
+-- =================
+-- Profession skills
+-- =================
+
+-- return skillid, errorstring
+function Dumper:_getSkillId(name)
+	local locale = GetLocale()
+	if locale ~= "ruRU" and locale ~= "enUS" then
+		return nil, "Can't get skill id! Wrong client locale!"
+	end
+	for k,v in pairs(DB.Skills) do
+		if name == v["name_"..locale] then
+			return k, nil
+		end
+	end
+	return nil, "Can't get skill id! Skill not found ("..name..")"
+end
+
+function Dumper:dumpSkills()
+	if not self:isInited() then
+		return false, "Dumper not inited yet!"
+	end
+
+--  NEW API FUNCTIONS
+--    local prof1, prof2, fishing, cooking, firstAid = GetProfessions()
+--    local professions = {prof1, prof2, fishing, cooking, firstAid}
+
+--    for i=1, 5 do
+--        local prof = professions[i]
+--        if prof then
+--            name, texture, rank, maxRank, numSpells, spelloffset, skillLine, rankModifier, specializationIndex, specializationOffset = GetProfessionInfo(prof)
+--            Addon:Print(name)
+--        end
+    
+--    end
+
+
+    -- Expand all skilllines first. Otherwise we get wrong GetNumSkillLines()
+	for i=GetNumSkillLines(),1,-1 do 
+		local _, isHeader, isExpanded = GetSkillLineInfo(i) 
+		if isHeader and not isExpanded then
+            ExpandSkillHeader(i)
+		end
+	end
+
+    local skills, count = {}, 0
+
+    for i=1,GetNumSkillLines() do 
+
+		local skillName, isHeader, _, skillRank, _, _, skillMaxRank = GetSkillLineInfo(i)
+        if not isHeader then
+			local skillId, error = self:_getSkillId(skillName)
+
+			if error then
+				return false, error
+			end
+
+            if DB.Skills[skillId].id == 40              -- Poisons
+                or DB.Skills[skillId].id == 762         -- Riding
+                or DB.Skills[skillId].categoryId == 6   -- Weapon/Defense skills
+                or DB.Skills[skillId].categoryId == 11  -- Professions
+            then
+
+			    skills[skillId] = {
+				    skillId = skillId,
+				    value = skillRank,
+                    maxValue = skillMaxRank
+			    }
+
+                if skills[skillId].value > 375 then
+                    skills[skillId].value = 375
+                end
+
+			    count = count + 1
+            end
+		end
+	end
+
+
+	self._db.skills = skills
+
+	return true, "Saved "..count.." skills"
+end
