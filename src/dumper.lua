@@ -1,5 +1,43 @@
 ﻿-- Author: for.sneg@gmail.com
 
+local Specializations = {
+    -- All Alchemy Specialities
+    [171] = { 
+        [28674] = GetSpellInfo(28674),
+        [28678] = GetSpellInfo(28678),
+        [28676] = GetSpellInfo(28676)
+    },
+    
+    -- All Blacksmithing Specialities
+    [164] = {
+        [9788] = GetSpellInfo(9788),   -- Armorsmith
+	    [17041] = GetSpellInfo(17041), -- Master Axesmith
+	    [17040] = GetSpellInfo(17040), -- Master Hammersmith
+	    [17039] = GetSpellInfo(17039), -- Master Swordsmith
+	    [9787] = GetSpellInfo(9787)    -- Weaponsmith
+    },
+
+    -- All Engineering Specialities
+    [202] = {
+    	[20219] = GetSpellInfo(20219), -- Gnomish
+	    [20222] = GetSpellInfo(20222)  -- Goblin
+    },
+
+    -- All Leatherworking Specialities
+    [165] = {
+	    [10657] = GetSpellInfo(10657), -- Dragonscale
+	    [10659] = GetSpellInfo(10659), -- Elemental
+	    [10661] = GetSpellInfo(10661)  -- Tribal
+    },
+    
+    -- All Tailoring Specialities
+    [197] = {
+    	[26797] = GetSpellInfo(26797), -- Spellfire
+	    [26801] = GetSpellInfo(26801), -- Shadoweave
+	    [26798] = GetSpellInfo(26798)  -- Primal Mooncloth
+    }
+}
+
 Dumper = { 
 	_db = nil, -- reference to save table for current char
 }
@@ -278,4 +316,47 @@ function Dumper:dumpSkills()
 	self._db.skills = skills
 
 	return true, "Saved "..count.." skills"
+end
+
+-- =================
+-- Specializations
+-- =================
+
+function Dumper:_getCharacterSpecialization(professionId)
+    local possibleSpecs = Specializations[professionId]
+
+    local index = 1
+    while (1) do
+        local spellName = GetSpellName(index, BOOKTYPE_SPELL)
+        if not spellName then
+            break
+        end
+        
+        for k,v in pairs(possibleSpecs) do
+            if spellName == v then
+                table.insert(self._db.specs, k)
+            end
+        end
+        index = index + 1
+    end
+end
+
+function Dumper:dumpSpecs()
+	if not self:isInited() then
+		return false, "Dumper not inited yet!"
+	end
+
+    if not self._db.skills then
+        return false, "Dump skills first!"
+    end
+
+    self._db.specs = {}
+
+    for k,v in pairs(self._db.skills) do    -- go through character skills
+        if Specializations[k] then          -- if skill have possible specializations
+            Dumper:_getCharacterSpecialization(k)
+        end
+    end
+
+    return true, "Saved "..#self._db.specs.." specializations"
 end

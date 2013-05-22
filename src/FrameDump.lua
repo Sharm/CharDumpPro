@@ -69,4 +69,6 @@ end
 function frameDump_OnShow()
 	btnDumpMainInfo:Click()
 	btnDumpReputation:Click()
+    btnDumpSkills:Click()
+    btnDumpSpecs:Click()
 end
