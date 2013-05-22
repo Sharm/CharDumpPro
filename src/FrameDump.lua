@@ -23,6 +23,9 @@ function frameDump_Init()
 	btnDumpMainInfo:init()
 	btnDumpInventory:init()
 	btnDumpReputation:init()
+    btnDumpSkills:init()
+    btnDumpSpecs:init()
+    btnDumpRecipes:init()
 
 	dumper:init()
 
