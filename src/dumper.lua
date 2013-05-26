@@ -418,15 +418,8 @@ end
 -- Recieps
 -- =================
 
-function Dumper:_dumpRecipesForSkill(baseSpellInfo)
+function Dumper:_dumpRecipesForTradeSkill(baseSpellInfo)
 
-    if baseSpellInfo.spellName == "Enchanting" then
-        return true, 0
-    end
-
-    -- Open recieps window
-    CastSpellByName(baseSpellInfo.spellName, "player")
-    
     local name, rank, maxLevel = GetTradeSkillLine()
     if name=="UNKNOWN" then
         return false, 0, "Can't open profession window: "..baseSpellInfo.spellName
@@ -471,10 +464,70 @@ function Dumper:_dumpRecipesForSkill(baseSpellInfo)
 		end
     end
 
+    return true, count
+end
+
+
+function Dumper:_dumpRecipesForCraft(baseSpellInfo)
+
+    local name = GetCraftName()
+    if name ~= baseSpellInfo.spellName then
+        return false, 0, "Can't open profession window: "..baseSpellInfo.spellName
+    end
+
+	-- Clear the "Have Materials" check box
+	if CraftFrameAvailableFilterCheckButton:GetChecked() then
+		CraftFrameAvailableFilterCheckButton:SetChecked(false)
+		CraftOnlyShowMakeable(false)
+	end
+
+	-- Clear the inventory slots filter
+	UIDropDownMenu_SetSelectedID(CraftFrameFilterDropDown, 1)
+	SetCraftFilter(1)
+	CraftFrame.selected = 1
+
+	-- Scans crafting recipes in opened window, expanding all headers
+	for i = GetNumCrafts(), 1, -1 do
+		local _, _, craftType = GetCraftInfo(i)
+		if craftType == "header" then
+			ExpandCraftSkillLine(i)
+		end
+	end
+
+	-- Scan through all recipes
+    local count = 0
+	for i = 1, GetNumCrafts() do
+		local skillName, _, craftType = GetCraftInfo(i)
+		-- Ignore all trade skill headers
+		if (craftType ~= "header") then
+            count = count + 1
+            local spellId = string.match(GetCraftRecipeLink(i), ".*Henchant:(%d+).*")
+            table.insert(self._db.recipes, tonumber(spellId))
+		end
+	end
+
+    return true, count
+end
+
+
+function Dumper:_dumpRecipesForSkill(baseSpellInfo)
+
+    -- Open recipes window
+    CastSpellByName(baseSpellInfo.spellName, "player")
+    
+    local isCraft = baseSpellInfo.skillId == 333 -- Enchanting
+
+    local ok, count, info = false, 0, ""
+    if isCraft then
+        ok, count, info = self:_dumpRecipesForCraft(baseSpellInfo)
+    else
+        ok, count, info = self:_dumpRecipesForTradeSkill(baseSpellInfo)
+    end
+        
     -- Close recipes window
     CastSpellByName(baseSpellInfo.spellName, "player")
     
-    return true, count
+    return ok, count, info
 end    
 
 function Dumper:dumpRecipes()
