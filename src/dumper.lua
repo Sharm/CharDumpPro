@@ -421,7 +421,7 @@ end
 function Dumper:_dumpRecipesForTradeSkill(baseSpellInfo)
 
     local name, rank, maxLevel = GetTradeSkillLine()
-    if name=="UNKNOWN" then
+    if name == "UNKNOWN" then
         return false, 0, "Can't open profession window: "..baseSpellInfo.spellName
     end
     
@@ -460,7 +460,7 @@ function Dumper:_dumpRecipesForTradeSkill(baseSpellInfo)
 		if (tradeType ~= "header") then
             count = count + 1
             local spellId = string.match(GetTradeSkillRecipeLink(i), ".*Henchant:(%d+).*")
-            table.insert(self._db.recipes, spellId)
+            table.insert(self._db.recipes, tonumber(spellId))
 		end
     end
 
@@ -529,6 +529,7 @@ function Dumper:_dumpRecipesForSkill(baseSpellInfo)
     
     return ok, count, info
 end    
+
 
 function Dumper:dumpRecipes()
 	if not self:isInited() then
