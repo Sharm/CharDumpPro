@@ -1,5 +1,58 @@
 ﻿-- Author: for.sneg@gmail.com
 
+local BaseProfessionSpells = {
+	{   -- Alchemy
+        skillId = 171,
+        spellName = GetSpellInfo(2259)
+    },   
+	{   -- Blacksmith
+        skillId = 164,
+        spellName = GetSpellInfo(2018)
+    },
+	{   -- Smelting
+        skillId = 164,
+        spellName = GetSpellInfo(2575)
+    },
+	{   -- Engineering
+        skillId = 202,
+        spellName = GetSpellInfo(4036)
+    },
+	{   -- Leatherwork
+        skillId = 165,
+        spellName = GetSpellInfo(2108)
+    },
+	{   -- Tailor
+        skillId = 197,
+        spellName = GetSpellInfo(3908)
+    },
+	{   -- Cooking
+        skillId = 185,
+        spellName = GetSpellInfo(2550)
+    },
+	{   -- FirstAid
+        skillId = 129,
+        spellName = GetSpellInfo(3273)
+    },
+	{   -- RoguePoison
+        skillId = 40,
+        spellName = GetSpellInfo(2842)
+    },
+	{   -- Jewelcrafting
+        skillId = 755,
+        spellName = GetSpellInfo(25229)
+    },
+	{   -- Enchanting (IT IS *CRAFT* IN 2.4.3)
+        skillId = 333,
+        spellName = GetSpellInfo(7411)
+    }
+	
+	--if (addon.wrath) then
+	--	professiontable[GetSpellInfo(45357)] = addon.InitInscription
+	--	professiontable[GetSpellInfo(7411)] = addon.InitEnchanting
+	--end
+
+}
+
 local Specializations = {
     -- All Alchemy Specialities
     [171] = { 
@@ -359,4 +412,92 @@ function Dumper:dumpSpecs()
     end
 
     return true, "Saved "..#self._db.specs.." specializations"
+end
+
+-- =================
+-- Recieps
+-- =================
+
+function Dumper:_dumpRecipesForSkill(baseSpellInfo)
+
+    if baseSpellInfo.spellName == "Enchanting" then
+        return true, 0
+    end
+
+    -- Open recieps window
+    CastSpellByName(baseSpellInfo.spellName, "player")
+    
+    local name, rank, maxLevel = GetTradeSkillLine()
+    if name=="UNKNOWN" then
+        return false, 0, "Can't open profession window: "..baseSpellInfo.spellName
+    end
+    
+    -- Validate
+    if rank ~= self._db.skills[baseSpellInfo.skillId].value or maxLevel ~= self._db.skills[baseSpellInfo.skillId].maxValue then
+        return false, 0, "Skills dump and profession window info are different: "..baseSpellInfo.spellName
+    end
+         
+    -- Clear the "Have Materials" check box
+	if TradeSkillFrameAvailableFilterCheckButton:GetChecked() then
+		TradeSkillFrameAvailableFilterCheckButton:SetChecked(false)
+		TradeSkillOnlyShowMakeable(false)
+	end
+
+	-- Clear the sub-classes filters
+	SetTradeSkillSubClassFilter(0, 1, 1)
+	UIDropDownMenu_SetSelectedID(TradeSkillSubClassDropDown, 1)
+
+	-- Clear the inventory slot filter
+	SetTradeSkillInvSlotFilter(0, 1, 1);
+	UIDropDownMenu_SetSelectedID(TradeSkillInvSlotDropDown, 1)
+
+	-- Expand all headers
+	for i = GetNumTradeSkills(), 1, -1 do
+		local _, tradeType = GetTradeSkillInfo(i)
+		if tradeType == "header" then
+			ExpandTradeSkillSubClass(i)
+		end
+	end
+
+	-- Scan through all recipes
+    local count = 0
+    for i = 1, GetNumTradeSkills() do
+		local skillName, tradeType = GetTradeSkillInfo(i)
+		-- Ignore all trade skill headers
+		if (tradeType ~= "header") then
+            count = count + 1
+            local spellId = string.match(GetTradeSkillRecipeLink(i), ".*Henchant:(%d+).*")
+            table.insert(self._db.recipes, spellId)
+		end
+    end
+    
+    return true, count
+end    
+
+function Dumper:dumpRecipes()
+	if not self:isInited() then
+		return false, "Dumper not inited yet!"
+	end
+
+    if not self._db.skills then
+        return false, "Dump skills first!"
+    end
+
+    self._db.recipes = {}
+
+    local profCount, recCount = 0, 0
+    for charSkillId, charSkillInfo in pairs(self._db.skills) do    -- go through character skills
+        for i, baseSpellInfo in pairs(BaseProfessionSpells) do     -- go through all ingame professions for found name
+            if charSkillId == baseSpellInfo.skillId then
+                local ok, count, info = self:_dumpRecipesForSkill(baseSpellInfo)
+                if not ok then 
+                    return ok, info
+                end
+                recCount = recCount + count
+                profCount = profCount + 1
+            end
+        end
+    end
+
+    return true, "Saved "..recCount.." recipes for "..profCount.." professions"
 end
