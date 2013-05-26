@@ -9,9 +9,9 @@ local BaseProfessionSpells = {
         skillId = 164,
         spellName = GetSpellInfo(2018)
     },
-	{   -- Smelting
-        skillId = 164,
-        spellName = GetSpellInfo(2575)
+	{   -- Mining (Smelting)
+        skillId = 186,
+        spellName = GetSpellInfo(2656)
     },
 	{   -- Engineering
         skillId = 202,
@@ -470,6 +470,9 @@ function Dumper:_dumpRecipesForSkill(baseSpellInfo)
             table.insert(self._db.recipes, spellId)
 		end
     end
+
+    -- Close recipes window
+    CastSpellByName(baseSpellInfo.spellName, "player")
     
     return true, count
 end    
