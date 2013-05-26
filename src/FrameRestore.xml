@@ -2,21 +2,69 @@
 	<Script file="FrameDump.lua" />
 	<Frame name="frameRestore" virtual="true" parent="">
 		<Size>
-			<AbsDimension x="482" y="200" />
+			<AbsDimension x="482" y="250" />
 		</Size>
 		<Backdrop bgFile="" edgeFile="">
 			<BackgroundInsets>
 				<AbsInset xsi:nil="true" />
 			</BackgroundInsets>
 		</Backdrop>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString inherits="DialogButtonHighlightText" text="Common info" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="119" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="102" y="-56" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="textLoadMainInfo" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="243" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="224" y="-56" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 		<Frames>
-			<Button inherits="UIPanelButtonTemplate" text="RESTORE BUTTON">
+			<Button name="checkREstoreMainInfo" inherits="UIPanelButtonTemplate" text="">
 				<Size>
-					<AbsDimension x="75" y="23" />
+					<AbsDimension x="25" y="25" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="86" y="-60" />
+						<Offset x="6" y="-56" />
+					</Anchor>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<PushedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+				<HighlightTexture file="" alphaMode="ADD" />
+			</Button>
+			<Button name="btnLoadMainInfo" inherits="UIPanelButtonTemplate" text="ReLoad">
+				<Size>
+					<AbsDimension x="65" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="34" y="-56" />
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="boxChooseCharacter" inherits="UIDropDownMenuTemplate" text="Button1">
+				<Size>
+					<AbsDimension x="167" y="30" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="17" y="-15" />
 					</Anchor>
 				</Anchors>
 			</Button>

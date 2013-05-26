@@ -13,7 +13,6 @@ function Addon:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("CharDumpDB")
 
 	frameMain_Init()
-	frameDump_Init()
 	
 	self:Print("Ready");
 end

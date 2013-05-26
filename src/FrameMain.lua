@@ -52,7 +52,7 @@ function frameMain_Init()
 	frameMain:RegisterForDrag("LeftButton")
 
 	-- Create log scrollframe
-	Log:init(frameMain)
+	-- Log:init(frameMain)
 	
 	-- Create dump and restore frames
 	local frame = CreateFrame("Frame", "frameDump", frameMain, "frameDump")
@@ -63,12 +63,14 @@ function frameMain_Init()
 	frame:SetPoint("TOPLEFT",14,-46)
 	frame:Hide()
 
-	UIDropDownMenu_Initialize(test, testInit)
-
 	headerText:SetText(ADDONNAME)
 	
 	tabDump:setActive(true)
 	tabRestore:setActive(false)
+    
+    -- Init child frames
+    frameDump_Init()
+    frameRestore_Init()
 end
 
 
@@ -82,20 +84,6 @@ end
 
 function btnClose_OnClick()
 	frameMain:Hide();
-end
-
-
-
-
-function testInit()
-	info = {
-		text = '12312313123';
-		func = nil;
-	};
-	UIDropDownMenu_AddButton(info);
-	UIDropDownMenu_AddButton(info);
-	UIDropDownMenu_AddButton(info);
-	UIDropDownMenu_AddButton(info);
 end
 
 
