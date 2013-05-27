@@ -27,8 +27,6 @@ function frameDump_Init()
     btnDumpSpecs:init()
     btnDumpRecipes:init()
 
-	dumper:init()
-
 	-- Addon:RegisterEvent("PLAYER_ENTERING_WORLD", function() frameDump_PLAYER_ENTERING_WORLD() end)
 	-- frameDump:RegisterEvent("PLAYER_ENTERING_WORLD")
 end
@@ -67,6 +65,7 @@ function btnCancelDialog_OnClick(self)
 end
 
 function frameDump_OnShow()
+    dumper:createRecord()
 	btnDumpMainInfo:Click()
 	btnDumpReputation:Click()
     btnDumpSkills:Click()

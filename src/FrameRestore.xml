@@ -27,7 +27,17 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="224" y="-56" />
+							<Offset x="233" y="-56" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="textRestoreStatus" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="243" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="233" y="-15" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -69,5 +79,13 @@
 				</Anchors>
 			</Button>
 		</Frames>
+		<Scripts>
+			<OnEvent>
+				frameRestore_OnEvent()
+			</OnEvent>
+			<OnShow>
+				frameRestore_OnShow()
+			</OnShow>
+		</Scripts>
 	</Frame>
 </Ui>

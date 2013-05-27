@@ -95,7 +95,7 @@ Dumper = {
 	_db = nil, -- reference to save table for current char
 }
 
-function Dumper:init()
+function Dumper:createRecord()
 	local realmName = GetRealmName()
 	local name = UnitName("player")
 
