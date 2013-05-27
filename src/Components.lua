@@ -11,6 +11,19 @@ function ModalDialog_Constructor(self)
 		self:Show()
 	end
 
+    function self:SetOptions(options)
+        self._options = options
+        
+        _G[self:GetName().."Okay"].callback = options.OnOkay
+        _G[self:GetName().."Cancel"].callback = options.OnCancel
+        self:SetWidth(options.width or self:GetWidth())
+        self:SetHeight(options.height or self:GetHeight())
+
+        if self.handleOptions then
+            self:handleOptions(options)
+        end
+    end
+
 	-- Create overlay frame
 	self.overlay = CreateFrame("Frame")
 	
@@ -47,6 +60,27 @@ end
 
 function ModalDialog_OnHide(self)
 	self.overlay:Hide()
+end
+
+function ModalDialogBtn_OnClick(self)
+    if self.callback then
+        self:callback()
+        self:GetParent():Hide()
+    else
+        self:GetParent():Hide()
+    end
+end
+
+-- =============
+-- ModalDialogText
+-- =============
+
+function ModalDialogText_Constructor(self)
+    ModalDialog_Constructor(self)
+    function self:handleOptions(options)
+
+        _G[self:GetName().."Text"]:SetText(options.Text)
+    end
 end
 
 -- =============

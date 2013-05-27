@@ -2,7 +2,7 @@
 	<Script file="Components.lua" />
 	<Frame name="ModalDialog" virtual="true" hidden="true" toplevel="true" frameStrata="DIALOG">
 		<Size>
-			<AbsDimension x="200" y="200" />
+			<AbsDimension x="200" y="170" />
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT">
@@ -20,6 +20,38 @@
 				<AbsValue val="16" />
 			</EdgeSize>
 		</Backdrop>
+		<Frames>
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="Okay">
+				<Size>
+					<AbsDimension x="75" y="23" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="22" y="-132" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						ModalDialogBtn_OnClick(self)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="Cancel">
+				<Size>
+					<AbsDimension x="75" y="23" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="103" y="-132" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						ModalDialogBtn_OnClick(self)
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
 		<Scripts>
 			<OnLoad>
 				ModalDialog_Constructor(self)
@@ -30,6 +62,32 @@
 			<OnHide>
 				ModalDialog_OnHide(self)
 			</OnHide>
+		</Scripts>
+	</Frame>
+	<Frame name="ModalDialogText" inherits="ModalDialog">
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset x="185" y="-183" />
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentText" inherits="GameFontNormal" text="FontString1">
+					<Size>
+						<AbsDimension x="168" y="89" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="16" y="-21" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				ModalDialogText_Constructor(self)
+			</OnLoad>
 		</Scripts>
 	</Frame>
 </Ui>
