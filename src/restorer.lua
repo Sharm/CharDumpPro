@@ -26,3 +26,18 @@ function Restorer:getRestoreRecordsNames()
 
     return records
 end
+
+-- =================
+-- Main info
+-- =================
+
+function Restorer:getMainInfoInfo()
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    if not self._db.mainInfo then
+        return false, "Empty!"
+    end
+    return true, tostring(self._db.mainInfo.class).." "..tostring(self._db.mainInfo.name).." "..tostring(self._db.mainInfo.level).."lvl"
+end
