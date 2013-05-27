@@ -131,7 +131,7 @@ function Dumper:dumpMainInfo()
 		charDumpVersion = VERSION,
 		realmlist = GetCVar("realmList"),
 		clientbuild = build,
-		guid = UnitGUID("player"),
+		-- guid = UnitGUID("player"),
 		class = class,
 		level=UnitLevel("player"),
 		race = race,

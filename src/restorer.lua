@@ -14,7 +14,7 @@ function Restorer:getRestoreRecordsNames()
 
 	for k,v in pairs(Addon.db.global) do
         local _, build, _, _ = GetBuildInfo()
-        if v.mainInfo.charDumpVersion == VERSION and v.mainInfo.clientbuild == build then
+        if v.mainInfo and v.mainInfo.charDumpVersion == VERSION and v.mainInfo.clientbuild == build then
             records = records or {}
             table.insert(records, k)
         end
@@ -27,6 +27,14 @@ function Restorer:getRestoreRecordsNames()
     return records
 end
 
+local function _isValidInteger(value, low, high)
+    return type(value) == "number" and (low == nil or value > low) and (high == nil or value < high)
+end
+
+local function _isValidString(value, count)
+    return type(value) == "string" and (count == nil or #value > count)
+end
+
 -- =================
 -- Main info
 -- =================
@@ -36,8 +44,32 @@ function Restorer:getMainInfoInfo()
         return false, "Initializing error!"
     end
 
-    if not self._db.mainInfo then
-        return false, "Empty!"
+    -- VALIDATE
+
+    -- Validates on record loading:
+    -- -- self._db.mainInfo
+    -- -- self._db.mainInfo.charDumpVersion
+    -- -- self._db.mainInfo.clientbuild
+
+    local db = self._db.mainInfo
+
+    local validate = {
+        ["Realmlist"] = _isValidString(db.realmlist, 4),
+        ["Class"] = _isValidString(db.class, 4),
+        ["Level"] = _isValidInteger(db.level, 0, 71), -- For 2.4.3
+        ["Race"] = _isValidString(db.race, 4),
+        ["Gender"] = _isValidInteger(db.gender, 1, 4),
+        ["HonorableKills"] = _isValidInteger(db.honorableKills, -1),
+        ["Honor"] = _isValidInteger(db.honor, -1),
+        ["Arena"] = _isValidInteger(db.arenapoints, -1),
+        ["Money"] = _isValidInteger(db.money, -1)
+    }
+
+    for k,v in pairs(validate) do
+        if not v then
+            return false, k
+        end
     end
-    return true, tostring(self._db.mainInfo.class).." "..tostring(self._db.mainInfo.name).." "..tostring(self._db.mainInfo.level).."lvl"
+
+    return true, db.class.." "..db.name.." "..tostring(db.level).." lvl"
 end
