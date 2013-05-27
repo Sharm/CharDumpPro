@@ -66,11 +66,11 @@
       <SubType>Code</SubType>
       <DependentUpon>FrameMain.xml</DependentUpon>
     </Content>
-    <Content Include="ModalDialog.lua">
+    <Content Include="Components.lua">
       <SubType>Code</SubType>
-      <DependentUpon>ModalDialog.xml</DependentUpon>
+      <DependentUpon>Components.xml</DependentUpon>
     </Content>
-    <Content Include="ModalDialog.xml">
+    <Content Include="Components.xml">
       <SubType>Frame</SubType>
     </Content>
     <Content Include="restorer.lua">

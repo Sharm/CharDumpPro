@@ -10,6 +10,7 @@ function btnRestore_Constructor(self)
         self.labelObj = _G["labelRestore"..self.type]
         self.restoreFunction = "restore"..self.type
         self.infoFunction = "get"..self.type.."Info"
+        ErrorFontString_init(self.textObj)
 	end
 
     -- Constructor
@@ -17,7 +18,9 @@ function btnRestore_Constructor(self)
 end
 
 function frameRestore_Init()
-    textRestoreStatus:SetText("Proceeding...")
+    ErrorFontString_init(textRestoreStatus)
+
+    textRestoreStatus:proceeding()
 
     btnRestoreMainInfo:init()
 
@@ -38,30 +41,29 @@ function boxChooseCharacter_dropDown_init()
             }
             UIDropDownMenu_AddButton(info);
         end
-        textRestoreStatus:SetText("Ready. Please choose restore record.")
+        textRestoreStatus:SetNormalText("Ready. Please choose restore record.")
     else
         local info = {
             text = "EMPTY",
             func = nil
         }
         UIDropDownMenu_AddButton(info);
-        -- TODO: Red color
-        textRestoreStatus:SetText("There is no valid restore records!")
+        textRestoreStatus:SetErrorText("There is no valid restore records!")
     end
 end
 
 function btnRestore_getInfo(self)
-    self.textObj:SetText("Proceeding...")
+    self.textObj:proceeding()
     local ok, info = restorer[self.infoFunction](restorer)
     if ok then
         self:Enable()
         self.labelObj:SetTextColor(1,1,1,1)
+        self.textObj:SetNormalText("Ready for restore! ("..info..")")
     else
-        -- TODO: Add red color to textObj
         self:Disable()
         self.labelObj:SetTextColor(0.753,0.753,0.753,1)
+        self.textObj:SetErrorText("Error occures while load dump record! ("..info..")")
     end
-    self.textObj:SetText("Ready for restore! ("..info..")")
     
     -- Save info for future use
     self._info = info

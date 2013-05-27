@@ -1,5 +1,8 @@
 ﻿-- Author: for.sneg@gmail.com
 
+-- =============
+-- ModalDialog
+-- =============
 
 function ModalDialog_Constructor(self)
 
@@ -44,4 +47,24 @@ end
 
 function ModalDialog_OnHide(self)
 	self.overlay:Hide()
+end
+
+-- =============
+-- Error FontString
+-- =============
+
+function ErrorFontString_init(self)
+    function self:SetErrorText(text)
+        self:SetTextColor(1,0,0,1)
+        self:SetText(text)
+    end
+
+    function self:SetNormalText(text)
+        self:SetTextColor(1,0.82,0,1)
+        self:SetText(text)
+    end
+
+    function self:proceeding()
+        self:SetNormalText("Proceeding...")
+    end
 end

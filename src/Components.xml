@@ -1,5 +1,5 @@
 ﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="ModalDialog.lua" />
+	<Script file="Components.lua" />
 	<Frame name="ModalDialog" virtual="true" hidden="true" toplevel="true" frameStrata="DIALOG">
 		<Size>
 			<AbsDimension x="200" y="200" />
