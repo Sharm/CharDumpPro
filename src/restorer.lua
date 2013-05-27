@@ -58,7 +58,6 @@ function Restorer:getMainInfoInfo()
         ["Class"] = _isValidString(db.class, 4),
         ["Level"] = _isValidInteger(db.level, 0, 71), -- For 2.4.3
         ["Race"] = _isValidString(db.race, 4),
-        ["Gender"] = _isValidInteger(db.gender, 1, 4),
         ["HonorableKills"] = _isValidInteger(db.honorableKills, -1),
         ["Honor"] = _isValidInteger(db.honor, -1),
         ["Arena"] = _isValidInteger(db.arenapoints, -1),
@@ -71,5 +70,26 @@ function Restorer:getMainInfoInfo()
         end
     end
 
-    return true, db.class.." "..db.name.." "..tostring(db.level).." lvl"
+    -- PREPARE WARNINGS
+  
+    local _, myclass = UnitClass("player")
+    local _,myrace = UnitRace("player")
+
+    local warnings = {
+        ["Class"] = db.class ~= myclass,
+        ["Race"] = db.race ~= myrace,
+    }
+
+    return true, db.class.." "..db.name.." "..tostring(db.level).." lvl", warnings
+end
+
+function Restorer:restoreMainInfo()
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    local db = self._db.mainInfo
+
+    return false, "Temporary!"
+
 end

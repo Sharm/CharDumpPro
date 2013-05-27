@@ -54,7 +54,7 @@ end
 
 function btnRestore_getInfo(self)
     self.textObj:proceeding()
-    local ok, info = restorer[self.infoFunction](restorer)
+    local ok, info, warnings = restorer[self.infoFunction](restorer)
     if ok then
         self:Enable()
         self.labelObj:SetTextColor(1,1,1,1)
@@ -62,23 +62,64 @@ function btnRestore_getInfo(self)
     else
         self:Disable()
         self.labelObj:SetTextColor(0.753,0.753,0.753,1)
-        self.textObj:SetErrorText("Error occures while load dump record! ("..info..")")
+        self.textObj:SetErrorText("Error occures while validate dump record! ("..info..")")
     end
     
-    -- Save info for future use
+    -- Save for future use
     self._info = info
+    self._warnings = warnings
 end
 
 function boxChooseCharacter_OnChoose(arg1, arg2)
     UIDropDownMenu_SetSelectedID(boxChooseCharacter, this:GetID()) 
     restorer:openRecord(this:GetText())
 
+    -- Get info from restorer and validate
     btnRestore_getInfo(btnRestoreMainInfo)
 
 end
 
 function btnRestore_OnClick(self)
     
+    -- Handle warnings
+    if self._warnings then
+        -- Warning in some class
+        if self._warnings.Class then
+            ModalDialogText:SetOptions({
+                OnOkay = function() 
+                    ModalDialogText:Hide()
+                    self._warnings.Class = nil
+                    btnRestoreMainInfo:Click()                  
+                end,
+                Text = "WARNING! Your current character class mismatch dump character class!\n\nAre you want to continue?"
+            })
+            ModalDialogText:ShowOnParent(frameRestore)
+            return
+        end
+        -- Warning in some race
+        if self._warnings.Race then
+            ModalDialogText:SetOptions({
+                OnOkay = function() 
+                    ModalDialogText:Hide()
+                    self._warnings.Race = nil
+                    btnRestoreMainInfo:Click()                  
+                end,
+                Text = "WARNING! Your current character race mismatch dump character race!\n\nAre you want to continue?"
+            })
+            ModalDialogText:ShowOnParent(frameRestore)
+            return
+        end
+    end
+
+    self.textObj:proceeding()
+
+    local ok, info = restorer[self.restoreFunction](restorer)
+    if ok then
+        local inf = info or self._info
+        self.textObj:SetNormalText("Success! ("..inf..")")
+    else
+        self.textObj:SetErrorText("Error occures while execute! ("..info..")")
+    end
 end
 
 function frameRestore_OnShow()

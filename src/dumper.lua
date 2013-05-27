@@ -135,7 +135,7 @@ function Dumper:dumpMainInfo()
 		class = class,
 		level=UnitLevel("player"),
 		race = race,
-		gender=UnitSex("player"),
+		-- gender=UnitSex("player"),
 		honorableKills = GetPVPLifetimeStats(),
 		honor = GetHonorCurrency(),
 		arenapoints = GetArenaCurrency(),
