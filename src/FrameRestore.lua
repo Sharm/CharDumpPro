@@ -80,15 +80,14 @@ function boxChooseCharacter_OnChoose(arg1, arg2)
 end
 
 function btnRestore_OnClick(self)
-    
     -- Handle warnings
     if self._warnings then
         -- Warning in some class
-        if self._warnings.Class then
+        if self._warnings.isClassMismatch then
             ModalDialogText:SetOptions({
                 OnOkay = function() 
                     ModalDialogText:Hide()
-                    self._warnings.Class = nil
+                    self._warnings.isClassMismatch = nil
                     btnRestoreMainInfo:Click()                  
                 end,
                 Text = "WARNING! Your current character class mismatch dump character class!\n\nAre you want to continue?"
@@ -97,11 +96,11 @@ function btnRestore_OnClick(self)
             return
         end
         -- Warning in some race
-        if self._warnings.Race then
+        if self._warnings.isRaceMismatch then
             ModalDialogText:SetOptions({
                 OnOkay = function() 
                     ModalDialogText:Hide()
-                    self._warnings.Race = nil
+                    self._warnings.isRaceMismatch = nil
                     btnRestoreMainInfo:Click()                  
                 end,
                 Text = "WARNING! Your current character race mismatch dump character race!\n\nAre you want to continue?"

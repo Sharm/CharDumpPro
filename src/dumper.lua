@@ -128,18 +128,19 @@ function Dumper:dumpMainInfo()
 	local _,race = UnitRace("player")
 
 	local mainInfo = {
-		charDumpVersion = VERSION,
-		realmlist = GetCVar("realmList"),
-		clientbuild = build,
-		-- guid = UnitGUID("player"),
-		class = class,
-		level=UnitLevel("player"),
-		race = race,
-		-- gender=UnitSex("player"),
-		honorableKills = GetPVPLifetimeStats(),
-		honor = GetHonorCurrency(),
-		arenapoints = GetArenaCurrency(),
-		money = GetMoney()
+        charDumpVersion = VERSION,
+        engineVersion = DUMP_ENGINE_VERSION,
+        realmlist = GetCVar("realmList"),
+        clientbuild = build,
+        -- guid = UnitGUID("player"),
+        class = class,
+        level=UnitLevel("player"),
+        race = race,
+        -- gender=UnitSex("player"),
+        honorableKills = GetPVPLifetimeStats(),
+        honor = GetHonorCurrency(),
+        arenapoints = GetArenaCurrency(),
+        money = GetMoney()
 	}
 
 

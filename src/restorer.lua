@@ -14,7 +14,7 @@ function Restorer:getRestoreRecordsNames()
 
 	for k,v in pairs(Addon.db.global) do
         local _, build, _, _ = GetBuildInfo()
-        if v.mainInfo and v.mainInfo.charDumpVersion == VERSION and v.mainInfo.clientbuild == build then
+        if v.mainInfo and v.mainInfo.engineVersion == DUMP_ENGINE_VERSION and v.mainInfo.clientbuild == build then
             records = records or {}
             table.insert(records, k)
         end
@@ -48,7 +48,7 @@ function Restorer:getMainInfoInfo()
 
     -- Validates on record loading:
     -- -- self._db.mainInfo
-    -- -- self._db.mainInfo.charDumpVersion
+    -- -- self._db.mainInfo.engineVersion
     -- -- self._db.mainInfo.clientbuild
 
     local db = self._db.mainInfo
@@ -76,8 +76,8 @@ function Restorer:getMainInfoInfo()
     local _,myrace = UnitRace("player")
 
     local warnings = {
-        ["Class"] = db.class ~= myclass,
-        ["Race"] = db.race ~= myrace,
+        ["isClassMismatch"] = db.class ~= myclass,
+        ["isRaceMismatch"] = db.race ~= myrace,
     }
 
     return true, db.class.." "..db.name.." "..tostring(db.level).." lvl", warnings
