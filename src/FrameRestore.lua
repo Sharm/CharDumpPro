@@ -25,7 +25,7 @@ function frameRestore_Init()
     btnRestoreMainInfo:init()
 
     UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
-    boxChooseCharacterText:SetText("Choose restore record...")
+    _G["DropDownList1Button1"]:Click()
     UIDropDownMenu_SetWidth(140, boxChooseCharacter)
 
 end
