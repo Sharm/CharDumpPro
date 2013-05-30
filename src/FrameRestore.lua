@@ -23,11 +23,16 @@ function frameRestore_Init()
     textRestoreStatus:proceeding()
 
     btnRestoreMainInfo:init()
+end
 
-    UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
-    _G["DropDownList1Button1"]:Click()
-    UIDropDownMenu_SetWidth(140, boxChooseCharacter)
-
+local firstShow = true
+function frameRestore_OnShow()
+    if firstShow then
+        firstShow = false
+        UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
+        _G["DropDownList1Button1"]:Click()
+        UIDropDownMenu_SetWidth(140, boxChooseCharacter)
+    end
 end
 
 function boxChooseCharacter_dropDown_init()
@@ -112,15 +117,19 @@ function btnRestore_OnClick(self)
 
     self.textObj:proceeding()
 
-    local ok, info = restorer[self.restoreFunction](restorer)
-    if ok then
-        local inf = info or self._info
-        self.textObj:SetNormalText("Success! ("..inf..")")
-    else
-        self.textObj:SetErrorText("Error occures while execute! ("..info..")")
-    end
+    -- Asynchronus call, wait for callback
+    restorer[self.restoreFunction](restorer, self, btnRestore_OnSuccess, btnRestore_OnError)
 end
 
-function frameRestore_OnShow()
-   
+function btnRestore_OnSuccess(self, info)
+    local inf = info or self._info
+    self.textObj:SetNormalText("Success! ("..inf..")")
+end
+
+function btnRestore_OnError(self, info)
+    local inf = info or self._info
+    self.textObj:SetErrorText("Error occures while execute! ("..inf..")")
+end
+
+function btnRestore_OnRestoreComplete(self)
 end

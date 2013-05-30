@@ -64,11 +64,15 @@ function btnCancelDialog_OnClick(self)
 	self:GetParent():Hide()
 end
 
+local firstShow = true
 function frameDump_OnShow()
-    dumper:createRecord()
-	btnDumpMainInfo:Click()
-	btnDumpReputation:Click()
-    btnDumpSkills:Click()
-    btnDumpSpecs:Click()
-    btnDumpRecipes:Click()
+    if firstShow then
+        firstShow = false
+        dumper:createRecord()
+        btnDumpMainInfo:Click()
+        btnDumpReputation:Click()
+        btnDumpSkills:Click()
+        btnDumpSpecs:Click()
+        btnDumpRecipes:Click()
+    end
 end

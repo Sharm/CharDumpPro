@@ -1,11 +1,20 @@
 ﻿-- Author: for.sneg@gmail.com
 
+-- ATTENSION! Asynchronus work!
+
 Restorer = { 
 	_db = nil, -- reference to save table for current char
+    _isErrorCatching = false,
+    _isError = false,
+    errorCallback = nil,
+    successCallback = nil,
+    callbackObj = nil
 }
 
 function Restorer:openRecord(name)
 	self._db = Addon.db.global[name]
+    Addon:RegisterEvent("CHAT_MSG_SAY", function() self:on_CHAT_MSG_SAY() end)
+    Addon:RegisterEvent("CHAT_MSG_SYSTEM", function() self:on_CHAT_MSG_SYSTEM() end)
 end
 
 -- Return nil if db empty
@@ -14,6 +23,7 @@ function Restorer:getRestoreRecordsNames()
 
 	for k,v in pairs(Addon.db.global) do
         local _, build, _, _ = GetBuildInfo()
+
         if v.mainInfo and v.mainInfo.engineVersion == DUMP_ENGINE_VERSION and v.mainInfo.clientbuild == build then
             records = records or {}
             table.insert(records, k)
@@ -34,6 +44,61 @@ end
 local function _isValidString(value, count)
     return type(value) == "string" and (count == nil or #value > count)
 end
+
+function Restorer:_SendChatMessage(text)
+    if not self.cmdError then
+        SendChatMessage(text, "SAY")
+    end
+end
+
+function Restorer:on_CHAT_MSG_SAY()
+    local msg = arg1
+    local sender = arg2
+    
+    if self._isErrorCatching then
+        local myname = UnitName("player")
+        if sender == myname and string.match(msg, "^%..+") then
+            self._isError = true
+            self.errorCallback(self.callbackObj, "Errors occures while execute GM commands.")
+        end
+
+    end
+end
+
+function Restorer:on_CHAT_MSG_SYSTEM()
+    local msg = string.lower(arg1)
+
+    if self._isErrorCatching then
+  
+        if     string.find(msg, "incorrect", 0, true)
+            or string.find(msg, "there is no such", 0, true)
+            or string.find(msg, "not found", 0, true)
+            or string.find(msg, "invalid", 0, true)
+            or string.find(msg, "syntax", 0, true)
+        then
+            self._isError = true
+            self.errorCallback(self.callbackObj, "Errors occures while execute GM commands.")
+        end
+
+    end
+end
+
+function Restorer:_enableErrorCatching()
+    self._isError = false
+    self._isErrorCatching = true
+end
+
+function Restorer:_disableErrorCatching()
+    self._isErrorCatching = false
+end
+
+function Restorer:_prepare(callbackObj, successCallback, errorCallback)
+    self.successCallback = successCallback
+    self.errorCallback = errorCallback
+    self.callbackObj = callbackObj
+    self:_enableErrorCatching()
+end
+
 
 -- =================
 -- Main info
@@ -83,13 +148,19 @@ function Restorer:getMainInfoInfo()
     return true, db.class.." "..db.name.." "..tostring(db.level).." lvl", warnings
 end
 
-function Restorer:restoreMainInfo()
-    if not self._db then
-        return false, "Initializing error!"
-    end
+-- RESTORE
+
+function Restorer:restoreMainInfo(callbackObj, successCallback, errorCallback)
+    self:_prepare(callbackObj, successCallback, errorCallback)
 
     local db = self._db.mainInfo
 
-    return false, "Temporary!"
+    self:_SendChatMessage(".level "..db.level)
 
+    
+    -- TODO: Timer + disable
+    if not self._isError then
+        self.successCallback(self.callbackObj)
+        -- self:_disableErrorCatching()
+    end
 end
