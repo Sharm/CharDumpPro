@@ -6,35 +6,28 @@ Restorer = {
 	_db = nil, -- reference to save table for current char
     _isErrorCatching = false,
     _isError = false,
+    _timerFrame = CreateFrame("frame"),
+    _timerCounter = 0,
     errorCallback = nil,
     successCallback = nil,
     callbackObj = nil
 }
 
-function Restorer:openRecord(name)
-	self._db = Addon.db.global[name]
-    Addon:RegisterEvent("CHAT_MSG_SAY", function() self:_on_CHAT_MSG_SAY() end)
-    Addon:RegisterEvent("CHAT_MSG_SYSTEM", function() self:_on_CHAT_MSG_SYSTEM() end)
-end
+-- TODO: Move timer code to separate class/file and extend its functionality
 
--- Return nil if db empty
-function Restorer:getRestoreRecordsNames()
-    local records = nil
+function Restorer:startTimer(func, delay, isSingleShot)
+    isSingleShot = true -- now only single shot timers supported
 
-	for k,v in pairs(Addon.db.global) do
-        local _, build, _, _ = GetBuildInfo()
-
-        if v.mainInfo and v.mainInfo.engineVersion == DUMP_ENGINE_VERSION and v.mainInfo.clientbuild == build then
-            records = records or {}
-            table.insert(records, k)
+    self._timerFrame:SetScript("OnUpdate", function(frame, elapsed) 
+        self._timerCounter = self._timerCounter + elapsed
+        if self._timerCounter > delay then
+            func()
+            self._timerCounter = 0
+            if isSingleShot then
+                self._timerFrame:SetScript("OnUpdate", nil)
+            end
         end
-    end
-
-    if records then
-        table.sort(records)
-    end
-
-    return records
+    end)
 end
 
 local function _isValidInteger(value, low, high)
@@ -49,6 +42,22 @@ function Restorer:_SendChatMessage(text)
     if not self.cmdError then
         SendChatMessage(text, "SAY")
     end
+end
+
+function Restorer:_enableErrorCatching()
+    self._isError = false
+    self._isErrorCatching = true
+end
+
+function Restorer:_disableErrorCatching()
+    self._isErrorCatching = false
+end
+
+function Restorer:_prepare(callbackObj, successCallback, errorCallback)
+    self.successCallback = successCallback
+    self.errorCallback = errorCallback
+    self.callbackObj = callbackObj
+    self:_enableErrorCatching()
 end
 
 function Restorer:_on_CHAT_MSG_SAY()
@@ -83,22 +92,38 @@ function Restorer:_on_CHAT_MSG_SYSTEM()
     end
 end
 
-function Restorer:_enableErrorCatching()
-    self._isError = false
-    self._isErrorCatching = true
+function Restorer:_on_restoreFinished()
+    if not self._isError then
+        self.successCallback(self.callbackObj)
+        self:_disableErrorCatching()
+    end
 end
 
-function Restorer:_disableErrorCatching()
-    self._isErrorCatching = false
+function Restorer:openRecord(name)
+	self._db = Addon.db.global[name]
+    Addon:RegisterEvent("CHAT_MSG_SAY", function() self:_on_CHAT_MSG_SAY() end)
+    Addon:RegisterEvent("CHAT_MSG_SYSTEM", function() self:_on_CHAT_MSG_SYSTEM() end)
 end
 
-function Restorer:_prepare(callbackObj, successCallback, errorCallback)
-    self.successCallback = successCallback
-    self.errorCallback = errorCallback
-    self.callbackObj = callbackObj
-    self:_enableErrorCatching()
-end
+-- Return nil if db empty
+function Restorer:getRestoreRecordsNames()
+    local records = nil
 
+	for k,v in pairs(Addon.db.global) do
+        local _, build, _, _ = GetBuildInfo()
+
+        if v.mainInfo and v.mainInfo.engineVersion == DUMP_ENGINE_VERSION and v.mainInfo.clientbuild == build then
+            records = records or {}
+            table.insert(records, k)
+        end
+    end
+
+    if records then
+        table.sort(records)
+    end
+
+    return records
+end
 
 -- =================
 -- Main info
@@ -160,10 +185,6 @@ function Restorer:restoreMainInfo(callbackObj, successCallback, errorCallback)
     self:_SendChatMessage(".mod honor "..db.honor)
     self:_SendChatMessage(".mod arena "..db.arenapoints)
     self:_SendChatMessage(".mod money "..db.money)
-    
-    -- TODO: Timer + disable
-    if not self._isError then
-        self.successCallback(self.callbackObj)
-        -- self:_disableErrorCatching()
-    end
+
+    self:startTimer(function() self:_on_restoreFinished() end, 3)
 end
