@@ -13,8 +13,8 @@ Restorer = {
 
 function Restorer:openRecord(name)
 	self._db = Addon.db.global[name]
-    Addon:RegisterEvent("CHAT_MSG_SAY", function() self:on_CHAT_MSG_SAY() end)
-    Addon:RegisterEvent("CHAT_MSG_SYSTEM", function() self:on_CHAT_MSG_SYSTEM() end)
+    Addon:RegisterEvent("CHAT_MSG_SAY", function() self:_on_CHAT_MSG_SAY() end)
+    Addon:RegisterEvent("CHAT_MSG_SYSTEM", function() self:_on_CHAT_MSG_SYSTEM() end)
 end
 
 -- Return nil if db empty
@@ -51,7 +51,7 @@ function Restorer:_SendChatMessage(text)
     end
 end
 
-function Restorer:on_CHAT_MSG_SAY()
+function Restorer:_on_CHAT_MSG_SAY()
     local msg = arg1
     local sender = arg2
     
@@ -65,7 +65,7 @@ function Restorer:on_CHAT_MSG_SAY()
     end
 end
 
-function Restorer:on_CHAT_MSG_SYSTEM()
+function Restorer:_on_CHAT_MSG_SYSTEM()
     local msg = string.lower(arg1)
 
     if self._isErrorCatching then
@@ -156,7 +156,10 @@ function Restorer:restoreMainInfo(callbackObj, successCallback, errorCallback)
     local db = self._db.mainInfo
 
     self:_SendChatMessage(".level "..db.level)
-
+    self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
+    self:_SendChatMessage(".mod honor "..db.honor)
+    self:_SendChatMessage(".mod arena "..db.arenapoints)
+    self:_SendChatMessage(".mod money "..db.money)
     
     -- TODO: Timer + disable
     if not self._isError then
