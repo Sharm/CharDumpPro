@@ -87,14 +87,20 @@ end
 -- =============
 
 function ErrorFontString_init(self)
+
+    function self:_setText(text)
+        self:SetText(text)
+    end
+
     function self:SetErrorText(text)
         self:SetTextColor(1,0,0,1)
-        self:SetText(text)
+        self:_setText(text)
+        Addon:Print("ERROR: "..text)
     end
 
     function self:SetNormalText(text)
         self:SetTextColor(1,0.82,0,1)
-        self:SetText(text)
+        self:_setText(text)
     end
 
     function self:proceeding()
