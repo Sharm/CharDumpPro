@@ -143,6 +143,10 @@ function Restorer:getMainInfoInfo()
 
     local db = self._db.mainInfo
 
+    if not db then
+        return false, "Common info is empty"
+    end
+
     local validate = {
         ["Realmlist"] = _isValidString(db.realmlist, 4),
         ["Class"] = _isValidString(db.class, 4),
@@ -195,4 +199,59 @@ function Restorer:restoreMainInfo(warnings, callbackObj, successCallback, errorC
     end
 
     self:startTimer(function() self:_on_restoreFinished() end, 3)
+end
+
+-- =================
+-- Inventory
+-- =================
+
+function Restorer:getInventoryInfo()
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    -- VALIDATE
+
+    local db = self._db.inventory
+
+    if not db then
+        return false, "Inventory info is empty"
+    end
+
+    local bagCount, itemsCount = 0, 0
+    for k,v in pairs(db) do             -- loop through all bags
+        for k2,v2 in pairs(v) do        -- loop through objects inside bag
+            if k2 == "link" then        -- link to the bag item
+                if not _isValidString(v2) then
+                    return false, string.format("[%s]: bad bag link; link: [%s]", tostring(k), tostring(v2.link))
+                end
+                itemsCount = itemsCount + 1
+            
+            else if k2 == "size" then   -- bag size
+                if not _isValidInteger(v2, 0, 100) then
+                    return false, string.format("[%s]: bad bag size; size: [%s]", tostring(k), tostring(v2.size))
+                end
+                    
+            else                        -- regular item object
+                if not _isValidString(v2.link) or (v2.count and not _isValidInteger(v2.count, 0, 260)) then
+                    return false, string.format("[%s]: bad link or count; link: [%s], count: [%s]", tostring(k), tostring(v2.link), tostring(v2.count))
+                end   
+                itemsCount = itemsCount + 1
+            end
+            end
+        end
+        bagCount = bagCount + 1
+    end
+    
+
+    -- PREPARE WARNINGS
+
+    local warnings = {
+        onebag = {
+            accepted = false,
+            isRestoreOneBagOnly = false
+        }
+    }
+
+    return true, itemsCount.." items in "..bagCount.." bags", warnings
 end
