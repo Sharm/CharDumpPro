@@ -166,8 +166,9 @@ function Restorer:getMainInfoInfo()
     local _,myrace = UnitRace("player")
 
     local warnings = {
-        ["isClassMismatch"] = db.class ~= myclass,
-        ["isRaceMismatch"] = db.race ~= myrace,
+        class = {
+            accepted = db.class == myclass and db.race == myrace,
+        }
     }
 
     return true, db.class.." "..db.name.." "..tostring(db.level).." lvl", warnings
@@ -175,7 +176,7 @@ end
 
 -- RESTORE
 
-function Restorer:restoreMainInfo(callbackObj, successCallback, errorCallback)
+function Restorer:restoreMainInfo(warnings, callbackObj, successCallback, errorCallback)
     self:_prepare(callbackObj, successCallback, errorCallback)
 
     local db = self._db.mainInfo

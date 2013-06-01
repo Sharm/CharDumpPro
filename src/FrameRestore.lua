@@ -86,39 +86,14 @@ end
 
 function btnRestore_OnClick(self)
     -- Handle warnings
-    if self._warnings then
-        -- Warning in some class
-        if self._warnings.isClassMismatch then
-            ModalDialogText:SetOptions({
-                OnOkay = function() 
-                    ModalDialogText:Hide()
-                    self._warnings.isClassMismatch = nil
-                    btnRestoreMainInfo:Click()                  
-                end,
-                Text = "WARNING! Your current character class mismatch dump character class!\n\nAre you want to continue?"
-            })
-            ModalDialogText:ShowOnParent(frameRestore)
-            return
-        end
-        -- Warning in some race
-        if self._warnings.isRaceMismatch then
-            ModalDialogText:SetOptions({
-                OnOkay = function() 
-                    ModalDialogText:Hide()
-                    self._warnings.isRaceMismatch = nil
-                    btnRestoreMainInfo:Click()                  
-                end,
-                Text = "WARNING! Your current character race mismatch dump character race!\n\nAre you want to continue?"
-            })
-            ModalDialogText:ShowOnParent(frameRestore)
-            return
-        end
+    if _G[self:GetName().."_handleWarnings"] and not _G[self:GetName().."_handleWarnings"](self) then
+        return
     end
 
     self.textObj:proceeding()
 
     -- Asynchronus call, wait for callback
-    restorer[self.restoreFunction](restorer, self, btnRestore_OnSuccess, btnRestore_OnError)
+    restorer[self.restoreFunction](restorer, self._warnings, self, btnRestore_OnSuccess, btnRestore_OnError)
 end
 
 function btnRestore_OnSuccess(self, info)
@@ -132,4 +107,21 @@ function btnRestore_OnError(self, info)
 end
 
 function btnRestore_OnRestoreComplete(self)
+end
+
+function btnRestoreMainInfo_handleWarnings(self)
+    -- Warning in some class/race
+    if not self._warnings.class.accepted then
+        ModalDialogText:SetOptions({
+            OnOkay = function() 
+                ModalDialogText:Hide()
+                self._warnings.class.accepted = true
+                self:Click()                  
+            end,
+            Text = "WARNING! Your current character class/race mismatch dump character class/race!\n\nAre you want to continue?"
+        })
+        ModalDialogText:ShowOnParent(frameRestore)
+        return false
+    end
+    return true
 end
