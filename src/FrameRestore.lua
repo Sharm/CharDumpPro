@@ -58,7 +58,10 @@ function boxChooseCharacter_dropDown_init()
 end
 
 function btnRestore_getInfo(self)
+    self:Disable()
+    self.checkObj:Disable()
     self.textObj:proceeding()
+
     local ok, info, warnings = restorer[self.infoFunction](restorer)
     if ok then
         self:Enable()
@@ -91,6 +94,7 @@ function btnRestore_OnClick(self)
     end
 
     self.textObj:proceeding()
+    self:Disable()
 
     -- Asynchronus call, wait for callback
     restorer[self.restoreFunction](restorer, self._warnings, self, btnRestore_OnSuccess, btnRestore_OnError)
@@ -99,14 +103,13 @@ end
 function btnRestore_OnSuccess(self, info)
     local inf = info or self._info
     self.textObj:SetNormalText("Success! ("..inf..")")
+    self.checkObj:Enable()
 end
 
 function btnRestore_OnError(self, info)
     local inf = info or self._info
     self.textObj:SetErrorText("Error occures while execute! ("..inf..")")
-end
-
-function btnRestore_OnRestoreComplete(self)
+    self:Enable()
 end
 
 function btnRestoreMainInfo_handleWarnings(self)
@@ -118,10 +121,31 @@ function btnRestoreMainInfo_handleWarnings(self)
                 self._warnings.class.accepted = true
                 self:Click()                  
             end,
-            Text = "WARNING! Your current character class/race mismatch dump character class/race!\n\nAre you want to continue?"
+            Text = "WARNING\n\nYour current character class/race mismatch dump character class/race!\n\nDo you want to continue?"
         })
         ModalDialogText:ShowOnParent(frameRestore)
         return false
     end
+
+    -- Option to restore kills
+    if not self._warnings.kills.accepted then
+        ModalDialogText:SetOptions({
+            OnOkay = function() 
+                ModalDialogText:Hide()
+                self._warnings.kills.accepted = true
+                self._warnings.kills.isRestoreKills = true
+                self:Click()                  
+            end,
+            OnCancel = function()
+                ModalDialogText:Hide()
+                self._warnings.kills.accepted = true
+                self:Click()  
+            end,
+            Text = "OPTION\n\nDo you want to restore honorable kills?"
+        })
+        ModalDialogText:ShowOnParent(frameRestore)
+        return false
+    end
+
     return true
 end

@@ -168,6 +168,10 @@ function Restorer:getMainInfoInfo()
     local warnings = {
         class = {
             accepted = db.class == myclass and db.race == myrace,
+        },
+        kills = {
+            accepted = false,
+            isRestoreKills = false
         }
     }
 
@@ -182,10 +186,13 @@ function Restorer:restoreMainInfo(warnings, callbackObj, successCallback, errorC
     local db = self._db.mainInfo
 
     self:_SendChatMessage(".level "..db.level)
-    self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
     self:_SendChatMessage(".mod honor "..db.honor)
     self:_SendChatMessage(".mod arena "..db.arenapoints)
     self:_SendChatMessage(".mod money "..db.money)
+
+    if warnings.kills.isRestoreKills then
+        self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
+    end
 
     self:startTimer(function() self:_on_restoreFinished() end, 3)
 end

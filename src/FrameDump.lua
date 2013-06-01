@@ -26,9 +26,6 @@ function frameDump_Init()
     btnDumpSkills:init()
     btnDumpSpecs:init()
     btnDumpRecipes:init()
-
-	-- Addon:RegisterEvent("PLAYER_ENTERING_WORLD", function() frameDump_PLAYER_ENTERING_WORLD() end)
-	-- frameDump:RegisterEvent("PLAYER_ENTERING_WORLD")
 end
 
 function frameDump_PLAYER_ENTERING_WORLD()
