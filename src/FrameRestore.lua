@@ -2,6 +2,8 @@
 
 local restorer = Restorer
 
+local restoreBtns = {}
+
 function btnRestore_Constructor(self)
 	function self:init()
         self.type = string.gsub(self:GetName(),"btnRestore","",1)
@@ -15,6 +17,7 @@ function btnRestore_Constructor(self)
 
     -- Constructor
     self:Disable()
+    table.insert(restoreBtns, self)
 end
 
 function frameRestore_Init()
@@ -23,6 +26,7 @@ function frameRestore_Init()
     textRestoreStatus:proceeding()
 
     btnRestoreMainInfo:init()
+    btnRestoreInventory:init()
 end
 
 local firstShow = true
@@ -30,9 +34,9 @@ function frameRestore_OnShow()
     if firstShow then
         firstShow = false
         UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
-        _G["DropDownList1Button1"]:Click()
         UIDropDownMenu_SetWidth(140, boxChooseCharacter)
     end
+    _G["DropDownList1Button1"]:Click()
 end
 
 function boxChooseCharacter_dropDown_init()
@@ -83,8 +87,9 @@ function boxChooseCharacter_OnChoose(arg1, arg2)
     restorer:openRecord(this:GetText())
 
     -- Get info from restorer and validate
-    btnRestore_getInfo(btnRestoreMainInfo)
-
+    for k,v in ipairs(restoreBtns) do
+        btnRestore_getInfo(v)
+    end
 end
 
 function btnRestore_OnClick(self)
