@@ -17,7 +17,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-21" />
+							<Offset x="233" y="-46" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -27,7 +27,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-21" />
+							<Offset x="37" y="-46" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -37,7 +37,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-49" />
+							<Offset x="233" y="-74" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -47,7 +47,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-49" />
+							<Offset x="37" y="-74" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -57,7 +57,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-80" />
+							<Offset x="37" y="-105" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -67,7 +67,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-80" />
+							<Offset x="233" y="-105" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -77,7 +77,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-111" />
+							<Offset x="37" y="-136" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -87,7 +87,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-111" />
+							<Offset x="233" y="-136" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -97,7 +97,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-142" />
+							<Offset x="37" y="-167" />
 						</Anchor>
 					</Anchors>
 					<FontHeight>
@@ -111,7 +111,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-142" />
+							<Offset x="233" y="-167" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -121,7 +121,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-173" />
+							<Offset x="37" y="-198" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -131,7 +131,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-173" />
+							<Offset x="233" y="-198" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -144,7 +144,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-21" />
+						<Offset x="6" y="-46" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -163,7 +163,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-21" />
+						<Offset x="162" y="-46" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -181,7 +181,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-49" />
+						<Offset x="6" y="-74" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -200,12 +200,12 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-49" />
+						<Offset x="162" y="-74" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						btnDumpInventory_OnClick()
+						btnDump_OnClick(self)
 					</OnClick>
 					<OnLoad>
 						btnDump_Constructor(self)
@@ -218,7 +218,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-80" />
+						<Offset x="6" y="-105" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -237,7 +237,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-80" />
+						<Offset x="162" y="-105" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -255,7 +255,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-111" />
+						<Offset x="6" y="-136" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -274,7 +274,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-111" />
+						<Offset x="162" y="-136" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -292,7 +292,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-142" />
+						<Offset x="6" y="-167" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -311,7 +311,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-142" />
+						<Offset x="162" y="-167" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -329,7 +329,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-173" />
+						<Offset x="6" y="-198" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -348,7 +348,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-173" />
+						<Offset x="162" y="-198" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -360,77 +360,27 @@
 					</OnLoad>
 				</Scripts>
 			</Button>
+			<Button name="btnDumpAll" inherits="UIPanelButtonTemplate" text="Dump ALL">
+				<Size>
+					<AbsDimension x="75" y="27" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="157" y="-13" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						btnDumpAll_OnClick()
+					</OnClick>
+				</Scripts>
+				<ButtonText name="$parentText" text="" justifyV="BOTTOM" />
+			</Button>
 		</Frames>
 		<Scripts>
 			<OnEvent>
 				frameDump_OnEvent(self, event, ...)
 			</OnEvent>
-			<OnShow>
-				frameDump_OnShow()
-			</OnShow>
 		</Scripts>
-	</Frame>
-	<Frame name="frameInventoryOptions" inherits="ModalDialog">
-		<Size>
-			<AbsDimension x="200" y="150" />
-		</Size>
-		<Anchors>
-			<Anchor point="TOPLEFT">
-				<Offset x="108" y="-129" />
-			</Anchor>
-		</Anchors>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString inherits="GameFontNormal" text="Dump only main bag (backpack) and equipped">
-					<Size>
-						<AbsDimension x="106" y="46" />
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset x="72" y="-34" />
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button name="btnOkayInventory" inherits="UIPanelButtonTemplate" text="Okay">
-				<Size>
-					<AbsDimension x="75" y="23" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset x="22" y="-113" />
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						btnOkayInventory_OnClick(self)
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="btnCancel" inherits="UIPanelButtonTemplate" text="Cancel">
-				<Size>
-					<AbsDimension x="75" y="23" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset x="103" y="-113" />
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						btnCancelDialog_OnClick(self)
-					</OnClick>
-				</Scripts>
-			</Button>
-			<CheckButton name="optionInventoryOneBag" inherits="UICheckButtonTemplate" text="CheckButton1">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset x="22" y="-41" />
-					</Anchor>
-				</Anchors>
-			</CheckButton>
-		</Frames>
 	</Frame>
 </Ui>

@@ -32,10 +32,10 @@ end
 
 local firstShow = true
 function frameRestore_OnShow()
+    UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
+    UIDropDownMenu_SetWidth(140, boxChooseCharacter)
     if firstShow then
         firstShow = false
-        UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
-        UIDropDownMenu_SetWidth(140, boxChooseCharacter)
         _G["DropDownList1Button1"]:Click()
     else
         _G["DropDownList1Button"..UIDropDownMenu_GetSelectedID(boxChooseCharacter)]:Click()

@@ -46,30 +46,11 @@ function btnDump_OnClick(self)
 	end
 end
 
-function btnDumpInventory_OnClick()
-	btnDumpInventory:showOptions()
-end
-
-function btnOkayInventory_OnClick(self)
-	btnDumpInventory.dumpOptions.isOneBag = optionInventoryOneBag:GetChecked()
-
-	btnDump_OnClick(btnDumpInventory)
-	btnCancelDialog_OnClick(self)
-end
-
-function btnCancelDialog_OnClick(self)
-	self:GetParent():Hide()
-end
-
-local firstShow = true
-function frameDump_OnShow()
-    if firstShow then
-        firstShow = false
-        dumper:createRecord()
-        btnDumpMainInfo:Click()
-        btnDumpReputation:Click()
-        btnDumpSkills:Click()
-        btnDumpSpecs:Click()
-        btnDumpRecipes:Click()
-    end
+function btnDumpAll_OnClick()
+    btnDumpMainInfo:Click()
+    btnDumpInventory:Click()
+    btnDumpReputation:Click()
+    btnDumpSkills:Click()
+    btnDumpSpecs:Click()
+    btnDumpRecipes:Click()
 end

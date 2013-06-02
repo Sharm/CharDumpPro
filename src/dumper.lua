@@ -96,6 +96,10 @@ Dumper = {
 }
 
 function Dumper:createRecord()
+    if self._db then
+        return
+    end
+
 	local realmName = GetRealmName()
 	local name = UnitName("player")
 
@@ -110,18 +114,12 @@ function Dumper:createRecord()
 	self._db = Addon.db.global[realmName.." - "..name]
 end
 
-function Dumper:isInited()
-	return self._db
-end
-
 -- =================
 -- Main info
 -- =================
 
 function Dumper:dumpMainInfo()
-	if not self:isInited() then
-		return false, "Dumper not inited yet!"
-	end
+	self:createRecord()
 
 	local _, build, _, _ = GetBuildInfo()
 	local _, class = UnitClass("player")
@@ -163,9 +161,7 @@ end
 -- =================
 
 function Dumper:dumpInventory(options)
-	if not self:isInited() then
-		return false, "Dumper not inited yet!"
-	end
+	self:createRecord()
 
 	local inventorySave = {}
 	local itemLink
@@ -249,9 +245,7 @@ function Dumper:_getFactionId(name)
 end
 
 function Dumper:dumpReputation()
-	if not self:isInited() then
-		return false, "Dumper not inited yet!"
-	end
+	self:createRecord()
 
 	-- Expand all faction first. Otherwise we get wrong GetNumFactions()
 	for i=GetNumFactions(),1,-1 do 
@@ -307,9 +301,7 @@ function Dumper:_getSkillId(name)
 end
 
 function Dumper:dumpSkills()
-	if not self:isInited() then
-		return false, "Dumper not inited yet!"
-	end
+	self:createRecord()
 
 --  NEW API FUNCTIONS
 --    local prof1, prof2, fishing, cooking, firstAid = GetProfessions()
@@ -396,9 +388,7 @@ function Dumper:_getCharacterSpecialization(professionId)
 end
 
 function Dumper:dumpSpecs()
-	if not self:isInited() then
-		return false, "Dumper not inited yet!"
-	end
+	self:createRecord()
 
     if not self._db.skills then
         return false, "Dump skills first!"
@@ -533,9 +523,7 @@ end
 
 
 function Dumper:dumpRecipes()
-	if not self:isInited() then
-		return false, "Dumper not inited yet!"
-	end
+	self:createRecord()
 
     if not self._db.skills then
         return false, "Dump skills first!"
