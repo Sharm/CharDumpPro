@@ -16,6 +16,8 @@ function btnDump_Constructor(self)
 end
 
 function frameDump_Init()
+    ErrorFontString_init(textTools)
+
 	-- link dump rows
 	btnDumpMainInfo:init()
 	btnDumpInventory:init()
@@ -50,4 +52,51 @@ function btnDumpAll_OnClick()
     btnDumpSkills:Click()
     btnDumpSpecs:Click()
     btnDumpRecipes:Click()
+end
+
+function btnToolDeleteInventory_OnClick()
+    local delcount = 0
+    
+    -- Delete items inside bags
+    for bagNum = 0, 4 do
+        local size = GetContainerNumSlots(bagNum)
+        local bagLink = nil
+        
+        if bagNum ~= 0 then
+            local bagNum_ID = ContainerIDToInventoryID(bagNum)
+		    bagLink = GetInventoryItemLink("player", bagNum_ID)
+        end
+
+		if bagNum == 0 or bagLink then -- if bag exists (0 for backpack)
+			for bagItem = 1, size do
+				local itemLink = GetContainerItemLink(bagNum, bagItem)
+				if itemLink then
+					local _, count = GetContainerItemInfo(bagNum, bagItem)
+					PickupContainerItem(bagNum, bagItem)
+					DeleteCursorItem()
+					delcount = delcount + (count or 1)
+				end
+			end
+		end
+        
+        -- Delete bag
+        if bagLink then
+            PickupBagFromSlot(ContainerIDToInventoryID(bagNum))
+            DeleteCursorItem()
+            delcount = delcount + 1
+        end
+	end
+
+    -- Delete equipped
+	for invNum = 0, 19 do
+		itemLink = GetInventoryItemLink("player", invNum)
+		if itemLink then
+			local count = GetInventoryItemCount("player", invNum)
+			PickupInventoryItem(invNum)
+			DeleteCursorItem()
+			delcount = delcount + 1
+        end    
+	end
+    
+    textTools:SetNormalText("Deleted "..delcount.." items")
 end

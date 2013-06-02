@@ -12,7 +12,7 @@ local invFull
 local updateFrame = CreateFrame("Frame")
 updateFrame:Hide()
 updateFrame:SetScript("OnShow", function(self)
-	self.time = 0.75
+	self.time = 0
 end)
 updateFrame:SetScript("OnUpdate", function(self, elapsed)
 	self.time = self.time - elapsed
