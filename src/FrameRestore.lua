@@ -165,3 +165,20 @@ function btnRestoreMainInfo_handleWarnings(self)
 
     return true
 end
+
+function btnRestoreInventory_handleWarnings(self)
+    -- Option for restore just one main bag
+    if not self._warnings.onebag.accepted then
+        ModalDialogRestoreInventory:SetOptions({
+            OnOkay = function() 
+                self._warnings.onebag.accepted = true
+                self._warnings.onebag.isRestoreOneBagOnly = true
+                self:Click()                  
+            end
+        })
+        ModalDialogRestoreInventory:ShowOnParent(frameRestore)
+        return false
+    end
+
+    return true
+end

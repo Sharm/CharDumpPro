@@ -8,6 +8,8 @@ Restorer = {
     _isError = false,
     _timerFrame = CreateFrame("frame"),
     _timerCounter = 0,
+    _itemsForRestore = 0,
+    _itemsCmdForRestore = "",
     errorCallback = nil,
     successCallback = nil,
     callbackObj = nil
@@ -39,7 +41,7 @@ local function _isValidString(value, count)
 end
 
 function Restorer:_SendChatMessage(text)
-    if not self.cmdError then
+    if not self._isError then
         local myname = UnitName("player")
         local targetname = UnitName("target")
         if myname ~= targetname then
@@ -261,4 +263,95 @@ function Restorer:getInventoryInfo()
     }
 
     return true, itemsCount.." items in "..bagCount.." bags", warnings
+end
+
+
+-- RESTORE
+
+-- return entry,chant,gem1,gem2,gem3,unk1,unk2,unk3,lvl1 in 
+function Restorer:_parseItemLink(link)
+    -- Hitem:31052:425:525:525:525:525:0:0
+    -- linkType, itemId, enchantId, jewelId1, jewelId2, jewelId3, jewelId4, rest
+    return string.match(link,".*Hitem:(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+).*")
+end
+
+function Restorer:_sendItemsForRestore()
+    if self._itemsForRestore > 0 then
+        self:_SendChatMessage(string.format(".send items %%t \"Items\" \"Items\" %s", self._itemsCmdForRestore))
+        self._itemsCmdForRestore = ""
+        self._itemsForRestore = 0
+    end
+end
+
+function Restorer:_pushItemForRestore(id, count)
+    if self._itemsForRestore >= 5 then
+        self:_sendItemsForRestore()
+    end
+
+    if self._itemsForRestore > 0 then
+        self._itemsCmdForRestore = self._itemsCmdForRestore.." "
+    end
+
+    self._itemsCmdForRestore = self._itemsCmdForRestore..id
+    
+    if count then
+        self._itemsCmdForRestore = self._itemsCmdForRestore..":"..count
+    end
+    
+    self._itemsForRestore = self._itemsForRestore + 1
+end
+
+function Restorer:_restoreBagItems(bag)
+    for k,v in pairs(bag) do
+        if type(v) == "table" then
+            local id, ench, gem1, gem2, gem3, gem4 = self:_parseItemLink(v.link)
+            self:_pushItemForRestore(id)
+            if gem1 ~= "0" then
+                self:_pushItemForRestore(gem1)
+            end
+            if gem2 ~= "0" then
+                self:_pushItemForRestore(gem2)
+            end
+            if gem3 ~= "0" then
+                self:_pushItemForRestore(gem3)
+            end
+            if gem4 ~= "0" then
+                self:_pushItemForRestore(gem4)
+            end
+        end
+    end
+    self:_sendItemsForRestore()
+end
+
+function Restorer:restoreInventory(warnings, callbackObj, successCallback, errorCallback)
+    self:_registerOutput(callbackObj, successCallback, errorCallback)
+
+    local db = self._db.inventory
+
+    -- Restore bags first
+    local cmd = ""
+    for k_bag, v_bag in pairs(db) do
+        if v_bag.link then
+            local id = self:_parseItemLink(v_bag.link)
+            cmd = cmd..tostring(id).." "
+        end
+    end
+    self:_SendChatMessage(string.format(".send items %%t \"Bags\" \"Bags\" %s", cmd))
+
+    -- Restore items in bags
+    for k_bag, v_bag in pairs(db) do
+        self:_restoreBagItems(v_bag)
+    end
+        
+
+--    self:_SendChatMessage(".level "..db.level)
+--    self:_SendChatMessage(".mod honor "..db.honor)
+--    self:_SendChatMessage(".mod arena "..db.arenapoints)
+--    self:_SendChatMessage(".mod money "..db.money)
+
+--    if warnings.kills.isRestoreKills then
+--        self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
+--    end
+
+    self:startTimer(function() self:_on_restoreFinished() end, 3)
 end

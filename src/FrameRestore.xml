@@ -160,4 +160,58 @@
 			</OnShow>
 		</Scripts>
 	</Frame>
+	<Frame name="ModalDialogRestoreInventory" inherits="ModalDialog">
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset x="185" y="-254" />
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString inherits="GameFontNormal" text="Check it for restore only main bag (backpack) and equipped items">
+					<Size>
+						<AbsDimension x="137" y="46" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="53" y="-38" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString inherits="GameFontNormal" text="Otherwise restore all bags">
+					<Size>
+						<AbsDimension x="180" y="28" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="10" y="-86" />
+						</Anchor>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="14" />
+					</FontHeight>
+					<Color r="0.753" g="0" b="0" />
+				</FontString>
+				<FontString inherits="GameFontNormal" text="OPTION">
+					<Size>
+						<AbsDimension x="93" y="16" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="54" y="-15" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="optionInventoryOneBag" inherits="UICheckButtonTemplate" text="CheckButton1">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="15" y="-45" />
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+		</Frames>
+	</Frame>
 </Ui>
