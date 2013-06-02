@@ -17,6 +17,7 @@ function btnRestore_Constructor(self)
 
     -- Constructor
     self:Disable()
+    self.restored = false
     table.insert(restoreBtns, self)
 end
 
@@ -35,8 +36,12 @@ function frameRestore_OnShow()
         firstShow = false
         UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
         UIDropDownMenu_SetWidth(140, boxChooseCharacter)
+        _G["DropDownList1Button1"]:Click()
+    else
+        _G["DropDownList1Button"..UIDropDownMenu_GetSelectedID(boxChooseCharacter)]:Click()
     end
-    _G["DropDownList1Button1"]:Click()
+    
+    
 end
 
 function boxChooseCharacter_dropDown_init()
@@ -83,12 +88,20 @@ function btnRestore_getInfo(self)
 end
 
 function boxChooseCharacter_OnChoose(arg1, arg2)
+    if UIDropDownMenu_GetSelectedID(boxChooseCharacter) ~= this:GetID() then
+        for k,v in ipairs(restoreBtns) do
+            v.restored = false
+        end
+    end
+
     UIDropDownMenu_SetSelectedID(boxChooseCharacter, this:GetID()) 
     restorer:openRecord(this:GetText())
 
     -- Get info from restorer and validate
     for k,v in ipairs(restoreBtns) do
-        btnRestore_getInfo(v)
+        if not v.restored then
+            btnRestore_getInfo(v)
+        end
     end
 end
 
@@ -109,6 +122,7 @@ function btnRestore_OnSuccess(self, info)
     local inf = info or self._info
     self.textObj:SetNormalText("Success! ("..inf..")")
     self.checkObj:Enable()
+    self.restored = true
 end
 
 function btnRestore_OnError(self, info)
@@ -122,7 +136,6 @@ function btnRestoreMainInfo_handleWarnings(self)
     if not self._warnings.class.accepted then
         ModalDialogText:SetOptions({
             OnOkay = function() 
-                ModalDialogText:Hide()
                 self._warnings.class.accepted = true
                 self:Click()                  
             end,
@@ -136,13 +149,11 @@ function btnRestoreMainInfo_handleWarnings(self)
     if not self._warnings.kills.accepted then
         ModalDialogText:SetOptions({
             OnOkay = function() 
-                ModalDialogText:Hide()
                 self._warnings.kills.accepted = true
                 self._warnings.kills.isRestoreKills = true
                 self:Click()                  
             end,
             OnCancel = function()
-                ModalDialogText:Hide()
                 self._warnings.kills.accepted = true
                 self:Click()  
             end,

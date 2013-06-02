@@ -40,6 +40,13 @@ end
 
 function Restorer:_SendChatMessage(text)
     if not self.cmdError then
+        local myname = UnitName("player")
+        local targetname = UnitName("target")
+        if myname ~= targetname then
+            self._isError = true
+            self.errorCallback(self.callbackObj, "Target self first!")
+            return
+        end
         SendChatMessage(text, "SAY")
     end
 end
@@ -53,7 +60,7 @@ function Restorer:_disableErrorCatching()
     self._isErrorCatching = false
 end
 
-function Restorer:_prepare(callbackObj, successCallback, errorCallback)
+function Restorer:_registerOutput(callbackObj, successCallback, errorCallback)
     self.successCallback = successCallback
     self.errorCallback = errorCallback
     self.callbackObj = callbackObj
@@ -95,8 +102,8 @@ end
 function Restorer:_on_restoreFinished()
     if not self._isError then
         self.successCallback(self.callbackObj)
-        self:_disableErrorCatching()
     end
+    self:_disableErrorCatching()
 end
 
 function Restorer:openRecord(name)
@@ -185,7 +192,7 @@ end
 -- RESTORE
 
 function Restorer:restoreMainInfo(warnings, callbackObj, successCallback, errorCallback)
-    self:_prepare(callbackObj, successCallback, errorCallback)
+    self:_registerOutput(callbackObj, successCallback, errorCallback)
 
     local db = self._db.mainInfo
 
