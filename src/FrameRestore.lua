@@ -129,6 +129,10 @@ function btnRestore_OnError(self, info)
     local inf = info or self._info
     self.textObj:SetErrorText("Error occures while execute! ("..inf..")")
     self:Enable()
+    -- Reset all warnings/options
+    for k,v in pairs(self._warnings) do
+        v.accepted = false
+    end
 end
 
 function btnRestoreMainInfo_handleWarnings(self)
@@ -172,7 +176,7 @@ function btnRestoreInventory_handleWarnings(self)
         ModalDialogRestoreInventory:SetOptions({
             OnOkay = function() 
                 self._warnings.onebag.accepted = true
-                self._warnings.onebag.isRestoreOneBagOnly = true
+                self._warnings.onebag.isRestoreOneBagOnly = optionRestoreInventoryOneBag:GetChecked()
                 self:Click()                  
             end
         })

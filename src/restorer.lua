@@ -49,6 +49,7 @@ function Restorer:_SendChatMessage(text)
             self.errorCallback(self.callbackObj, "Target self first!")
             return
         end
+        Addon:Print("Execute command: "..text)
         SendChatMessage(text, "SAY")
     end
 end
@@ -303,24 +304,25 @@ end
 
 function Restorer:_restoreBagItems(bag)
     for k,v in pairs(bag) do
-        if type(v) == "table" then
+        -- ignore `size` and bag `link` fields
+        if type(v) == "table" then 
             local id, ench, gem1, gem2, gem3, gem4 = self:_parseItemLink(v.link)
             self:_pushItemForRestore(id)
-            if gem1 ~= "0" then
-                self:_pushItemForRestore(gem1)
-            end
-            if gem2 ~= "0" then
-                self:_pushItemForRestore(gem2)
-            end
-            if gem3 ~= "0" then
-                self:_pushItemForRestore(gem3)
-            end
-            if gem4 ~= "0" then
-                self:_pushItemForRestore(gem4)
-            end
+            -- TODO: Restore gems through GemProperties.dbc
+            --if gem1 ~= "0" then
+            --    self:_pushItemForRestore(gem1)
+            --end
+            --if gem2 ~= "0" then
+            --    self:_pushItemForRestore(gem2)
+            --end
+            --if gem3 ~= "0" then
+            --    self:_pushItemForRestore(gem3)
+            --end
+            --if gem4 ~= "0" then
+            --    self:_pushItemForRestore(gem4)
+            --end
         end
     end
-    self:_sendItemsForRestore()
 end
 
 function Restorer:restoreInventory(warnings, callbackObj, successCallback, errorCallback)
@@ -338,20 +340,18 @@ function Restorer:restoreInventory(warnings, callbackObj, successCallback, error
     end
     self:_SendChatMessage(string.format(".send items %%t \"Bags\" \"Bags\" %s", cmd))
 
-    -- Restore items in bags
-    for k_bag, v_bag in pairs(db) do
-        self:_restoreBagItems(v_bag)
+    if warnings.onebag.isRestoreOneBagOnly then
+        self:_restoreBagItems(db.Bag0)    -- backpack
+        self:_restoreBagItems(db.Bag100)  -- equipped
+    else
+        -- Restore items in all bags
+        for k_bag, v_bag in pairs(db) do
+            self:_restoreBagItems(v_bag)
+        end
     end
-        
 
---    self:_SendChatMessage(".level "..db.level)
---    self:_SendChatMessage(".mod honor "..db.honor)
---    self:_SendChatMessage(".mod arena "..db.arenapoints)
---    self:_SendChatMessage(".mod money "..db.money)
-
---    if warnings.kills.isRestoreKills then
---        self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
---    end
+    -- Flush remaining items
+    self:_sendItemsForRestore()
 
     self:startTimer(function() self:_on_restoreFinished() end, 3)
 end

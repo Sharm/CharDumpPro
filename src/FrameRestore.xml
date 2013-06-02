@@ -205,7 +205,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<CheckButton name="optionInventoryOneBag" inherits="UICheckButtonTemplate" text="CheckButton1">
+			<CheckButton name="optionRestoreInventoryOneBag" inherits="UICheckButtonTemplate" text="CheckButton1">
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset x="15" y="-45" />
