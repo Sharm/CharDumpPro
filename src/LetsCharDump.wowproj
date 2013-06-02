@@ -73,6 +73,9 @@
     <Content Include="Components.xml">
       <SubType>Frame</SubType>
     </Content>
+    <Content Include="modules\PickUp.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="restorer.lua">
       <SubType>Code</SubType>
     </Content>
@@ -282,6 +285,7 @@
     <Folder Include="Libs\CallbackHandler-1.0\" />
     <Folder Include="Libs\LibStub\" />
     <Folder Include="Data\" />
+    <Folder Include="modules" />
   </ItemGroup>
   <Import Project="$(DevEnvDir)\Extensions\Tools\MSBuild\Microsoft\WowAddonStudio\3.0\WowAddonStudio.targets" />
   <!--
