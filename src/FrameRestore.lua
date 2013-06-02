@@ -40,8 +40,6 @@ function frameRestore_OnShow()
     else
         _G["DropDownList1Button"..UIDropDownMenu_GetSelectedID(boxChooseCharacter)]:Click()
     end
-    
-    
 end
 
 function boxChooseCharacter_dropDown_init()
@@ -134,6 +132,10 @@ function btnRestore_OnError(self, info)
         v.accepted = false
     end
 end
+
+-- =============
+-- Handle WARNINGS
+-- =============
 
 function btnRestoreMainInfo_handleWarnings(self)
     -- Warning in some class/race

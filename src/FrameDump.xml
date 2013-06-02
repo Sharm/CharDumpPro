@@ -17,7 +17,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-46" />
+							<Offset x="233" y="-40" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -27,7 +27,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-46" />
+							<Offset x="37" y="-40" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -37,7 +37,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-74" />
+							<Offset x="233" y="-68" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -47,7 +47,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-74" />
+							<Offset x="37" y="-68" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -57,7 +57,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-105" />
+							<Offset x="37" y="-99" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -67,7 +67,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-105" />
+							<Offset x="233" y="-99" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -77,7 +77,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-136" />
+							<Offset x="37" y="-130" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -87,7 +87,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-136" />
+							<Offset x="233" y="-130" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -97,7 +97,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-167" />
+							<Offset x="37" y="-161" />
 						</Anchor>
 					</Anchors>
 					<FontHeight>
@@ -111,7 +111,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-167" />
+							<Offset x="233" y="-161" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -121,7 +121,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-198" />
+							<Offset x="37" y="-192" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -131,7 +131,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-198" />
+							<Offset x="233" y="-192" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -144,7 +144,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-46" />
+						<Offset x="6" y="-40" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -163,7 +163,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-46" />
+						<Offset x="162" y="-40" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -181,7 +181,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-74" />
+						<Offset x="6" y="-68" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -200,7 +200,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-74" />
+						<Offset x="162" y="-68" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -218,7 +218,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-105" />
+						<Offset x="6" y="-99" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -237,7 +237,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-105" />
+						<Offset x="162" y="-99" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -255,7 +255,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-136" />
+						<Offset x="6" y="-130" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -274,7 +274,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-136" />
+						<Offset x="162" y="-130" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -292,7 +292,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-167" />
+						<Offset x="6" y="-161" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -311,7 +311,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-167" />
+						<Offset x="162" y="-161" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -329,7 +329,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-198" />
+						<Offset x="6" y="-192" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -348,7 +348,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-198" />
+						<Offset x="162" y="-192" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -366,7 +366,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="157" y="-13" />
+						<Offset x="157" y="-7" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
