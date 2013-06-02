@@ -13,9 +13,6 @@ function btnDump_Constructor(self)
 	function self:showOptions()
 		_G["frame"..self.type.."Options"]:ShowOnParent(frameDump)
 	end
-
-	-- Create table for store dump otions
-	self.dumpOptions = {}
 end
 
 function frameDump_Init()
@@ -36,7 +33,7 @@ function btnDump_OnClick(self)
 	self.checkObj:Disable()
 	self.textObj:SetText("Proceeding...")
 
-	local success, info = dumper[self.dumpFunction](dumper, self.dumpOptions)
+	local success, info = dumper[self.dumpFunction](dumper)
 	if success then
 		self.checkObj:Enable()
 		self.textObj:SetText("Success! ("..info..")")

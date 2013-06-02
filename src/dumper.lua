@@ -160,7 +160,7 @@ end
 -- Inventory
 -- =================
 
-function Dumper:dumpInventory(options)
+function Dumper:dumpInventory()
 	self:createRecord()
 
 	local inventorySave = {}
@@ -177,7 +177,7 @@ function Dumper:dumpInventory(options)
 				link = nil,
 				size = GetContainerNumSlots(bagNum)
 			}
-		elseif not options.isOneBag then
+		else
 			local bagNum_ID = ContainerIDToInventoryID(bagNum)
 			itemLink = GetInventoryItemLink("player", bagNum_ID)
 			if itemLink then
