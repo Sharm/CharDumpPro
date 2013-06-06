@@ -6,31 +6,12 @@ Restorer = {
 	_db = nil, -- reference to save table for current char
     _isErrorCatching = false,
     _isError = false,
-    _timerFrame = CreateFrame("frame"),
-    _timerCounter = 0,
     _itemsForRestore = 0,
     _itemsCmdForRestore = "",
     errorCallback = nil,
     successCallback = nil,
     callbackObj = nil
 }
-
--- TODO: Move timer code to separate class/file and extend its functionality
-
-function Restorer:startTimer(func, delay, isSingleShot)
-    isSingleShot = true -- now only single shot timers supported
-
-    self._timerFrame:SetScript("OnUpdate", function(frame, elapsed) 
-        self._timerCounter = self._timerCounter + elapsed
-        if self._timerCounter > delay then
-            func()
-            self._timerCounter = 0
-            if isSingleShot then
-                self._timerFrame:SetScript("OnUpdate", nil)
-            end
-        end
-    end)
-end
 
 local function _isValidInteger(value, low, high)
     return type(value) == "number" and (low == nil or value > low) and (high == nil or value < high)
@@ -41,26 +22,32 @@ local function _isValidString(value, count)
 end
 
 function Restorer:_SendChatMessage(text)
-    if not self._isError then
-        local myname = UnitName("player")
-        local targetname = UnitName("target")
-        if myname ~= targetname then
-            self._isError = true
-            self.errorCallback(self.callbackObj, "Target self first!")
-            return
+    Sheduler:shedule(function() 
+        if not self._isError then
+            local myname = UnitName("player")
+            local targetname = UnitName("target")
+            if myname ~= targetname then
+                self._isError = true
+                self.errorCallback(self.callbackObj, "Target self first!")
+                return
+            end
+            Addon:Print("Execute command: "..text)
+            SendChatMessage(text, "SAY")
         end
-        Addon:Print("Execute command: "..text)
-        SendChatMessage(text, "SAY")
-    end
+    end, self, text)
 end
 
 function Restorer:_enableErrorCatching()
-    self._isError = false
-    self._isErrorCatching = true
+    Sheduler:shedule(function() 
+        self._isError = false
+        self._isErrorCatching = true
+    end, self) 
 end
 
 function Restorer:_disableErrorCatching()
-    self._isErrorCatching = false
+    Sheduler:shedule(function() 
+        self._isErrorCatching = false
+    end, self) 
 end
 
 function Restorer:_registerOutput(callbackObj, successCallback, errorCallback)
@@ -103,10 +90,12 @@ function Restorer:_on_CHAT_MSG_SYSTEM()
 end
 
 function Restorer:_on_restoreFinished()
-    if not self._isError then
-        self.successCallback(self.callbackObj)
-    end
-    self:_disableErrorCatching()
+    Sheduler:shedule(function() 
+        if not self._isError then
+            self.successCallback(self.callbackObj)
+        end
+        self:_disableErrorCatching()
+    end, self)
 end
 
 function Restorer:openRecord(name)
@@ -208,7 +197,7 @@ function Restorer:restoreMainInfo(warnings, callbackObj, successCallback, errorC
         self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
     end
 
-    self:startTimer(function() self:_on_restoreFinished() end, 3)
+    self:_on_restoreFinished()
 end
 
 -- =================
@@ -353,5 +342,5 @@ function Restorer:restoreInventory(warnings, callbackObj, successCallback, error
     -- Flush remaining items
     self:_sendItemsForRestore()
 
-    self:startTimer(function() self:_on_restoreFinished() end, 3)
+    self:_on_restoreFinished()
 end

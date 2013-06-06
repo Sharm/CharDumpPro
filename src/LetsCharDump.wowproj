@@ -79,6 +79,9 @@
     <Content Include="restorer.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Sheduler.lua">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libs/LibStub/LibStub.lua">
