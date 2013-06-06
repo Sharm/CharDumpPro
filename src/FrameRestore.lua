@@ -83,6 +83,8 @@ function btnRestore_getInfo(self)
     -- Save for future use
     self._info = info
     self._warnings = warnings
+    self._warnings_bak = table.copy(warnings)
+
 end
 
 function boxChooseCharacter_OnChoose(arg1, arg2)
@@ -127,10 +129,10 @@ function btnRestore_OnError(self, info)
     local inf = info or self._info
     self.textObj:SetErrorText("Error occures while execute! ("..inf..")")
     self:Enable()
-    -- Reset all warnings/options
-    for k,v in pairs(self._warnings) do
-        v.accepted = false
-    end
+
+    -- Reset all warnings/options to defaults
+    self._warnings = table.copy(self._warnings_bak)
+
 end
 
 -- =============
