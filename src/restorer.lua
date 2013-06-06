@@ -8,6 +8,7 @@ Restorer = {
     _isError = false,
     _itemsForRestore = 0,
     _itemsCmdForRestore = "",
+    _itemsMsgTitle = "Items",
     errorCallback = nil,
     successCallback = nil,
     callbackObj = nil
@@ -203,6 +204,10 @@ end
 -- =================
 -- Inventory
 -- =================
+-- Send to mailbox message titles:
+--  - Bags: mails contains olny bag items
+--  - Equipped: mails contains olny equipped items
+--  - Items: all other items from bags
 
 function Restorer:getInventoryInfo()
     if not self._db then
@@ -265,12 +270,17 @@ function Restorer:_parseItemLink(link)
     return string.match(link,".*Hitem:(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+).*")
 end
 
-function Restorer:_sendItemsForRestore()
+function Restorer:_sendItemsForRestore(msgTitle)
+    if msgTitle then
+        self._itemsMsgTitle = msgTitle
+    end
+
     if self._itemsForRestore > 0 then
-        self:_SendChatMessage(string.format(".send items %%t \"Items\" \"Items\" %s", self._itemsCmdForRestore))
+        self:_SendChatMessage(string.format(".send items %%t \"%s\" \"%s\" %s", self._itemsMsgTitle, self._itemsMsgTitle, self._itemsCmdForRestore))
         self._itemsCmdForRestore = ""
         self._itemsForRestore = 0
     end
+    self._itemsMsgTitle = "Items"
 end
 
 function Restorer:_pushItemForRestore(id, count)
@@ -291,7 +301,10 @@ function Restorer:_pushItemForRestore(id, count)
     self._itemsForRestore = self._itemsForRestore + 1
 end
 
-function Restorer:_restoreBagItems(bag)
+function Restorer:_restoreBagItems(bag, msgTitle)
+    if msgTitle then
+        self._itemsMsgTitle = msgTitle
+    end
     for k,v in pairs(bag) do
         -- ignore `size` and bag `link` fields
         if type(v) == "table" then 
@@ -312,6 +325,11 @@ function Restorer:_restoreBagItems(bag)
             --end
         end
     end
+
+    -- Restor all remaining items
+    self:_sendItemsForRestore(msgTitle)
+
+    self._itemsMsgTitle = "Items"
 end
 
 function Restorer:restoreInventory(warnings, callbackObj, successCallback, errorCallback)
@@ -329,13 +347,18 @@ function Restorer:restoreInventory(warnings, callbackObj, successCallback, error
     end
     self:_SendChatMessage(string.format(".send items %%t \"Bags\" \"Bags\" %s", cmd))
 
+    -- Restore equipped
+    self:_restoreBagItems(db.Bag100, "Equipped")
+
+    -- Restore bags
     if warnings.onebag.isRestoreOneBagOnly then
         self:_restoreBagItems(db.Bag0)    -- backpack
-        self:_restoreBagItems(db.Bag100)  -- equipped
     else
         -- Restore items in all bags
         for k_bag, v_bag in pairs(db) do
-            self:_restoreBagItems(v_bag)
+            if k_bag ~= "Bag100" then
+                self:_restoreBagItems(v_bag)
+            end
         end
     end
 
