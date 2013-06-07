@@ -1,30 +1,14 @@
 ﻿
 local Addon_PickUp = Addon:NewModule("PickUp", "AceEvent-3.0", "AceHook-3.0")
 
-local btnDefaultText = "Chardump: Pickup ALL"
-local mailIndex, attachIndex
-local lastmailIndex, lastattachIndex, lastmailmoneyIndex
-local lastItem
-local button
-local skipFlag = false
-local invFull
+local sheduler = Sheduler:create(0)
 
-local updateFrame = CreateFrame("Frame")
-updateFrame:Hide()
-updateFrame:SetScript("OnShow", function(self)
-	self.time = 0
-end)
-updateFrame:SetScript("OnUpdate", function(self, elapsed)
-	self.time = self.time - elapsed
-	if self.time <= 0 then
-		self:Hide()
-		Addon_PickUp:ProcessNext()
-	end
-end)
+local btnDefaultText = "Chardump: Pickup ALL"
+local button
+local invFull
 
 function Addon_PickUp:OnEnable()
 	if not button then
-
         -- Create mailbox button
 	    button = CreateFrame("Button", "PostalOpenAllButton", InboxFrame, "UIPanelButtonTemplate")
 	    button:SetWidth(150)
@@ -45,89 +29,109 @@ function Addon_PickUp:OnDisable()
 	button:Hide()
 end
 
+-- ============
+-- Events
+-- ============
+
 function Addon_PickUp:MAIL_SHOW()
 	self:RegisterEvent("MAIL_CLOSED", "Reset")
 	self:RegisterEvent("PLAYER_LEAVING_WORLD", "Reset")
 end
 
-function Addon_PickUp:PickUpAll()
-	mailIndex = GetInboxNumItems() or 0
-	attachIndex = ATTACHMENTS_MAX_RECEIVE
-	invFull = nil
-	skipFlag = false
-	lastmailIndex = nil
-	lastattachIndex = nil
-	lastmailmoneyIndex = nil
-	lastItem = nil
-	if mailIndex == 0 then
+function Addon_PickUp:MAIL_INBOX_UPDATE()
+    sheduler:continue("Delete")
+    sheduler:continue("TakeItem")
+end
+
+function Addon_PickUp:UI_ERROR_MESSAGE(event, error_message)
+    if error_message == ERR_INV_FULL then
+        sheduler:continue("TakeItem")
+    elseif error_message == ERR_ITEM_MAX_COUNT then
+        sheduler:continue("TakeItem")
+    end
+end
+
+-- ============
+-- Pick up
+-- ============
+
+function Addon_PickUp:_pickUpOneItem(mailIndex, attachIndex)
+    sheduler:shedule(function()
+    
+        if invFull then
+            return
+        end
+
+        sheduler:stop("TakeItem")
+        TakeInboxItem(mailIndex, attachIndex)
+
+    end, self, mailIndex, attachIndex)
+end
+
+
+function Addon_PickUp:_equipBag(mailIndex, attachIndex)
+end
+
+function Addon_PickUp:_pickUpOneMail(mailIndex, withSubject)
+	msgSubject, _, msgCOD, _, itemCount, _, _, _, _, _ = select(4, GetInboxHeaderInfo(mailIndex))
+	if (msgCOD and msgCOD > 0) then -- Skip mail if it contains a CoD
 		return
 	end
 
+    if not withSubject or withSubject == msgSubject then
+        itemCount = itemCount or 0
+
+        for attachIndex = itemCount, 1, -1 do
+            self:_pickUpOneItem(mailIndex, attachIndex)
+            
+            --if withSubject and msgSubject == "Bags" then
+            --    self:_equipBag(mailIndex, attachIndex)
+            --end
+        
+        end
+    end
+end
+
+ function Addon_PickUp:_deleteOneMail(mailIndex)
+    sheduler:shedule(function()
+        sheduler:stop("Delete")
+        DeleteInboxItem(mailIndex)
+    end, self, mailIndex)
+ end
+
+function Addon_PickUp:_deleteEmptyMails()
+    for mailIndex = GetInboxNumItems(), 1, -1 do
+        if not select(8, GetInboxHeaderInfo(mailIndex)) then
+            self:_deleteOneMail(mailIndex)
+        end
+    end
+end
+
+function Addon_PickUp:PickUpAll()
 	self:DisableInbox(1)
 	button:SetText("In Progress")
     button:Disable()
 
 	self:RegisterEvent("UI_ERROR_MESSAGE")
-	self:ProcessNext()
-end
+    self:RegisterEvent("MAIL_INBOX_UPDATE")
 
-function Addon_PickUp:ProcessNext()
-	local _, msgSubject, msgMoney, msgCOD, msgItem, msgText, isGM
-	if mailIndex > 0 then
-		msgSubject, msgMoney, msgCOD, _, msgItem, _, _, msgText, _, isGM = select(4, GetInboxHeaderInfo(mailIndex))
-		if (msgCOD and msgCOD > 0) then
-			-- Skip mail if it contains a CoD or if its from a GM
-			skipFlag = true
-			mailIndex = mailIndex - 1
-			attachIndex = ATTACHMENTS_MAX_RECEIVE
-			lastItem = nil
-			return self:ProcessNext() -- tail call
-		end
+    for mailIndex = GetInboxNumItems(), 1, -1 do
+        self:_pickUpOneMail(mailIndex, "Bags")
+    end
+    
+    sheduler:shedule(function()
+        for mailIndex = GetInboxNumItems(), 1, -1 do
+            self:_pickUpOneMail(mailIndex)
+        end
 
-		while not GetInboxItemLink(mailIndex, attachIndex) and attachIndex > 0 do
-			-- Find first attachment index backwards
-			attachIndex = attachIndex - 1
-		end
-		if attachIndex > 0 and not invFull then
-			-- If there's attachments, take the item
-			--Addon:Print("Getting Item from Message "..mailIndex..", "..attachIndex)
-			if lastmailIndex ~= mailIndex or lastattachIndex ~= attachIndex then -- don't attempt to take more than once or it generates the "database error"
-				--Addon:Print("Actually getting it")
-				lastItem = GetInboxNumItems()
-				TakeInboxItem(mailIndex, attachIndex)
-				lastmailIndex = mailIndex
-				lastattachIndex = attachIndex
-			else
-				if lastItem ~= GetInboxNumItems() then
-					mailIndex = mailIndex - 1
-					attachIndex = ATTACHMENTS_MAX_RECEIVE
-					lastItem = nil
-					return self:ProcessNext() -- tail call
-				end
-			end
-			--attachIndex = attachIndex - 1
-			updateFrame:Show()
-		else
-			if lastItem and lastItem ~= GetInboxNumItems() then
-				-- the last attachment or gold taken auto deleted the mail so move on to the next mail
-				mailIndex = mailIndex - 1
-				attachIndex = ATTACHMENTS_MAX_RECEIVE
-				lastItem = nil
-				return self:ProcessNext() -- tail call
-			end
-			mailIndex = mailIndex - 1
-			attachIndex = ATTACHMENTS_MAX_RECEIVE
-			lastItem = nil
-			return self:ProcessNext() -- tail call
-		end
-	else
-		if skipFlag then Addon:Print("Some Messages May Have Been Skipped.") end
-		self:Reset()
-	end
+        sheduler:shedule(function()
+            self:_deleteEmptyMails()
+            sheduler:shedule(self.Reset, self, event)
+        end, self)
+    end, self)
 end
 
 function Addon_PickUp:Reset(event)
-	updateFrame:Hide()
 	self:UnregisterEvent("MAIL_INBOX_UPDATE")
 	self:UnregisterEvent("UI_ERROR_MESSAGE")
 	button:SetText(btnDefaultText)
@@ -138,20 +142,7 @@ function Addon_PickUp:Reset(event)
 		self:UnregisterEvent("MAIL_CLOSED")
 		self:UnregisterEvent("PLAYER_LEAVING_WORLD")
 	end
-end
-
-function Addon_PickUp:MAIL_INBOX_UPDATE()
-	--Addon:Print("update")
-	self:UnregisterEvent("MAIL_INBOX_UPDATE")
-	updateFrame:Show()
-end
-
-function Addon_PickUp:UI_ERROR_MESSAGE(event, error_message)
-	if error_message == ERR_INV_FULL then
-		invFull = true
-	elseif error_message == ERR_ITEM_MAX_COUNT then
-		attachIndex = attachIndex - 1
-	end
+    invFull = false
 end
 
 function Addon_PickUp:DisableInbox(disable)
