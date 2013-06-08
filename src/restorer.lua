@@ -538,3 +538,58 @@ function Restorer:restoreSkills(warnings, callbackObj, successCallback, errorCal
 
     self:_on_restoreFinished()
 end
+
+
+-- =================
+-- Recipes & specializations
+-- =================
+
+function Restorer:getRecipesInfo()
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    -- VALIDATE
+
+    if not self._db.specs and not self._db.recipes then
+        return false, "Recipes & specs info is empty"
+    end
+
+    if self._db.specs then
+        for k,v in pairs(self._db.specs) do 
+            if not _isValidInteger(v, 0) then
+                return false, string.format("Bad spec spell id: %s", tostring(v))
+            end
+        end
+    end
+
+    if self._db.recipes then
+        for k,v in pairs(self._db.recipes) do 
+            if not _isValidInteger(v, 0) then
+                return false, string.format("Bad recipe spell id: %s", tostring(v))
+            end
+        end
+    end
+
+    return true, #self._db.recipes.." recipes and "..#self._db.specs.." specializations"
+end
+
+function Restorer:_restoreSpells(spells)
+    for k,v in pairs(spells) do 
+        self:_SendChatMessage(".learn "..v)
+    end
+end
+
+function Restorer:restoreRecipes(warnings, callbackObj, successCallback, errorCallback)
+    self:_registerOutput(callbackObj, successCallback, errorCallback)
+
+    if self._db.specs then
+        self:_restoreSpells(self._db.specs)
+    end
+
+    if self._db.recipes then
+        self:_restoreSpells(self._db.recipes)
+    end
+
+    self:_on_restoreFinished()
+end
