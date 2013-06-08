@@ -8,6 +8,7 @@ function btnDump_Constructor(self)
 		self.checkObj = _G["checkDump"..self.type]
 		self.textObj = _G["textDump"..self.type]
 		self.dumpFunction = "dump"..self.type
+        ErrorFontString_init(self.textObj)
 	end
 
 	function self:showOptions()
@@ -33,15 +34,14 @@ end
 
 function btnDump_OnClick(self)
 	self.checkObj:Disable()
-	self.textObj:SetText("Proceeding...")
+	self.textObj:SetNormalText("Proceeding...")
 
 	local success, info = dumper[self.dumpFunction](dumper)
 	if success then
 		self.checkObj:Enable()
-		self.textObj:SetText("Success! ("..info..")")
+		self.textObj:SetNormalText("Success! ("..info..")")
 	else
-		-- TODO: set red color
-		self.textObj:SetText("Failed! ("..info..")")
+		self.textObj:SetErrorText("Failed! ("..info..")")
 	end
 end
 
