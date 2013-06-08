@@ -100,3 +100,37 @@ function btnToolDeleteInventory_OnClick()
     
     textTools:SetNormalText("Deleted "..delcount.." items")
 end
+
+function btnToolResetProf_OnClick()
+    -- Expand all skilllines first. Otherwise we get wrong GetNumSkillLines()
+	for i=GetNumSkillLines(),1,-1 do 
+		local _, isHeader, isExpanded = GetSkillLineInfo(i) 
+		if isHeader and not isExpanded then
+            ExpandSkillHeader(i)
+		end
+	end
+
+    local abadoned = 0
+    for i=1,GetNumSkillLines() do 
+		local skillName, isHeader, _, skillRank, _, _, skillMaxRank = GetSkillLineInfo(i)
+        if not isHeader then
+            local skillId, error = dumper:getSkillId(skillName)
+            if error then
+                textTools:SetErrorText(error)
+				return
+			end
+            if DB.Skills[skillId].id == 40              -- Poisons
+                or DB.Skills[skillId].id == 356         -- Fishing
+                or DB.Skills[skillId].id == 185         -- Cooking
+                or DB.Skills[skillId].id == 129         -- First Aid
+                or DB.Skills[skillId].id == 762         -- Riding
+                or DB.Skills[skillId].categoryId == 11  -- Professions
+            then
+                AbandonSkill(i)
+                abadoned = abadoned + 1
+            end
+        end
+    end
+
+    textTools:SetNormalText("Abadoned "..abadoned.." professions")
+end

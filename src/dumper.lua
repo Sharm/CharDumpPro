@@ -292,7 +292,7 @@ end
 -- =================
 
 -- return skillid, errorstring
-function Dumper:_getSkillId(name)
+function Dumper:getSkillId(name)
 	local locale = GetLocale()
 	if locale ~= "ruRU" and locale ~= "enUS" then
 		return nil, "Can't get skill id! Wrong client locale!"
@@ -336,7 +336,7 @@ function Dumper:dumpSkills()
 
 		local skillName, isHeader, _, skillRank, _, _, skillMaxRank = GetSkillLineInfo(i)
         if not isHeader then
-			local skillId, error = self:_getSkillId(skillName)
+			local skillId, error = self:getSkillId(skillName)
 
 			if error then
 				return false, error
