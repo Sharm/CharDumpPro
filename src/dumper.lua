@@ -283,7 +283,7 @@ function Dumper:dumpReputation()
 end
 
 -- =================
--- Profession skills
+-- Skills
 -- =================
 
 -- return skillid, errorstring
@@ -338,6 +338,9 @@ function Dumper:dumpSkills()
 			end
 
             if DB.Skills[skillId].id == 40              -- Poisons
+                or DB.Skills[skillId].id == 356         -- Fishing
+                or DB.Skills[skillId].id == 185         -- Cooking
+                or DB.Skills[skillId].id == 129         -- First Aid
                 or DB.Skills[skillId].id == 762         -- Riding
                 or DB.Skills[skillId].categoryId == 6   -- Weapon/Defense skills
                 or DB.Skills[skillId].categoryId == 11  -- Professions

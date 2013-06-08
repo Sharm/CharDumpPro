@@ -1,5 +1,46 @@
 ﻿-- Author: for.sneg@gmail.com
 
+local professionSpells = {
+    -- skillId = {
+    --      rank1 spellId,
+    --      rank2 spellId,
+    --      rank3 spellId,
+    --      rank4 spellId,
+    --      rank5 spellId
+    -- }
+    
+    -- Blacksmithing
+    [164]	= { 2020, 2021, 3539, 9786, 29845 },
+    -- Leatherworking
+    [165]	= { 2155, 2154, 3812, 10663, 32550 },
+    -- Alchemy
+    [171]	= { 2275, 2280, 3465, 11612, 28597 },
+    -- Herbalism
+    [182] = { 2372, 2373, 3571, 11994, 28696 },
+    -- Mining
+    [186]	= { 2581, 2582, 3568, 10249, 29355 },
+    -- Tailoring
+    [197]	= { 3911, 3912, 3913, 12181, 26791 },
+    -- Engineering
+    [202]	= { 4039, 4040, 4041, 12657, 30351 },
+    -- Enchanting
+    [333]	= { 7414, 7415, 7416, 13921, 28030 },
+    -- Skinning
+    [393]	= { 8615, 8619, 8620, 10769, 32679 },
+    -- Jewelcrafting
+    [755]	= { 25245, 25246, 28896, 28899, 28901 },
+    -- Riding
+    [762] = { 33389, 33392, 34092, 34093 },
+    -- Poisons
+    [40]  = { 2995 },
+    -- Fishing
+    [356] = { 7733, 7734, 19889, 19890, 33100 },
+    -- Cooking
+    [185] = { 2551, 3412, 19886, 19887, 33361 },
+    -- First Aid 
+    [129] = { 3279, 3280, 19903, 19902, 27029 }
+}
+
 -- ATTENSION! Asynchronus work!
 
 Restorer = { 
@@ -22,14 +63,19 @@ local function _isValidString(value, count)
     return type(value) == "string" and (count == nil or #value > count)
 end
 
+function Restorer:_error(text)
+    self._isError = true
+    self.errorCallback(self.callbackObj, text)
+end
+    
+
 function Restorer:_SendChatMessage(text)
     Sheduler:shedule(function() 
         if not self._isError then
             local myname = UnitName("player")
             local targetname = UnitName("target")
             if myname ~= targetname then
-                self._isError = true
-                self.errorCallback(self.callbackObj, "Target self first!")
+                self:_error("Target self first!")
                 return
             end
             Addon:Print("Execute command: "..text)
@@ -65,8 +111,7 @@ function Restorer:_on_CHAT_MSG_SAY()
     if self._isErrorCatching then
         local myname = UnitName("player")
         if sender == myname and string.match(msg, "^%..+") then
-            self._isError = true
-            self.errorCallback(self.callbackObj, "Errors occures while execute GM commands.")
+            self._error("Errors occures while execute GM commands.")
         end
 
     end
@@ -83,8 +128,7 @@ function Restorer:_on_CHAT_MSG_SYSTEM()
             or string.find(msg, "invalid", 0, true)
             or string.find(msg, "syntax", 0, true)
         then
-            self._isError = true
-            self.errorCallback(self.callbackObj, "Errors occures while execute GM commands.")
+            self._error("Errors occures while execute GM commands.")
         end
 
     end
@@ -420,5 +464,77 @@ end
 -- =================
 
 function Restorer:getSkillsInfo()
-    return true, "test"
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    -- VALIDATE
+
+    local db = self._db.skills
+
+    if not db then
+        return false, "Skills info is empty"
+    end
+
+    local skillsCount = 0
+    for k,v in pairs(db) do 
+        if not _isValidInteger(k, 0) or not _isValidInteger(v.skillId, 0) then
+            return false, string.format("[%s] Bad skill id: %s", tostring(k), tostring(v.skillId))
+        end
+
+        if not _isValidInteger(v.value, 0, 400) then
+            return false, string.format("[%s] Bad skill value: %s", tostring(k), tostring(v.value))
+        end
+
+        if not _isValidInteger(v.maxValue, 0, 400) then
+            return false, string.format("[%s] Bad skill max value: %s", tostring(k), tostring(v.maxValue))
+        end
+
+        skillsCount = skillsCount + 1
+    end
+
+    return true, skillsCount.." skills"
+end
+
+function Restorer:_getProfessionRank(maxValue)
+    local rank = 5
+    if maxValue < 375 then
+        rank = 4
+    elseif maxValue < 300 then
+        rank = 3
+    elseif maxValue < 225 then
+        rank = 2
+    elseif maxValue < 150 then
+        rank = 1
+    end
+    return rank
+end
+
+function Restorer:restoreSkills(warnings, callbackObj, successCallback, errorCallback)
+    self:_registerOutput(callbackObj, successCallback, errorCallback)
+
+    local db = self._db.skills
+
+    for k,v in pairs(db) do 
+        local rank = self:_getProfessionRank(v.maxValue)
+
+        if v.skillId == 40 then -- Poisons
+            rank = 1
+        end
+
+        if professionSpells[v.skillId] then
+            if professionSpells[v.skillId][rank] then
+                self:_SendChatMessage(".cast "..professionSpells[v.skillId][rank])
+            else
+                self:_error(string.format("[%d] Bad profession spell for rank %d", v.skillId, rank))
+                return
+            end
+        end
+        
+        if not (v.skillId == 762) then -- No need to update skill for Riding
+            self:_SendChatMessage(string.format(".setskill %d %d %d", v.skillId, v.value, v.maxValue))
+        end
+    end
+
+    self:_on_restoreFinished()
 end
