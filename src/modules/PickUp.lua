@@ -22,6 +22,7 @@ function Addon_PickUp:OnEnable()
 	self:RegisterEvent("MAIL_SHOW")
 	-- For enabling after a disable
 	button:Show()
+    sheduler:enable()
 end
 
 function Addon_PickUp:OnDisable()
@@ -39,55 +40,82 @@ function Addon_PickUp:MAIL_SHOW()
 end
 
 function Addon_PickUp:MAIL_INBOX_UPDATE()
+    --Addon:Print("MAIL_INBOX_UPDATE")
     sheduler:continue("Delete")
     sheduler:continue("TakeItem")
 end
 
 function Addon_PickUp:UI_ERROR_MESSAGE(event, error_message)
     if error_message == ERR_INV_FULL then
+        --Addon:Print("ERR_INV_FULL")
+        invFull = true
         sheduler:continue("TakeItem")
     elseif error_message == ERR_ITEM_MAX_COUNT then
+        --Addon:Print("ERR_ITEM_MAX_COUNT")
         sheduler:continue("TakeItem")
     end
+end
+
+function Addon_PickUp:EQUIP_BIND_CONFIRM(event, slot)
+    --Addon:Print("EQUIP_BIND_CONFIRM "..slot)
+    EquipPendingItem(slot)
 end
 
 -- ============
 -- Pick up
 -- ============
 
-function Addon_PickUp:_pickUpOneItem(mailIndex, attachIndex)
+function Addon_PickUp:_pickUpOneItem(mailIndex, attachIndex, isNeedWait)
     sheduler:shedule(function()
     
         if invFull then
             return
         end
 
+        --Addon:Print("Mail: "..mailIndex.." Attach: "..attachIndex)
+
         sheduler:stop("TakeItem")
         TakeInboxItem(mailIndex, attachIndex)
+
+        if isNeedWait then
+            sheduler:stop("WaitForBagUpdate", 0.4)
+        end
 
     end, self, mailIndex, attachIndex)
 end
 
-
-function Addon_PickUp:_equipBag(mailIndex, attachIndex)
+function Addon_PickUp:_equip(itemName)
+    sheduler:shedule(function()
+        if itemName then
+            EquipItemByName(itemName)
+            --Addon:Print("Equip "..itemName)
+        end
+    end, self, itemName)
 end
 
 function Addon_PickUp:_pickUpOneMail(mailIndex, withSubject)
-	msgSubject, _, msgCOD, _, itemCount, _, _, _, _, _ = select(4, GetInboxHeaderInfo(mailIndex))
+	local msgSubject, _, msgCOD, _, itemCount, _, _, _, _, _ = select(4, GetInboxHeaderInfo(mailIndex))
 	if (msgCOD and msgCOD > 0) then -- Skip mail if it contains a CoD
 		return
 	end
 
+    --Addon:Print("_pickUpOneMail "..tostring(withSubject))
+    
     if not withSubject or withSubject == msgSubject then
         itemCount = itemCount or 0
 
         for attachIndex = itemCount, 1, -1 do
-            self:_pickUpOneItem(mailIndex, attachIndex)
-            
-            --if withSubject and msgSubject == "Bags" then
-            --    self:_equipBag(mailIndex, attachIndex)
-            --end
-        
+            local itemName = GetInboxItem(mailIndex, attachIndex)
+
+            if msgSubject == "Bags" then 
+                self:_pickUpOneItem(mailIndex, attachIndex, true)
+                self:_equip(itemName)
+            elseif msgSubject == "Equipped" then
+                self:_pickUpOneItem(mailIndex, attachIndex, true)
+                self:_equip(itemName)
+            else
+                self:_pickUpOneItem(mailIndex, attachIndex)
+            end
         end
     end
 end
@@ -114,6 +142,8 @@ function Addon_PickUp:PickUpAll()
 
 	self:RegisterEvent("UI_ERROR_MESSAGE")
     self:RegisterEvent("MAIL_INBOX_UPDATE")
+    self:RegisterEvent("EQUIP_BIND_CONFIRM")
+    self:RegisterEvent("AUTOEQUIP_BIND_CONFIRM", function(event, slot) self:EQUIP_BIND_CONFIRM(event, slot) end)
 
     for mailIndex = GetInboxNumItems(), 1, -1 do
         self:_pickUpOneMail(mailIndex, "Bags")
@@ -132,8 +162,12 @@ function Addon_PickUp:PickUpAll()
 end
 
 function Addon_PickUp:Reset(event)
+    --Addon:Print("Reset")
 	self:UnregisterEvent("MAIL_INBOX_UPDATE")
 	self:UnregisterEvent("UI_ERROR_MESSAGE")
+    self:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
+    self:UnregisterEvent("EQUIP_BIND_CONFIRM")
+    self:UnregisterEvent("AUTOEQUIP_BIND_CONFIRM")
 	button:SetText(btnDefaultText)
     button:Enable()
 	self:DisableInbox()
@@ -143,6 +177,7 @@ function Addon_PickUp:Reset(event)
 		self:UnregisterEvent("PLAYER_LEAVING_WORLD")
 	end
     invFull = false
+    sheduler:disable()
 end
 
 function Addon_PickUp:DisableInbox(disable)
