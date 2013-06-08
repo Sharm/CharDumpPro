@@ -28,6 +28,8 @@ function frameRestore_Init()
 
     btnRestoreMainInfo:init()
     btnRestoreInventory:init()
+    btnRestoreReputations:init()
+    btnRestoreSkills:init()
 end
 
 local firstShow = true
