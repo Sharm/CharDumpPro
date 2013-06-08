@@ -367,3 +367,58 @@ function Restorer:restoreInventory(warnings, callbackObj, successCallback, error
 
     self:_on_restoreFinished()
 end
+
+
+-- =================
+-- Reputations
+-- =================
+
+function Restorer:getReputationsInfo()
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    -- VALIDATE
+
+    local db = self._db.reputation
+
+    if not db then
+        return false, "Reputations info is empty"
+    end
+
+    local repCount = 0
+    for k,v in pairs(db) do 
+        if not _isValidInteger(k, 0) or not _isValidInteger(v.factionId, 0) then
+            return false, string.format("[%s] Bad faction id: %s", tostring(k), tostring(v.factionId))
+        end
+
+        if not _isValidInteger(v.earnedValue) then
+            return false, string.format("[%s] Bad earned value: %s", tostring(k), tostring(v.earnedValue))
+        end
+
+        repCount = repCount + 1
+    end
+
+    return true, repCount.." reputations"
+end
+
+function Restorer:restoreReputations(warnings, callbackObj, successCallback, errorCallback)
+    self:_registerOutput(callbackObj, successCallback, errorCallback)
+
+    local db = self._db.reputation
+
+    for k,v in pairs(db) do 
+        self:_SendChatMessage(string.format(".mod rep %d %d", k, v.earnedValue))
+    end
+
+    self:_on_restoreFinished()
+end
+
+
+-- =================
+-- Skills
+-- =================
+
+function Restorer:getSkillsInfo()
+    return true, "test"
+end
