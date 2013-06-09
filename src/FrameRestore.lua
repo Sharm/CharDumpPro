@@ -37,13 +37,13 @@ local firstShow = true
 function frameRestore_OnShow()
     UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
     UIDropDownMenu_SetWidth(140, boxChooseCharacter)
-    if firstShow then
+    if firstShow or not UIDropDownMenu_GetSelectedID(boxChooseCharacter) then
         firstShow = false
+        boxChooseCharacter.notResetRestoredBtns = true
         _G["DropDownList1Button1"]:Click()
     else
-        if UIDropDownMenu_GetSelectedID(boxChooseCharacter) then
-            _G["DropDownList1Button"..UIDropDownMenu_GetSelectedID(boxChooseCharacter)]:Click()
-        end
+        boxChooseCharacter.notResetRestoredBtns = true
+        _G["DropDownList1Button"..UIDropDownMenu_GetSelectedID(boxChooseCharacter)]:Click()
     end
 end
 
@@ -93,10 +93,12 @@ function btnRestore_getInfo(self)
 end
 
 function boxChooseCharacter_OnChoose(arg1, arg2)
-    if UIDropDownMenu_GetSelectedID(boxChooseCharacter) ~= this:GetID() then
+    if not boxChooseCharacter.notResetRestoredBtns then
         for k,v in ipairs(restoreBtns) do
             v.restored = false
         end
+    else
+        boxChooseCharacter.notResetRestoredBtns = false
     end
 
     UIDropDownMenu_SetSelectedID(boxChooseCharacter, this:GetID()) 
