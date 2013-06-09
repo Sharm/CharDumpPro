@@ -36,9 +36,9 @@ function HighlightTab_Constructor(self)
 	_G[self:GetName().."Left"]:Show()
 	_G[self:GetName().."Middle"]:Show()
 	
-	if self == tabDump then
+	if self:GetName() == "tabDump" then
 		self._tabType = "Dump"
-	elseif self == tabRestore then
+	elseif self:GetName() == "tabRestore" then
 		self._tabType = "Restore"
 	end
 	

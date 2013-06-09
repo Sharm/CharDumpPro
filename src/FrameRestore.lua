@@ -41,7 +41,9 @@ function frameRestore_OnShow()
         firstShow = false
         _G["DropDownList1Button1"]:Click()
     else
-        _G["DropDownList1Button"..UIDropDownMenu_GetSelectedID(boxChooseCharacter)]:Click()
+        if UIDropDownMenu_GetSelectedID(boxChooseCharacter) then
+            _G["DropDownList1Button"..UIDropDownMenu_GetSelectedID(boxChooseCharacter)]:Click()
+        end
     end
 end
 
