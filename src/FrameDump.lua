@@ -1,4 +1,4 @@
-﻿-- Author: for.sneg@gmail.com
+﻿-- Author: for.sharm@gmail.com
 
 local dumper = Dumper
 

@@ -1,0 +1,10 @@
+## Interface: 30000
+## Version: 1.1
+## Title: CharDamp.PRO (v1.1)
+## Notes: |cFF00FF00Enhanced transfer helper addon|r 
+## Author: for.sharm@gmail.com
+## OptionalDeps: Ace3
+## SavedVariables: CharDumpDB
+
+embeds.xml
+

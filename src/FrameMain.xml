@@ -57,6 +57,22 @@
 					</Anchors>
 				</Texture>
 			</Layer>
+			<Layer level="OVERLAY">
+				<FontString font="Fonts\FRIZQT__.TTF" text="Please feedback me on for.sharm@gmail.com or https://github.com/Sharm">
+					<Size>
+						<AbsDimension x="428" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="41" y="-353" />
+						</Anchor>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="11" />
+					</FontHeight>
+					<Color a="0.5" r="1" g="0.82" b="0" />
+				</FontString>
+			</Layer>
 		</Layers>
 		<Frames>
 			<Button name="btnClose" inherits="UIPanelCloseButton" text="Button1">
@@ -132,6 +148,20 @@
 							<FontHeight>
 								<AbsValue val="15" />
 							</FontHeight>
+						</FontString>
+						<FontString font="Fonts\FRIZQT__.TTF" text="Powered by letswow.ru">
+							<Size>
+								<AbsDimension x="137" y="20" />
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="78" y="-34" />
+								</Anchor>
+							</Anchors>
+							<FontHeight>
+								<AbsValue val="9" />
+							</FontHeight>
+							<Color a="0.8" r="1" g="0.82" b="0" />
 						</FontString>
 					</Layer>
 				</Layers>

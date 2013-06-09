@@ -1,4 +1,4 @@
-﻿-- Author: for.sneg@gmail.com
+﻿-- Author: for.sharm@gmail.com
 -- Bref: Component to use insted of standart DEFAULT_CHAT_FRAME:AddMessage
 
 Log = {

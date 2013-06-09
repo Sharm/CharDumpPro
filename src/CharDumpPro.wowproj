@@ -2,22 +2,19 @@
 <Project ToolsVersion="4.0" DefaultTargets="Deploy" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
-    <Name>LetsCharDump</Name>
+    <Name>CharDumpPro</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{b948ec7e-6faa-4875-9cd2-d5190cb16a21}</ProjectGuid>
     <AssemblyName>WowAddon1</AssemblyName>
     <RootNamespace>WowAddon1</RootNamespace>
     <WowPath>D:\Games\WoW 2.4.3</WowPath>
-    <AddonTitle>LetsCharDump</AddonTitle>
+    <AddonTitle>CharDumpPro</AddonTitle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
     <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="addon.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="chardump.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Data\init.lua">
@@ -47,16 +44,13 @@
     <Content Include="FrameRestore.xml">
       <SubType>Frame</SubType>
     </Content>
-    <Content Include="LogArea.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="main.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="datastore.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="LetsCharDump.toc">
+    <Content Include="CharDumpPro.toc">
       <SubType>TableOfContents</SubType>
     </Content>
     <Content Include="FrameMain.xml">

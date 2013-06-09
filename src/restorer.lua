@@ -1,4 +1,4 @@
-﻿-- Author: for.sneg@gmail.com
+﻿-- Author: for.sharm@gmail.com
 
 local professionSpells = {
     -- skillId = {
@@ -352,21 +352,8 @@ function Restorer:_restoreBagItems(bag, msgTitle)
     for k,v in pairs(bag) do
         -- ignore `size` and bag `link` fields
         if type(v) == "table" then 
-            local id, ench, gem1, gem2, gem3, gem4 = self:_parseItemLink(v.link)
+            local id = self:_parseItemLink(v.link)
             self:_pushItemForRestore(id)
-            -- TODO: Restore gems through GemProperties.dbc
-            --if gem1 ~= "0" then
-            --    self:_pushItemForRestore(gem1)
-            --end
-            --if gem2 ~= "0" then
-            --    self:_pushItemForRestore(gem2)
-            --end
-            --if gem3 ~= "0" then
-            --    self:_pushItemForRestore(gem3)
-            --end
-            --if gem4 ~= "0" then
-            --    self:_pushItemForRestore(gem4)
-            --end
         end
     end
 

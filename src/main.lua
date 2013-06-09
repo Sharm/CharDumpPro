@@ -1,4 +1,4 @@
-﻿-- Author: for.sneg@gmail.com
+﻿-- Author: for.sharm@gmail.com
 
 Addon:RegisterChatCommand("cd", function()
 	if frameMain:IsShown() then
