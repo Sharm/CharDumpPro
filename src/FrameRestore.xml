@@ -2,7 +2,7 @@
 	<Script file="FrameDump.lua" />
 	<Frame name="frameRestore" virtual="true" parent="">
 		<Size>
-			<AbsDimension x="482" y="250" />
+			<AbsDimension x="482" y="320" />
 		</Size>
 		<Backdrop bgFile="" edgeFile="">
 			<BackgroundInsets>
@@ -10,6 +10,19 @@
 			</BackgroundInsets>
 		</Backdrop>
 		<Layers>
+			<Layer>
+				<Texture file="Interface\TaxiFrame\UI-Taxi-Line">
+					<Size>
+						<AbsDimension x="474" y="19" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="4" y="-223" />
+						</Anchor>
+					</Anchors>
+					<Color a="0.5" r="1" g="1" b="1" />
+				</Texture>
+			</Layer>
 			<Layer level="OVERLAY">
 				<FontString name="labelRestoreMainInfo" inherits="DialogButtonHighlightText" text="Common info" justifyH="LEFT">
 					<Size>
@@ -126,6 +139,26 @@
 					<Anchors>
 						<Anchor point="TOPLEFT">
 							<Offset x="233" y="-180" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString inherits="DialogButtonNormalText" text="Tools:">
+					<Size>
+						<AbsDimension x="81" y="27" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="6" y="-248" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString inherits="GameFontNormal" text="Auto pick up mail from mailbox enabled" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="226" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="119" y="-250" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -327,6 +360,18 @@
 					</OnLoad>
 				</Scripts>
 			</Button>
+			<CheckButton name="checkPickUpMail" inherits="UICheckButtonTemplate" text="CheckButton2" checked="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="83" y="-248" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						checkPickUpMail_OnClick()
+					</OnClick>
+				</Scripts>
+			</CheckButton>
 		</Frames>
 		<Scripts>
 			<OnEvent>

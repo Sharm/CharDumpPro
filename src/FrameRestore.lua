@@ -139,7 +139,14 @@ function btnRestore_OnError(self, info)
 
     -- Reset all warnings/options to defaults
     self._warnings = table.copy(self._warnings_bak)
+end
 
+function checkPickUpMail_OnClick()
+    if checkPickUpMail:GetChecked() then
+        Addon:EnableModule("PickUp")
+    else
+        Addon:DisableModule("PickUp")
+    end
 end
 
 -- =============
