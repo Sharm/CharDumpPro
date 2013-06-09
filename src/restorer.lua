@@ -233,10 +233,12 @@ function Restorer:restoreMainInfo(warnings, callbackObj, successCallback, errorC
 
     local db = self._db.mainInfo
 
-    self:_SendChatMessage(".level "..db.level)
-    self:_SendChatMessage(".mod honor "..db.honor)
-    self:_SendChatMessage(".mod arena "..db.arenapoints)
-    self:_SendChatMessage(".mod money "..db.money)
+    local curLevel, curHonor, curArena, curMoney = UnitLevel("player"), GetHonorCurrency(), GetArenaCurrency(), GetMoney()
+
+    self:_SendChatMessage(".level "..db.level - curLevel)
+    self:_SendChatMessage(".mod honor "..db.honor - curHonor)
+    self:_SendChatMessage(".mod arena "..db.arenapoints - curArena)
+    self:_SendChatMessage(".mod money "..db.money - curMoney)
 
     if warnings.kills.isRestoreKills then
         self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
