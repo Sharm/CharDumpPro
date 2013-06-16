@@ -64,8 +64,8 @@ end
 
 function ModalDialogBtn_OnClick(self)
     if self.callback then
-        self:callback()
         self:GetParent():Hide()
+        self:callback()
     else
         self:GetParent():Hide()
     end
