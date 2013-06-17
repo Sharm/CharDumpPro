@@ -4,15 +4,18 @@ Sheduler = {
 
     _time = 0,
     _delay = 0.5,
-    _frame = CreateFrame("frame"),
     _stepByStepMode = false,
 
     create = function(self, delay, stepByStepMode)
-        self._delay = delay
-        self._stepByStepMode = stepByStepMode or false
-        self._frame.obj = self
-        self:enable()
-        return self
+        local object = {} 
+        setmetatable(object, self) 
+        self.__index = self
+        object._delay = delay
+        object._stepByStepMode = stepByStepMode or false
+        object._frame = CreateFrame("frame")
+        object._frame.obj = object
+        object:enable()
+        return object
     end,
     
     enable = function(self)
@@ -91,5 +94,3 @@ Sheduler = {
         end
     end
 }
-
-Sheduler:create(0.1)

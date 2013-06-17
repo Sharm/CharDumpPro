@@ -1,5 +1,7 @@
 ﻿-- Author: for.sharm@gmail.com
 
+local sheduler = Sheduler:create(0.1)
+
 local professionSpells = {
     -- skillId = {
     --      rank1 spellId,
@@ -70,7 +72,7 @@ end
     
 
 function Restorer:_SendChatMessage(text)
-    Sheduler:shedule(function() 
+    sheduler:shedule(function() 
         if not self._isError then
             local myname = UnitName("player")
             local targetname = UnitName("target")
@@ -85,14 +87,14 @@ function Restorer:_SendChatMessage(text)
 end
 
 function Restorer:_enableErrorCatching()
-    Sheduler:shedule(function() 
+    sheduler:shedule(function() 
         self._isError = false
         self._isErrorCatching = true
     end, self) 
 end
 
 function Restorer:_disableErrorCatching()
-    Sheduler:shedule(function() 
+    sheduler:shedule(function() 
         self._isErrorCatching = false
     end, self) 
 end
@@ -135,7 +137,7 @@ function Restorer:_on_CHAT_MSG_SYSTEM()
 end
 
 function Restorer:_on_restoreFinished()
-    Sheduler:shedule(function() 
+    sheduler:shedule(function() 
         if not self._isError then
             self.successCallback(self.callbackObj)
         end
