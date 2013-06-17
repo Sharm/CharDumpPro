@@ -199,7 +199,7 @@ function Dumper:dumpInventory()
 				itemLink = GetContainerItemLink(bagNum, bagItem)
 				if itemLink then
 					local _, count = GetContainerItemInfo(bagNum, bagItem)
-					inventorySave[bagString][bagItem] = {
+					inventorySave[bagString][#inventorySave[bagString] + 1] = {
 						link = itemLink,
 						count = count and count > 1 and count or nil
 					}
@@ -218,7 +218,7 @@ function Dumper:dumpInventory()
 		itemLink = GetInventoryItemLink("player", invNum)
 		if itemLink then
 			local count = GetInventoryItemCount("player", invNum)
-			inventorySave.Bag100[invNum] = {
+			inventorySave.Bag100[#inventorySave.Bag100 + 1] = {
 				link = itemLink,
 				count = count and count > 1 and count or nil
 			}
