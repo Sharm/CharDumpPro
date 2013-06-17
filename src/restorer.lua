@@ -318,17 +318,12 @@ function Restorer:_parseItemLink(link)
     return string.match(link,".*Hitem:(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+).*")
 end
 
-function Restorer:_sendItemsForRestore(msgTitle)
-    if msgTitle then
-        self._itemsMsgTitle = msgTitle
-    end
-
+function Restorer:_sendItemsForRestore()
     if self._itemsForRestore > 0 then
         self:_SendChatMessage(string.format(".send items %%t \"%s\" \"%s\" %s", self._itemsMsgTitle, self._itemsMsgTitle, self._itemsCmdForRestore))
         self._itemsCmdForRestore = ""
         self._itemsForRestore = 0
     end
-    self._itemsMsgTitle = "Items"
 end
 
 function Restorer:_pushItemForRestore(id, count)
@@ -350,9 +345,9 @@ function Restorer:_pushItemForRestore(id, count)
 end
 
 function Restorer:_restoreBagItems(bag, msgTitle)
-    if msgTitle then
-        self._itemsMsgTitle = msgTitle
-    end
+
+    self._itemsMsgTitle = msgTitle or "Items"
+
     for k,v in pairs(bag) do
         -- ignore `size` and bag `link` fields
         if type(v) == "table" then 
@@ -362,9 +357,7 @@ function Restorer:_restoreBagItems(bag, msgTitle)
     end
 
     -- Restor all remaining items
-    self:_sendItemsForRestore(msgTitle)
-
-    self._itemsMsgTitle = "Items"
+    self:_sendItemsForRestore()
 end
 
 function Restorer:restoreInventory(warnings, callbackObj, successCallback, errorCallback)
