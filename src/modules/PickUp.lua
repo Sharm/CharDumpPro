@@ -22,7 +22,6 @@ function Addon_PickUp:OnEnable()
 	self:RegisterEvent("MAIL_SHOW")
 	-- For enabling after a disable
 	button:Show()
-    sheduler:enable()
 end
 
 function Addon_PickUp:OnDisable()
@@ -35,8 +34,11 @@ end
 -- ============
 
 function Addon_PickUp:MAIL_SHOW()
-	self:RegisterEvent("MAIL_CLOSED", "Reset")
-	self:RegisterEvent("PLAYER_LEAVING_WORLD", "Reset")
+    sheduler:enable()
+    self:RegisterEvent("MAIL_CLOSED", "Reset")
+    self:RegisterEvent("PLAYER_LEAVING_WORLD", "Reset")
+    self:RegisterEvent("MAIL_CLOSED", function(event) sheduler:disable() end)
+    self:RegisterEvent("PLAYER_LEAVING_WORLD", function(event) sheduler:disable() end)
 end
 
 function Addon_PickUp:MAIL_INBOX_UPDATE()
@@ -177,7 +179,6 @@ function Addon_PickUp:Reset(event)
 		self:UnregisterEvent("PLAYER_LEAVING_WORLD")
 	end
     invFull = false
-    sheduler:disable()
 end
 
 function Addon_PickUp:DisableInbox(disable)
