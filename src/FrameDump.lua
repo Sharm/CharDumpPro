@@ -119,16 +119,16 @@ function btnToolResetProf_OnClick()
                 textTools:SetErrorText(error)
 				return
 			end
-            if DB.Skills[skillId].id == 40              -- Poisons
-                or DB.Skills[skillId].id == 356         -- Fishing
-                or DB.Skills[skillId].id == 185         -- Cooking
-                or DB.Skills[skillId].id == 129         -- First Aid
-                or DB.Skills[skillId].id == 762         -- Riding
-                or DB.Skills[skillId].categoryId == 11  -- Professions
-            then
+            --if DB.Skills[skillId].id == 40              -- Poisons
+            --    or DB.Skills[skillId].id == 356         -- Fishing
+            --    or DB.Skills[skillId].id == 185         -- Cooking
+            --    or DB.Skills[skillId].id == 129         -- First Aid
+            --    or DB.Skills[skillId].id == 762         -- Riding
+            --    or DB.Skills[skillId].categoryId == 11  -- Professions
+            --then
                 AbandonSkill(i)
                 abadoned = abadoned + 1
-            end
+            --end
         end
     end
 

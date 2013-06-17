@@ -424,7 +424,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="btnToolResetProf" inherits="UIPanelButtonTemplate2" text="Unlearn professions">
+			<Button name="btnToolResetProf" inherits="UIPanelButtonTemplate2" text="Unlearn skills">
 				<Size>
 					<AbsDimension x="171" y="27" />
 				</Size>
