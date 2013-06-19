@@ -88,7 +88,7 @@ function btnToolDeleteInventory_OnClick()
 	end
 
     -- Delete equipped
-	for invNum = 0, 19 do
+	for invNum = 1, 19 do
 		itemLink = GetInventoryItemLink("player", invNum)
 		if itemLink then
 			local count = GetInventoryItemCount("player", invNum)

@@ -352,7 +352,8 @@ function Restorer:_restoreBagItems(bag, msgTitle)
         -- ignore `size` and bag `link` fields
         if type(v) == "table" then 
             local id = self:_parseItemLink(v.link)
-            self:_pushItemForRestore(id)
+            local count = v.count or nil
+            self:_pushItemForRestore(id, count)
         end
     end
 
