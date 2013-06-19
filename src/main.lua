@@ -25,13 +25,6 @@ function Addon:OnDisable()
     -- Called when the addon is disabled
 end
 
-function string:split(sep)
-    local sep, fields = sep or ":", {}
-    local pattern = string.format("([^%s]+)", sep)
-    self:gsub(pattern, function(c) fields[#fields+1] = c end)
-    return fields
-end
-
 function table.join(t1, t2)
 	for k,v in pairs(t2) do t1[k] = v end return t1
 end
