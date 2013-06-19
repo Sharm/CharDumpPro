@@ -12,35 +12,70 @@ local professionSpells = {
     -- }
     
     -- Blacksmithing
-    [164]	= { 2020, 2021, 3539, 9786, 29845 },
+    [164]	= { cast = { 2020, 2021, 3539, 9786, 29845 }},
     -- Leatherworking
-    [165]	= { 2155, 2154, 3812, 10663, 32550 },
+    [165]	= { cast = { 2155, 2154, 3812, 10663, 32550 }},
     -- Alchemy
-    [171]	= { 2275, 2280, 3465, 11612, 28597 },
+    [171]	= { cast = { 2275, 2280, 3465, 11612, 28597 }},
     -- Herbalism
-    [182] = { 2372, 2373, 3571, 11994, 28696 },
+    [182]   = { cast = { 2372, 2373, 3571, 11994, 28696 }},
     -- Mining
-    [186]	= { 2581, 2582, 3568, 10249, 29355 },
+    [186]	= { cast = { 2581, 2582, 3568, 10249, 29355 }},
     -- Tailoring
-    [197]	= { 3911, 3912, 3913, 12181, 26791 },
+    [197]	= { cast = { 3911, 3912, 3913, 12181, 26791 }},
     -- Engineering
-    [202]	= { 4039, 4040, 4041, 12657, 30351 },
+    [202]	= { cast = { 4039, 4040, 4041, 12657, 30351 }},
     -- Enchanting
-    [333]	= { 7414, 7415, 7416, 13921, 28030 },
+    [333]	= { cast = { 7414, 7415, 7416, 13921, 28030 }},
     -- Skinning
-    [393]	= { 8615, 8619, 8620, 10769, 32679 },
+    [393]	= { cast = { 8615, 8619, 8620, 10769, 32679 }},
     -- Jewelcrafting
-    [755]	= { 25245, 25246, 28896, 28899, 28901 },
+    [755]	= { cast = { 25245, 25246, 28896, 28899, 28901 }},
     -- Riding
-    [762] = { 33389, 33392, 34092, 34093 },
+    [762]   = { cast = { 33389, 33392, 34092, 34093 }},
     -- Poisons
-    [40]  = { 2995 },
+    [40]    = { cast = { 2995 }},
+    -- Lockpicking
+    [633]   = { cast = { 1809 }},
     -- Fishing
-    [356] = { 7733, 7734, 19889, 19890, 33100 },
+    [356]   = { cast = { 7733, 7734, 19889, 19890, 33100 }},
     -- Cooking
-    [185] = { 2551, 3412, 19886, 19887, 33361 },
+    [185]   = { cast = { 2551, 3412, 19886, 19887, 33361 }},
     -- First Aid 
-    [129] = { 3279, 3280, 19903, 19902, 27029 }
+    [129]   = { cast = { 3279, 3280, 7925, 10847, 33894 }},
+
+    -- Swords
+    [43]    = { learn = { 201 }},
+    -- Axes
+    [44]    = { learn = { 196 }},
+    -- Bows
+    [45]    = { learn = { 264 }},
+    -- Guns
+    [46]    = { learn = { 201 }},
+    -- Maces
+    [54]    = { learn = { 198 }},
+    -- Two-Handed Swords
+    [55]    = { learn = { 202 }},
+    -- Staves
+    [136]   = { learn = { 227 }},
+    -- Two-Handed Maces
+    [160]   = { learn = { 199 }},
+    -- Unarmed
+    [162]   = { learn = { 203 }},
+    -- Two-Handed Axes
+    [172]   = { learn = { 197 }},
+    -- Daggers
+    [173]   = { learn = { 1180 }},
+    -- Thrown
+    [176]   = { learn = { 2567 }},
+    -- Crossbows
+    [226]   = { learn = { 5011 }},
+    -- Wands
+    [228]   = { learn = { 5009 }},
+    -- Polearms
+    [229]   = { learn = { 200 }},
+    
+    
 }
 
 -- ATTENSION! Asynchronus work!
@@ -503,14 +538,27 @@ function Restorer:restoreSkills(warnings, callbackObj, successCallback, errorCal
     for k,v in pairs(db) do 
         local rank = self:_getProfessionRank(v.maxValue)
 
-        if v.skillId == 40 then -- Poisons
+        -- Poisons, Lockpicking and weapons/defense skills
+        if v.skillId == 40 or v.skillId == 633 or DB.Skills[v.skillId].categoryId == 6 then 
             rank = 1
         end
 
-        if professionSpells[v.skillId] then
-            if professionSpells[v.skillId][rank] then
-                self:_SendChatMessage(".cast "..professionSpells[v.skillId][rank])
-            else
+        local spells = professionSpells[v.skillId]
+
+        if spells then
+            local ok = false
+            
+            if spells.cast and spells.cast[rank] then
+                self:_SendChatMessage(".cast "..spells.cast[rank])
+                ok = true
+            end
+
+            if spells.learn and spells.learn[rank] then
+                self:_SendChatMessage(".learn "..spells.learn[rank])
+                ok = true
+            end
+                
+            if not ok then
                 self:_error(string.format("[%d] Bad profession spell for rank %d", v.skillId, rank))
                 return
             end

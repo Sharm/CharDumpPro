@@ -343,6 +343,7 @@ function Dumper:dumpSkills()
 			end
 
             if DB.Skills[skillId].id == 40              -- Poisons
+                or DB.Skills[skillId].id == 633         -- Lockpicking
                 or DB.Skills[skillId].id == 356         -- Fishing
                 or DB.Skills[skillId].id == 185         -- Cooking
                 or DB.Skills[skillId].id == 129         -- First Aid
