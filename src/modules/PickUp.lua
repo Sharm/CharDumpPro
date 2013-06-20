@@ -10,7 +10,7 @@ local invFull
 function Addon_PickUp:OnEnable()
 	if not button then
         -- Create mailbox button
-	    button = CreateFrame("Button", "PostalOpenAllButton", InboxFrame, "UIPanelButtonTemplate")
+	    button = CreateFrame("Button", "PickUpAllBtn", InboxFrame, "UIPanelButtonTemplate")
 	    button:SetWidth(150)
 	    button:SetHeight(25)
 	    button:SetPoint("CENTER", InboxFrame, "TOP", 0, -55)
