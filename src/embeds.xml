@@ -16,17 +16,20 @@
     <!--<Include file="Libs\AceComm-3.0\AceComm-3.0.xml"/>-->
     <!--<Include file="Libs\AceTab-3.0\AceTab-3.0.xml"/>-->
     <!--<Include file="Libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>-->
-    <Script file="Sheduler.lua"/>
-    <Script file="addon.lua"/>
-    <Script file="modules\PickUp.lua"/>
 
     <Script file="data\factions.lua"/>
     <Script file="data\skills.lua"/>
     <Script file="data\init.lua"/>
 
+    <Script file="addon.lua"/>
+    
     <Include file="Components.xml"/>
     <Script file="Components.lua"/>
     <Script file="LogArea.lua"/>
+    <Script file="Sheduler.lua"/>
+    <Script file="CommandProcessor.lua"/>
+
+    <Script file="modules\PickUp.lua"/>
     
     <Script file="datastore.lua"/>
     <Script file="chardump.lua"/>

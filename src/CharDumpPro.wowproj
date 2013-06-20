@@ -17,6 +17,9 @@
     <Content Include="addon.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="CommandProcessor.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Data\init.lua">
       <SubType>Code</SubType>
     </Content>
