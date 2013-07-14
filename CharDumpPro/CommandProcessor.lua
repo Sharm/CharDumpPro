@@ -1,21 +1,26 @@
 ﻿
 CommProc = {}
 
-local sheduler = Sheduler:create(0)
-
-function CommProc:create(callbackObj, executedCallback, errorCallback)
+function CommProc:create(sheduler)
     local object = {} 
     setmetatable(object, self) 
     self.__index = self
 
-    object._sheduler = Sheduler:create(0)
+    ---- Declaration
+    object._sheduler = sheduler or Sheduler:create(0)
     object._isError = false
-    object._errorCallback = errorCallback
-    object._executedCallback = executedCallback
-    object._callbackObj = callbackObj
+    object._errorCallback = nil
+    object._callbackObj = nil
+    ----
 
     object:enableErrorCatching()
     return object
+end
+
+function CommProc:registerOutput(callbackObj, errorCallback)
+    self._errorCallback = errorCallback
+    self._callbackObj = callbackObj
+    self:enableErrorCatching()
 end
 
 function CommProc:enableErrorCatching()
@@ -30,24 +35,28 @@ function CommProc:disableErrorCatching()
 end
 
 function CommProc:SendChatMessage(text)
-    self._sheduler:shedule(function() 
-        if not self._isError then
-            local myname = UnitName("player")
-            local targetname = UnitName("target")
-            if myname ~= targetname then
-                self._error("ERROR: Target self first!")
-                return
-            end
-            --Addon:Print("Execute command: "..text)
-            self._executedCallback(self.callbackObj, text)
-            SendChatMessage(text, "SAY")
+    if not self._isError then
+        local myname = UnitName("player")
+        local targetname = UnitName("target")
+        if myname ~= targetname then
+            self:_error("ERROR: Target self first!")
+            return
         end
-    end, self, text)
+
+        self._sheduler:shedule(function() 
+            -- Check isError again, that right
+            if not self._isError then
+                Addon:Print("Execute command: "..text)
+                SendChatMessage(text, "SAY")
+            end
+        end, self, text)
+    end
+
 end
 
 function CommProc:_error(text)
     self._isError = true
-    self.errorCallback(self.callbackObj, text)
+    self._errorCallback(self._callbackObj, text)
 end
 
 function CommProc:_on_CHAT_MSG_SAY()

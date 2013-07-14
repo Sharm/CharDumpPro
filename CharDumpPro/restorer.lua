@@ -1,6 +1,7 @@
 ﻿-- Author: for.sharm@gmail.com
 
 local sheduler = Sheduler:create(0.1)
+local cmdProc = CommProc:create(sheduler)
 
 local professionSpells = {
     -- skillId = {
@@ -82,14 +83,11 @@ local professionSpells = {
 
 Restorer = { 
 	_db = nil, -- reference to save table for current char
-    _isErrorCatching = false,
-    _isError = false,
     _itemsForRestore = 0,
     _itemsCmdForRestore = "",
     _itemsMsgTitle = "Items",
-    errorCallback = nil,
     successCallback = nil,
-    callbackObj = nil
+    callbackObj = nil    
 }
 
 local function _isValidInteger(value, low, high)
@@ -100,89 +98,17 @@ local function _isValidString(value, count)
     return type(value) == "string" and (count == nil or #value > count)
 end
 
-function Restorer:_error(text)
-    self._isError = true
-    self.errorCallback(self.callbackObj, text)
-end
-    
-
-function Restorer:_SendChatMessage(text)
-    if not self._isError then
-        
-        local myname = UnitName("player")
-        local targetname = UnitName("target")
-        if myname ~= targetname then
-            self:_error("Target self first!")
-            return
-        end
-
-        self:_error("sheduler:shedule"..self._isError)
-        sheduler:shedule(function() 
-            -- Check isError again, that right
-            if not self._isError then
-                Addon:Print("Execute command: "..text)
-                SendChatMessage(text, "SAY")
-            end
-        end, self, text)
-    end
-end
-
-function Restorer:_enableErrorCatching()
-    sheduler:shedule(function() 
-        self._isError = false
-        self._isErrorCatching = true
-    end, self) 
-end
-
-function Restorer:_disableErrorCatching()
-    sheduler:shedule(function() 
-        self._isErrorCatching = false
-    end, self) 
-end
-
 function Restorer:_registerOutput(callbackObj, successCallback, errorCallback)
     self.successCallback = successCallback
-    self.errorCallback = errorCallback
     self.callbackObj = callbackObj
-    self:_enableErrorCatching()
+    cmdProc:registerOutput(callbackObj, errorCallback)
 end
-
-function Restorer:_on_CHAT_MSG_SAY()
-    local msg = arg1
-    local sender = arg2
-    
-    if self._isErrorCatching then
-        local myname = UnitName("player")
-        if sender == myname and string.match(msg, "^%..+") then
-            self._error("Errors occures while execute GM commands.")
-        end
-
-    end
-end
-
-function Restorer:_on_CHAT_MSG_SYSTEM()
-    local msg = string.lower(arg1)
-
-    if self._isErrorCatching then
-  
-        if     string.find(msg, "incorrect", 0, true)
-            or string.find(msg, "there is no such", 0, true)
-            or string.find(msg, "not found", 0, true)
-            or string.find(msg, "invalid", 0, true)
-            or string.find(msg, "syntax", 0, true)
-        then
-            self._error("Errors occures while execute GM commands.")
-        end
-
-    end
-end
-
 function Restorer:_on_restoreFinished()
     sheduler:shedule(function() 
-        if not self._isError then
+        if not cmdProc._isError then
             self.successCallback(self.callbackObj)
         end
-        self:_disableErrorCatching()
+        cmdProc:disableErrorCatching()
     end, self)
 end
 
@@ -278,13 +204,13 @@ function Restorer:restoreMainInfo(warnings, callbackObj, successCallback, errorC
 
     local curLevel, curHonor, curArena, curMoney = UnitLevel("player"), GetHonorCurrency(), GetArenaCurrency(), GetMoney()
 
-    self:_SendChatMessage(".level "..db.level - curLevel)
-    self:_SendChatMessage(".mod honor "..db.honor - curHonor)
-    self:_SendChatMessage(".mod arena "..db.arenapoints - curArena)
-    self:_SendChatMessage(".mod money "..db.money - curMoney)
+    cmdProc:SendChatMessage(".level "..db.level - curLevel)
+    cmdProc:SendChatMessage(".mod honor "..db.honor - curHonor)
+    cmdProc:SendChatMessage(".mod arena "..db.arenapoints - curArena)
+    cmdProc:SendChatMessage(".mod money "..db.money - curMoney)
 
     if warnings.kills.isRestoreKills then
-        self:_SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
+        cmdProc:SendChatMessage(".debug setvalue 1517 "..db.honorableKills)
     end
 
     self:_on_restoreFinished()
@@ -361,7 +287,7 @@ end
 
 function Restorer:_sendItemsForRestore()
     if self._itemsForRestore > 0 then
-        self:_SendChatMessage(string.format(".send items %%t \"%s\" \"%s\" %s", self._itemsMsgTitle, self._itemsMsgTitle, self._itemsCmdForRestore))
+        cmdProc:SendChatMessage(string.format(".send items %%t \"%s\" \"%s\" %s", self._itemsMsgTitle, self._itemsMsgTitle, self._itemsCmdForRestore))
         self._itemsCmdForRestore = ""
         self._itemsForRestore = 0
     end
@@ -415,7 +341,7 @@ function Restorer:restoreInventory(warnings, callbackObj, successCallback, error
             cmd = cmd..tostring(id).." "
         end
     end
-    self:_SendChatMessage(string.format(".send items %%t \"Bags\" \"Bags\" %s", cmd))
+    cmdProc:SendChatMessage(string.format(".send items %%t \"Bags\" \"Bags\" %s", cmd))
 
     -- Restore equipped
     self:_restoreBagItems(db.Bag100, "Equipped")
@@ -478,7 +404,7 @@ function Restorer:restoreReputations(warnings, callbackObj, successCallback, err
     local db = self._db.reputation
 
     for k,v in pairs(db) do 
-        self:_SendChatMessage(string.format(".mod rep %d %d", k, v.earnedValue))
+        cmdProc:SendChatMessage(string.format(".mod rep %d %d", k, v.earnedValue))
     end
 
     self:_on_restoreFinished()
@@ -555,12 +481,12 @@ function Restorer:restoreSkills(warnings, callbackObj, successCallback, errorCal
             local ok = false
             
             if spells.cast and spells.cast[rank] then
-                self:_SendChatMessage(".cast "..spells.cast[rank])
+                cmdProc:SendChatMessage(".cast "..spells.cast[rank])
                 ok = true
             end
 
             if spells.learn and spells.learn[rank] then
-                self:_SendChatMessage(".learn "..spells.learn[rank])
+                cmdProc:SendChatMessage(".learn "..spells.learn[rank])
                 ok = true
             end
                 
@@ -571,7 +497,7 @@ function Restorer:restoreSkills(warnings, callbackObj, successCallback, errorCal
         end
         
         if not (v.skillId == 762) then -- No need to update skill for Riding
-            self:_SendChatMessage(string.format(".setskill %d %d %d", v.skillId, v.value, v.maxValue))
+            cmdProc:SendChatMessage(string.format(".setskill %d %d %d", v.skillId, v.value, v.maxValue))
         end
     end
 
@@ -615,7 +541,7 @@ end
 
 function Restorer:_restoreSpells(spells)
     for k,v in pairs(spells) do 
-        self:_SendChatMessage(".learn "..v)
+        cmdProc:SendChatMessage(".learn "..v)
     end
 end
 
