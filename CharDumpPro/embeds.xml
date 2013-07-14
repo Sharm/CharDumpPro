@@ -30,7 +30,6 @@
     <Script file="CommandProcessor.lua"/>
 
     <Script file="modules\PickUp.lua"/>
-    <Script file="modules\TrainerLearn.lua"/>
     
     <Script file="datastore.lua"/>
     <Script file="chardump.lua"/>

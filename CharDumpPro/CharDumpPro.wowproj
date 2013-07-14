@@ -73,9 +73,6 @@
     <Content Include="modules\PickUp.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="modules\TrainerLearn.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="restorer.lua">
       <SubType>Code</SubType>
     </Content>
