@@ -107,18 +107,24 @@ end
     
 
 function Restorer:_SendChatMessage(text)
-    sheduler:shedule(function() 
-        if not self._isError then
-            local myname = UnitName("player")
-            local targetname = UnitName("target")
-            if myname ~= targetname then
-                self:_error("Target self first!")
-                return
-            end
-            Addon:Print("Execute command: "..text)
-            SendChatMessage(text, "SAY")
+    if not self._isError then
+        
+        local myname = UnitName("player")
+        local targetname = UnitName("target")
+        if myname ~= targetname then
+            self:_error("Target self first!")
+            return
         end
-    end, self, text)
+
+        self:_error("sheduler:shedule"..self._isError)
+        sheduler:shedule(function() 
+            -- Check isError again, that right
+            if not self._isError then
+                Addon:Print("Execute command: "..text)
+                SendChatMessage(text, "SAY")
+            end
+        end, self, text)
+    end
 end
 
 function Restorer:_enableErrorCatching()
