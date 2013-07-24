@@ -27,6 +27,9 @@
     <Content Include="Data\skills.lua">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Data\class_spells.lua">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="dumper.lua">
       <SubType>Code</SubType>
     </Content>

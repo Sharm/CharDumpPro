@@ -19,6 +19,7 @@
 
     <Script file="data\factions.lua"/>
     <Script file="data\skills.lua"/>
+    <Script file="data\class_spells.lua"/>
     <Script file="data\init.lua"/>
 
     <Script file="addon.lua"/>
