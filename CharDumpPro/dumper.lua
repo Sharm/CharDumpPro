@@ -377,20 +377,25 @@ end
 -- Specializations
 -- =================
 
-function Dumper:_getCharacterSpecialization(professionId)
-    local possibleSpecs = Specializations[professionId]
+function Dumper:_isCharacterHasSpell(checkedSpell)
+    
+
+    local spellForCheck
+    if type(checkedSpell) == "string" then
+        spellForCheck = checkedSpell
+    else
+        spellForCheck = GetSpellInfo(checkedSpell)
+    end
 
     local index = 1
     while (1) do
         local spellName = GetSpellName(index, BOOKTYPE_SPELL)
         if not spellName then
-            break
+            return false
         end
         
-        for k,v in pairs(possibleSpecs) do
-            if spellName == v then
-                table.insert(self._db.specs, k)
-            end
+        if spellName == spellForCheck then
+            return true
         end
         index = index + 1
     end
@@ -407,7 +412,13 @@ function Dumper:dumpSpecs()
 
     for k,v in pairs(self._db.skills) do    -- go through character skills
         if Specializations[k] then          -- if skill have possible specializations
-            Dumper:_getCharacterSpecialization(k)
+            local possibleSpecs = Specializations[k] -- k - professionId
+
+            for k,v in pairs(possibleSpecs) do
+                if self:_isCharacterHasSpell(v) then
+                    table.insert(self._db.specs, k)
+                end
+            end
         end
     end
 
