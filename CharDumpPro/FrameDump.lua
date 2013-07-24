@@ -26,10 +26,7 @@ function frameDump_Init()
     btnDumpSkills:init()
     btnDumpSpecs:init()
     btnDumpRecipes:init()
-end
-
-function frameDump_PLAYER_ENTERING_WORLD()
-	
+    btnDumpSpells:init()
 end
 
 function btnDump_OnClick(self)
@@ -52,6 +49,7 @@ function btnDumpAll_OnClick()
     btnDumpSkills:Click()
     btnDumpSpecs:Click()
     btnDumpRecipes:Click()
+    btnDumpSpells:Click()
 end
 
 function btnToolDeleteInventory_OnClick()

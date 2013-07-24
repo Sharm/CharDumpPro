@@ -2,7 +2,7 @@
 	<Script file="FrameDump.lua" />
 	<Frame name="frameDump" virtual="true" parent="">
 		<Size>
-			<AbsDimension x="482" y="320" />
+			<AbsDimension x="482" y="360" />
 		</Size>
 		<Backdrop bgFile="" edgeFile="">
 			<BackgroundInsets>
@@ -17,7 +17,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="4" y="-223" />
+							<Offset x="4" y="-258" />
 						</Anchor>
 					</Anchors>
 					<Color a="0.5" r="1" g="1" b="1" />
@@ -30,7 +30,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-40" />
+							<Offset x="233" y="-44" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -40,7 +40,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-40" />
+							<Offset x="37" y="-44" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -50,7 +50,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-68" />
+							<Offset x="233" y="-72" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -60,7 +60,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-68" />
+							<Offset x="37" y="-72" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -70,7 +70,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-99" />
+							<Offset x="37" y="-103" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -80,7 +80,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-99" />
+							<Offset x="233" y="-103" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -90,7 +90,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-130" />
+							<Offset x="37" y="-134" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -100,7 +100,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-130" />
+							<Offset x="233" y="-134" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -110,7 +110,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-161" />
+							<Offset x="37" y="-196" />
 						</Anchor>
 					</Anchors>
 					<FontHeight>
@@ -124,7 +124,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-161" />
+							<Offset x="233" y="-195" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -134,7 +134,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-192" />
+							<Offset x="37" y="-227" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -144,7 +144,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-192" />
+							<Offset x="233" y="-227" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -154,7 +154,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="6" y="-248" />
+							<Offset x="6" y="-284" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -164,7 +164,27 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="33" y="-277" />
+							<Offset x="33" y="-313" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString inherits="DialogButtonHighlightText" text="Spells" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="119" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="37" y="-165" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="textDumpSpells" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="243" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="233" y="-165" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -177,7 +197,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-40" />
+						<Offset x="6" y="-44" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -196,7 +216,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-40" />
+						<Offset x="162" y="-44" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -214,7 +234,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-68" />
+						<Offset x="6" y="-72" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -233,7 +253,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-68" />
+						<Offset x="162" y="-72" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -251,7 +271,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-99" />
+						<Offset x="6" y="-103" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -270,7 +290,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-99" />
+						<Offset x="162" y="-103" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -288,7 +308,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-130" />
+						<Offset x="6" y="-134" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -307,7 +327,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-130" />
+						<Offset x="162" y="-134" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -325,7 +345,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-161" />
+						<Offset x="6" y="-196" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -344,7 +364,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-161" />
+						<Offset x="162" y="-196" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -362,7 +382,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-192" />
+						<Offset x="6" y="-227" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -381,7 +401,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-192" />
+						<Offset x="162" y="-227" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -399,7 +419,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="157" y="-7" />
+						<Offset x="157" y="-11" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -415,7 +435,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="83" y="-248" />
+						<Offset x="83" y="-284" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -430,12 +450,49 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="278" y="-248" />
+						<Offset x="278" y="-284" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
 						btnToolResetProf_OnClick()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="checkDumpSpells" inherits="UIPanelButtonTemplate" text="">
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="6" y="-165" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:Disable();
+					</OnLoad>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<PushedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+				<HighlightTexture file="" alphaMode="ADD" />
+			</Button>
+			<Button name="btnDumpSpells" inherits="UIPanelButtonTemplate" text="ReDump">
+				<Size>
+					<AbsDimension x="65" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="162" y="-165" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						btnDump_Constructor(self)
+					</OnLoad>
+					<OnClick>
+						btnDump_OnClick(self)
 					</OnClick>
 				</Scripts>
 			</Button>

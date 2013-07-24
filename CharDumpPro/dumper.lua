@@ -1,5 +1,19 @@
 ﻿-- Author: for.sharm@gmail.com
 
+local Classes = {
+    [1] = "WARRIOR",
+    [2] = "PALADIN",
+    [3] = "HUNTER",
+    [4] = "ROGUE" ,
+    [5] = "PRIEST",
+    -- [6] DEATHKNIGHT
+    [7] = "SHAMAN",
+    [8] = "MAGE",
+    [9] = "WARLOCK",
+    -- [10] MONK
+    [11] = "DRUID"
+}
+
 local BaseProfessionSpells = {
 	{   -- Alchemy
         skillId = 171,
@@ -566,4 +580,27 @@ function Dumper:dumpRecipes()
     end
 
     return true, "Saved "..recCount.." recipes for "..profCount.." professions"
+end
+
+-- =================
+-- Non trained spells
+-- =================
+
+function Dumper:dumpSpells()
+	self:createRecord()
+
+    self._db.spells = {}
+
+    local _, class = UnitClass("player")
+    local faction, _ = UnitFactionGroup("player")
+
+    for _,v in pairs(DB.ClassSpells) do
+        if Classes[v.class] == class and v.is_trainer == 0 and ((faction == "Alliance" and v.faction_A == 1) or (faction == "Horde" and v.faction_H == 1)) then
+            if self:_isCharacterHasSpell(v.spellId) then 
+                table.insert(self._db.spells, v.spellId)
+            end
+        end
+    end
+
+    return true, "Saved "..#self._db.spells.." non trainer spells"
 end
