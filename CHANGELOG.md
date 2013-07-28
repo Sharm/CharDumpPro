@@ -11,3 +11,5 @@
  * Fix conflicts with other addons
  * Fix learning of weapons skills
  * Fix lockpicking dump/restore
+ * Dump/restore unique spells for each class (quest, books, etc)
+ * Auto learn trainers spells
