@@ -1,6 +1,6 @@
 ﻿-- Author: for.sharm@gmail.com
 
-local Classes = {
+Classes = {
     [1] = "WARRIOR",
     [2] = "PALADIN",
     [3] = "HUNTER",
@@ -583,7 +583,7 @@ function Dumper:dumpRecipes()
 end
 
 -- =================
--- Non trained spells
+-- Non trainer spells
 -- =================
 
 function Dumper:dumpSpells()

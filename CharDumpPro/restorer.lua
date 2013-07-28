@@ -87,7 +87,8 @@ Restorer = {
     _itemsCmdForRestore = "",
     _itemsMsgTitle = "Items",
     successCallback = nil,
-    callbackObj = nil    
+    callbackObj = nil,
+    _trainerSpells = {}
 }
 
 local function _isValidInteger(value, low, high)
@@ -114,8 +115,6 @@ end
 
 function Restorer:openRecord(name)
 	self._db = Addon.db.global[name]
-    Addon:RegisterEvent("CHAT_MSG_SAY", function() self:_on_CHAT_MSG_SAY() end)
-    Addon:RegisterEvent("CHAT_MSG_SYSTEM", function() self:_on_CHAT_MSG_SYSTEM() end)
 end
 
 -- Return nil if db empty
@@ -504,9 +503,95 @@ function Restorer:restoreSkills(warnings, callbackObj, successCallback, errorCal
     self:_on_restoreFinished()
 end
 
+-- =================
+-- Spells
+-- =================
+
+function Restorer:getSpellsInfo()
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    -- VALIDATE
+
+    if not self._db.spells then
+        return false, "Spells info is empty"
+    end
+
+    for k,v in pairs(self._db.spells) do 
+        if not _isValidInteger(v, 0) then
+            return false, string.format("Bad spec spell id: %s", tostring(v))
+        end
+    end
+
+    local _, class = UnitClass("player")
+    local faction, _ = UnitFactionGroup("player")
+
+    for _,v in pairs(DB.ClassSpells) do
+        if Classes[v.class] == class and v.is_trainer == 1 and ((faction == "Alliance" and v.faction_A == 1) or (faction == "Horde" and v.faction_H == 1)) then
+            table.insert(self._trainerSpells, v.spellId)
+        end
+    end
+
+    return true, #self._db.spells.." non trainer spells and "..#self._trainerSpells.." trainer spells"
+end
+
+function Restorer:_restoreSpells(spells)
+    for k,v in pairs(spells) do 
+        cmdProc:SendChatMessage(".learn "..v)
+    end
+end
+
+function Restorer:restoreSpells(warnings, callbackObj, successCallback, errorCallback)
+    self:_registerOutput(callbackObj, successCallback, errorCallback)
+
+    if self._trainerSpells then
+        self:_restoreSpells(self._trainerSpells)
+    end
+
+    if self._db.spells then
+        self:_restoreSpells(self._db.spells)
+    end
+
+    self:_on_restoreFinished()
+end
 
 -- =================
--- Recipes & specializations
+-- Profession specializations
+-- =================
+
+function Restorer:getSpecsInfo()
+    if not self._db then
+        return false, "Initializing error!"
+    end
+
+    -- VALIDATE
+
+    if not self._db.specs then
+        return false, "Specs info is empty"
+    end
+
+    for k,v in pairs(self._db.specs) do 
+        if not _isValidInteger(v, 0) then
+            return false, string.format("Bad spec spell id: %s", tostring(v))
+        end
+    end
+
+    return true, #self._db.specs.." specializations"
+end
+
+function Restorer:restoreSpecs(warnings, callbackObj, successCallback, errorCallback)
+    self:_registerOutput(callbackObj, successCallback, errorCallback)
+
+    if self._db.specs then
+        self:_restoreSpells(self._db.specs)
+    end
+
+    self:_on_restoreFinished()
+end
+
+-- =================
+-- Recipes
 -- =================
 
 function Restorer:getRecipesInfo()
@@ -516,41 +601,21 @@ function Restorer:getRecipesInfo()
 
     -- VALIDATE
 
-    if not self._db.specs and not self._db.recipes then
-        return false, "Recipes & specs info is empty"
+    if not self._db.recipes then
+        return false, "Recipes info is empty"
     end
 
-    if self._db.specs then
-        for k,v in pairs(self._db.specs) do 
-            if not _isValidInteger(v, 0) then
-                return false, string.format("Bad spec spell id: %s", tostring(v))
-            end
+    for k,v in pairs(self._db.recipes) do 
+        if not _isValidInteger(v, 0) then
+            return false, string.format("Bad recipe spell id: %s", tostring(v))
         end
     end
 
-    if self._db.recipes then
-        for k,v in pairs(self._db.recipes) do 
-            if not _isValidInteger(v, 0) then
-                return false, string.format("Bad recipe spell id: %s", tostring(v))
-            end
-        end
-    end
-
-    return true, #self._db.recipes.." recipes and "..#self._db.specs.." specializations"
-end
-
-function Restorer:_restoreSpells(spells)
-    for k,v in pairs(spells) do 
-        cmdProc:SendChatMessage(".learn "..v)
-    end
+    return true, #self._db.recipes.." recipes"
 end
 
 function Restorer:restoreRecipes(warnings, callbackObj, successCallback, errorCallback)
     self:_registerOutput(callbackObj, successCallback, errorCallback)
-
-    if self._db.specs then
-        self:_restoreSpells(self._db.specs)
-    end
 
     if self._db.recipes then
         self:_restoreSpells(self._db.recipes)
