@@ -2,7 +2,7 @@
 	<Script file="FrameDump.lua" />
 	<Frame name="frameDump" virtual="true" parent="">
 		<Size>
-			<AbsDimension x="482" y="360" />
+			<AbsDimension x="482" y="369" />
 		</Size>
 		<Backdrop bgFile="" edgeFile="">
 			<BackgroundInsets>

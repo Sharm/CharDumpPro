@@ -31,6 +31,8 @@ function frameRestore_Init()
     btnRestoreReputations:init()
     btnRestoreSkills:init()
     btnRestoreRecipes:init()
+    btnRestoreSpells:init()
+    btnRestoreSpecs:init()
 end
 
 local firstShow = true

@@ -2,7 +2,7 @@
 	<Script file="FrameDump.lua" />
 	<Frame name="frameRestore" virtual="true" parent="">
 		<Size>
-			<AbsDimension x="482" y="320" />
+			<AbsDimension x="482" y="369" />
 		</Size>
 		<Backdrop bgFile="" edgeFile="">
 			<BackgroundInsets>
@@ -17,7 +17,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="4" y="-223" />
+							<Offset x="4" y="-273" />
 						</Anchor>
 					</Anchors>
 					<Color a="0.5" r="1" g="1" b="1" />
@@ -118,17 +118,17 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="labelRestoreRecipes" font="Fonts\FRIZQT__.TTF" text="Recipes &amp; specializations" justifyH="LEFT">
+				<FontString name="labelRestoreRecipes" font="Fonts\FRIZQT__.TTF" text="Recipes" justifyH="LEFT">
 					<Size>
 						<AbsDimension x="119" y="25" />
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="37" y="-180" />
+							<Offset x="37" y="-242" />
 						</Anchor>
 					</Anchors>
 					<FontHeight>
-						<AbsValue val="12" />
+						<AbsValue val="16" />
 					</FontHeight>
 					<Color r="0.753" g="0.753" b="0.753" />
 				</FontString>
@@ -138,7 +138,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="233" y="-180" />
+							<Offset x="233" y="-242" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -148,7 +148,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="6" y="-248" />
+							<Offset x="6" y="-294" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -158,7 +158,52 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="119" y="-250" />
+							<Offset x="119" y="-296" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="labelRestoreSpells" inherits="DialogButtonHighlightText" text="Spells" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="119" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="37" y="-180" />
+						</Anchor>
+					</Anchors>
+					<Color r="0.753" g="0.753" b="0.753" />
+				</FontString>
+				<FontString name="labelRestoreSpecs" font="Fonts\FRIZQT__.TTF" text="Profession specializations" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="119" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="37" y="-211" />
+						</Anchor>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="12" />
+					</FontHeight>
+					<Color r="0.753" g="0.753" b="0.753" />
+				</FontString>
+				<FontString name="textRestoreSpells" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="243" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="233" y="-180" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="textRestoreSpecs" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="243" y="25" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="233" y="-211" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -329,7 +374,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="6" y="-180" />
+						<Offset x="6" y="-242" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -348,7 +393,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-180" />
+						<Offset x="162" y="-242" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -363,7 +408,7 @@
 			<CheckButton name="checkPickUpMail" inherits="UICheckButtonTemplate" text="CheckButton2" checked="true">
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="83" y="-248" />
+						<Offset x="83" y="-294" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -372,6 +417,80 @@
 					</OnClick>
 				</Scripts>
 			</CheckButton>
+			<Button name="checkRestoreSpells" inherits="UIPanelButtonTemplate" text="">
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="6" y="-180" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:Disable();
+					</OnLoad>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<PushedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+				<HighlightTexture file="" alphaMode="ADD" />
+			</Button>
+			<Button name="btnRestoreSpells" inherits="UIPanelButtonTemplate" text="Restore">
+				<Size>
+					<AbsDimension x="65" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="162" y="-180" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						btnRestore_Constructor(self)
+					</OnLoad>
+					<OnClick>
+						btnRestore_OnClick(self)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="checkRestoreSpecs" inherits="UIPanelButtonTemplate" text="">
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="6" y="-211" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:Disable();
+					</OnLoad>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<PushedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+				<HighlightTexture file="" alphaMode="ADD" />
+			</Button>
+			<Button name="btnRestoreSpecs" inherits="UIPanelButtonTemplate" text="Restore">
+				<Size>
+					<AbsDimension x="65" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="162" y="-211" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						btnRestore_OnClick(self)
+					</OnClick>
+					<OnLoad>
+						btnRestore_Constructor(self)
+					</OnLoad>
+				</Scripts>
+			</Button>
 		</Frames>
 		<Scripts>
 			<OnEvent>
