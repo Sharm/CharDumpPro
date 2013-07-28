@@ -3,6 +3,7 @@
 **Future list for `dump and restore`**:
 * Dump/restore inventory
 * Dump/restore reputations
+* Dump/restore unique spells for each class (quest, books, etc)
 * Dump/restore skills
 * Dump/restore professions specializations
 * Dump/restore professions recipes
@@ -11,6 +12,7 @@
 
 **Future list for `tools`**:
 * Auto pick up and equip items from mailbox
+* Learn trainers spells
 * Delete all inventory with one button press
 * Unlearn all skills with one button press
 
