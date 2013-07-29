@@ -9,12 +9,12 @@ Addon:RegisterChatCommand("cd", function()
 end)
 
 function Addon:OnInitialize()
-	
-	self.db = LibStub("AceDB-3.0"):New("CharDumpDB")
+    self.db = LibStub("AceDB-3.0"):New("CharDumpDB")
+    self.db.global.options = self.db.global.options or {}
 
-	frameMain_Init()
+    frameMain_Init()
 	
-	self:Print("Ready");
+    self:Print("Ready");
 end
 
 function Addon:OnEnable()

@@ -28,6 +28,8 @@ function frameRestore_Init()
 
     textRestoreStatus:proceeding()
 
+    checkPickUpMail:SetChecked(Addon.db.global.options.checkPickUpMail or false)
+
     btnRestoreMainInfo:init()
     btnRestoreInventory:init()
     btnRestoreReputations:init()
@@ -151,6 +153,7 @@ function checkPickUpMail_OnClick()
     else
         Addon:DisableModule("PickUp")
     end
+    Addon.db.global.options.checkPickUpMail = checkPickUpMail:GetChecked()
 end
 
 function btnToolLearnClassSpells_OnClick()
