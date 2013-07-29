@@ -1,6 +1,6 @@
 ## Interface: 20400
-## Version: 1.2dev
-## Title: CharDamp.|cFF3247FFPRO|r (v1.1)
+## Version: 1.2
+## Title: CharDamp.|cFF3247FFPRO|r (v1.2)
 ## Notes: Enhanced transfer helper addon. Usage: |cFF00FF00/cd|r 
 ## Author: for.sharm@gmail.com
 ## SavedVariables: CharDumpDB
