@@ -105,12 +105,7 @@ function Restorer:_registerOutput(callbackObj, successCallback, errorCallback)
     cmdProc:registerOutput(callbackObj, errorCallback)
 end
 function Restorer:_on_restoreFinished()
-    sheduler:shedule(function() 
-        if not cmdProc._isError then
-            self.successCallback(self.callbackObj)
-        end
-        cmdProc:disableErrorCatching()
-    end, self)
+    cmdProc:sheduleSuccessFunction(self.callbackObj, self.successCallback)
 end
 
 function Restorer:openRecord(name)

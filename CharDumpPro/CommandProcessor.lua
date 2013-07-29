@@ -6,8 +6,14 @@ function CommProc:create(sheduler)
     setmetatable(object, self) 
     self.__index = self
 
+    local delay = nil
+    if type(sheduler) == "number" then
+        delay = sheduler
+        sheduler = nil
+    end
+
     ---- Declaration
-    object._sheduler = sheduler or Sheduler:create(0)
+    object._sheduler = sheduler or Sheduler:create(delay or 0.1)
     object._isError = false
     object._errorCallback = nil
     object._callbackObj = nil
@@ -51,7 +57,15 @@ function CommProc:SendChatMessage(text)
             end
         end, self, text)
     end
+end
 
+function CommProc:sheduleSuccessFunction(obj, func)
+    self._sheduler:shedule(function() 
+        if not self._isError then
+            func(obj)
+        end
+        self:disableErrorCatching()
+    end, self)
 end
 
 function CommProc:_error(text)
