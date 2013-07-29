@@ -2,7 +2,7 @@
 	<Script file="FrameDump.lua" />
 	<Frame name="frameRestore" virtual="true" parent="">
 		<Size>
-			<AbsDimension x="482" y="369" />
+			<AbsDimension x="482" y="400" />
 		</Size>
 		<Backdrop bgFile="" edgeFile="">
 			<BackgroundInsets>
@@ -204,6 +204,16 @@
 					<Anchors>
 						<Anchor point="TOPLEFT">
 							<Offset x="233" y="-211" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="textRestoreTools" inherits="GameFontNormal" text="">
+					<Size>
+						<AbsDimension x="417" y="26" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="33" y="-356" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -489,6 +499,21 @@
 					<OnLoad>
 						btnRestore_Constructor(self)
 					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="btnToolLearnClassSpells" inherits="UIPanelButtonTemplate2" text="Learn all trainer spells">
+				<Size>
+					<AbsDimension x="171" y="27" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="83" y="-327" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						btnToolLearnClassSpells_OnClick()
+					</OnClick>
 				</Scripts>
 			</Button>
 		</Frames>

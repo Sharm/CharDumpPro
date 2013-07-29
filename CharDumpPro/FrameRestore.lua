@@ -1,6 +1,7 @@
 ﻿-- Author: for.sharm@gmail.com
 
 local restorer = Restorer
+local cmdProc = CommProc:create(0.05)
 
 local restoreBtns = {}
 
@@ -23,6 +24,7 @@ end
 
 function frameRestore_Init()
     ErrorFontString_init(textRestoreStatus)
+    ErrorFontString_init(textRestoreTools)
 
     textRestoreStatus:proceeding()
 
@@ -149,6 +151,33 @@ function checkPickUpMail_OnClick()
     else
         Addon:DisableModule("PickUp")
     end
+end
+
+function btnToolLearnClassSpells_OnClick()
+    textRestoreTools:SetNormalText("Proceeding...")
+
+    local toLearn = {}
+    local _, class = UnitClass("player")
+    local faction, _ = UnitFactionGroup("player")
+
+    for _,v in pairs(DB.ClassSpells) do
+        if Classes[v.class] == class and v.is_trainer == 1 and ((faction == "Alliance" and v.faction_A == 1) or (faction == "Horde" and v.faction_H == 1)) then
+            table.insert(toLearn, v.spellId)
+        end
+    end
+
+    cmdProc:registerOutput(_G, function(_G, text) 
+        textRestoreTools:SetErrorText(text)
+    end)
+
+    for _,v in pairs(toLearn) do 
+        cmdProc:SendChatMessage(".learn "..v)
+    end
+
+    cmdProc:sheduleSuccessFunction(_G, function()
+        textRestoreTools:SetNormalText("Trained "..#toLearn.." class spells")
+    end)
+
 end
 
 -- =============

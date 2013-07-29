@@ -2,7 +2,7 @@
 	<Script file="FrameDump.lua" />
 	<Frame name="frameDump" virtual="true" parent="">
 		<Size>
-			<AbsDimension x="482" y="369" />
+			<AbsDimension x="482" y="400" />
 		</Size>
 		<Backdrop bgFile="" edgeFile="">
 			<BackgroundInsets>
@@ -17,7 +17,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="4" y="-258" />
+							<Offset x="4" y="-281" />
 						</Anchor>
 					</Anchors>
 					<Color a="0.5" r="1" g="1" b="1" />
@@ -154,7 +154,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="6" y="-284" />
+							<Offset x="6" y="-307" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -164,7 +164,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="33" y="-313" />
+							<Offset x="33" y="-336" />
 						</Anchor>
 					</Anchors>
 				</FontString>
@@ -435,7 +435,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="83" y="-284" />
+						<Offset x="83" y="-307" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -450,7 +450,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="278" y="-284" />
+						<Offset x="278" y="-307" />
 					</Anchor>
 				</Anchors>
 				<Scripts>

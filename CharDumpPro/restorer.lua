@@ -1,6 +1,6 @@
 ﻿-- Author: for.sharm@gmail.com
 
-local sheduler = Sheduler:create(0.1)
+local sheduler = Sheduler:create(0.05)
 local cmdProc = CommProc:create(sheduler)
 
 local professionSpells = {
@@ -87,8 +87,7 @@ Restorer = {
     _itemsCmdForRestore = "",
     _itemsMsgTitle = "Items",
     successCallback = nil,
-    callbackObj = nil,
-    _trainerSpells = {}
+    callbackObj = nil
 }
 
 local function _isValidInteger(value, low, high)
@@ -519,16 +518,7 @@ function Restorer:getSpellsInfo()
         end
     end
 
-    local _, class = UnitClass("player")
-    local faction, _ = UnitFactionGroup("player")
-
-    for _,v in pairs(DB.ClassSpells) do
-        if Classes[v.class] == class and v.is_trainer == 1 and ((faction == "Alliance" and v.faction_A == 1) or (faction == "Horde" and v.faction_H == 1)) then
-            table.insert(self._trainerSpells, v.spellId)
-        end
-    end
-
-    return true, #self._db.spells.." non trainer spells and "..#self._trainerSpells.." trainer spells"
+    return true, #self._db.spells.." non trainer spells"
 end
 
 function Restorer:_restoreSpells(spells)
@@ -539,10 +529,6 @@ end
 
 function Restorer:restoreSpells(warnings, callbackObj, successCallback, errorCallback)
     self:_registerOutput(callbackObj, successCallback, errorCallback)
-
-    if self._trainerSpells then
-        self:_restoreSpells(self._trainerSpells)
-    end
 
     if self._db.spells then
         self:_restoreSpells(self._db.spells)

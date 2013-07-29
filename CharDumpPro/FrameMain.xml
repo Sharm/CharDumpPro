@@ -17,11 +17,11 @@
 	</Button>
 	<Frame name="frameMain" hidden="true" movable="true">
 		<Size>
-			<AbsDimension x="510" y="411" />
+			<AbsDimension x="510" y="467" />
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER">
-				<Offset y="11" />
+				<Offset y="-17" />
 			</Anchor>
 		</Anchors>
 		<TitleRegion setAllPoints="true">
@@ -64,7 +64,7 @@
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="41" y="-378" />
+							<Offset x="41" y="-432" />
 						</Anchor>
 					</Anchors>
 					<FontHeight>
