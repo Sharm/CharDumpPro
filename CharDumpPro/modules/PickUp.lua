@@ -1,5 +1,6 @@
 ﻿
 local Addon_PickUp = Addon:NewModule("PickUp", "AceEvent-3.0", "AceHook-3.0")
+Addon_PickUp:SetEnabledState(false)
 
 local sheduler = Sheduler:create(0)
 
