@@ -11,6 +11,8 @@ end)
 function Addon:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New("CharDumpDB")
     self.db.global.options = self.db.global.options or {}
+    
+    if self.db.global.options.checkPickUpMail then self:EnableModule("PickUp") end
 
     frameMain_Init()
 	
