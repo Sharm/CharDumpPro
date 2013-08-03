@@ -79,7 +79,7 @@ function CommProc:_on_CHAT_MSG_SAY()
     
     local myname = UnitName("player")
     if sender == myname and string.match(msg, "^%..+") then
-        self._error("Errors occures while execute GM commands.")
+        self:_error("Errors occures while execute GM commands.")
     end
 end
 
@@ -92,6 +92,6 @@ function CommProc:_on_CHAT_MSG_SYSTEM()
         or string.find(msg, "invalid", 0, true)
         or string.find(msg, "syntax", 0, true)
     then
-        self._error("Errors occures while execute GM commands.")
+        self:_error("Errors occures while execute GM commands.")
     end
 end
