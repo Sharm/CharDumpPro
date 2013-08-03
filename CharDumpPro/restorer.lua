@@ -443,15 +443,17 @@ end
 
 function Restorer:_getProfessionRank(maxValue)
     local rank = 5
-    if maxValue < 375 then
-        rank = 4
-    elseif maxValue < 300 then
-        rank = 3
+
+    if maxValue < 150 then
+        rank = 1
     elseif maxValue < 225 then
         rank = 2
-    elseif maxValue < 150 then
-        rank = 1
+    elseif maxValue < 300 then
+        rank = 3
+    elseif maxValue < 375 then
+        rank = 4
     end
+
     return rank
 end
 
