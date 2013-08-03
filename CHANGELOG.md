@@ -1,7 +1,10 @@
 ###Changelog:
 **v1.3**
  * Checkbox position for enable/disable mailbox button now saved after logout
-
+ * Correct calculate of skills ranks on restore, closes #19
+ * Fixed learn talents spells, closes #18
+ * Fixed errors output while execute GM commands
+ 
 **v1.2**
  * Added checkbox for enable/disable mailbox button for auto pick up items.
  * Fix bugs and improved restore of level, honor, arena points, money, more safe and proper way.
