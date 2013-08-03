@@ -70,9 +70,9 @@ local BaseProfessionSpells = {
 local Specializations = {
     -- All Alchemy Specialities
     [171] = { 
-        [28674] = GetSpellInfo(28674),
-        [28678] = GetSpellInfo(28678),
-        [28676] = GetSpellInfo(28676)
+        [28672] = GetSpellInfo(28672), -- Transmutation
+        [28677] = GetSpellInfo(28677), -- Elixir
+        [28675] = GetSpellInfo(28675)  -- Potion
     },
     
     -- All Blacksmithing Specialities
@@ -92,9 +92,9 @@ local Specializations = {
 
     -- All Leatherworking Specialities
     [165] = {
-	    [10657] = GetSpellInfo(10657), -- Dragonscale
-	    [10659] = GetSpellInfo(10659), -- Elemental
-	    [10661] = GetSpellInfo(10661)  -- Tribal
+	    [10656] = GetSpellInfo(10656), -- Dragonscale
+	    [10658] = GetSpellInfo(10658), -- Elemental
+	    [10660] = GetSpellInfo(10660)  -- Tribal
     },
     
     -- All Tailoring Specialities
