@@ -29,6 +29,7 @@ function frameRestore_Init()
     textRestoreStatus:proceeding()
 
     checkPickUpMail:SetChecked(Addon.db.global.options.checkPickUpMail or false)
+    checkPickUpMail_OnClick()
 
     btnRestoreMainInfo:init()
     btnRestoreInventory:init()
