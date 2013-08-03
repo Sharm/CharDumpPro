@@ -273,9 +273,11 @@ end
 
 -- return entry,chant,gem1,gem2,gem3,unk1,unk2,unk3,lvl1 in 
 function Restorer:_parseItemLink(link)
+    -- "|cff0070dd|Hitem:31203:0:0:0:0:0:-41:33|h[Arcane Loop of the Beast]|h|r"
     -- Hitem:31052:425:525:525:525:525:0:0
     -- linkType, itemId, enchantId, jewelId1, jewelId2, jewelId3, jewelId4, rest
-    return string.match(link,".*Hitem:(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%d+).*")
+    
+    return string.match(link,".*Hitem:(-?%d+):(-?%d+):(-?%d+):(-?%d+):(-?%d+):(-?%d+):(-?%d+):(-?%d+).*")
 end
 
 function Restorer:_sendItemsForRestore()
