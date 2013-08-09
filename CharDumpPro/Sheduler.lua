@@ -48,10 +48,11 @@ Sheduler = {
         end
     end,
 
-    stop = function(self, conditionName, timeout)
+    stop = function(self, conditionName, timeout, func)
         self._conditions[conditionName] = {
             timeout = timeout,
-            time = 0
+            time = 0,
+	    func = func,
         }
     end,
 
@@ -71,6 +72,10 @@ Sheduler = {
                         self._conditions[k] = nil
                     end
                 end
+		if v.func() then
+			v = nil
+                        self._conditions[k] = nil
+		end
                 if v then
                     --Addon:Print("Blocked by "..k)
                     return

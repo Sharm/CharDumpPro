@@ -2,6 +2,7 @@
 
 local sheduler = Sheduler:create(0.05)
 local cmdProc = CommProc:create(sheduler)
+local Sheduler1 = Sheduler:create(0.1)
 
 local professionSpells = {
     -- skillId = {
@@ -231,7 +232,7 @@ function Restorer:getInventoryInfo()
     end
 
     local bagCount, itemsCount = 0, 0
-    for k,v in pairs(db) do             -- loop through all bags
+    --[[for k,v in pairs(db) do             -- loop through all bags
         for k2,v2 in pairs(v) do        -- loop through objects inside bag
             if k2 == "link" then        -- link to the bag item
                 if not _isValidString(v2) then
@@ -253,7 +254,7 @@ function Restorer:getInventoryInfo()
             end
         end
         bagCount = bagCount + 1
-    end
+    end]]
     
 
     -- PREPARE WARNINGS
@@ -323,40 +324,319 @@ function Restorer:_restoreBagItems(bag, msgTitle)
     self:_sendItemsForRestore()
 end
 
+function NextSlot(BagType)
+	local c, s = 0, nil
+	if BagType ~= 0 then
+		c = 1
+		repeat
+			local fs, bt = GetContainerNumFreeSlots(c)
+			if BagType == bt and fs ~= 0 then
+				local ns = 1
+				repeat
+					if GetContainerItemLink(c, ns) == nil then
+						s = ns
+					end
+					ns = ns + 1
+				until s or (ns == GetContainerNumSlots(c) + 1)
+			end
+			c = c + 1
+		until s or (c == 5)
+		
+		if not s then c = 0 end
+	end
+	
+	if not s then
+		repeat
+			local fs, bt = GetContainerNumFreeSlots(c)
+			if bt and (fs ~= 0) then
+				local ns = 1
+				repeat
+					if GetContainerItemLink(c, ns) == nil then
+						s = ns
+					end
+					ns = ns + 1
+				until s or (ns == GetContainerNumSlots(c) + 1)
+			end
+			c = c + 1
+		until s or (c == 5)
+	end
+	
+	if s then
+		c = c - 1
+	else
+		c = nil
+	end
+	
+	return c, s
+end
+
+function NextBankSlot()
+	local nbs, s = nil, 1
+	repeat
+		if GetContainerItemLink(-1, s) == nil then
+			nbs = s
+		end
+		s = s + 1
+	until nbs or (s == 29)
+	return nbs
+end
+
+function GetBagType(itemLink)
+	local itemID = strmatch(itemLink, "item:(%d+)")
+	local BagType = GetItemFamily(itemID)
+	if select(9, GetItemInfo(itemID)) == "INVTYPE_BAG" then
+		BagType = 0
+	end
+	return BagType
+end
+
+function Restorer:restoreItemGems(b, i, c, s, gid1, gid2, gid3)
+	local gid, socket = nil, nil
+	if gid1 ~= 0 then
+		gid = gid1
+		socket = 1
+		gid1 = 0
+	elseif gid2 ~= 0 then
+		gid = gid2
+		socket = 2
+		gid2 = 0
+	elseif gid3 ~= 0 then
+		gid = gid3
+		socket = 3
+		gid3 = 0
+	end
+	
+	if gid then
+		SocketContainerItem(c, s)
+		local gc, gs = NextSlot(512)
+		SendChatMessage(".additem "..Gems[gid])
+		Sheduler1:shedule(function()
+			PickupContainerItem(gc, gs)
+			ClickSocketButton(socket)
+			AcceptSockets()
+			Sheduler1:shedule(function()
+				self:restoreItemGems(b, i, c, s, gid1, gid2, gid3)
+			end)
+			Sheduler1:stop("cond", nil, function()
+				if not GetContainerItemLink(gc, gs) then
+					return true
+				end
+			end)
+		end)
+		Sheduler1:stop("cond", nil, function()
+			if GetContainerItemLink(gc, gs) then
+				return true
+			end
+		end)
+	else
+		Sheduler1:shedule(function()
+			if b ~= c then
+				PickupContainerItem(c, s)
+				if b == 0 then
+					PutItemInBackpack()
+				elseif b == -1 then
+					local dc = self._db.inventory.SoulboundBags[i].c
+					if dc == -1 then
+						PutItemInBag(NextBankSlot() + 39)
+					else
+						PutItemInBag(ContainerIDToInventoryID(dc))
+					end
+				elseif b == 100 then
+					EquipCursorItem(self._db.inventory["Bag100"][i].s)
+				else
+					PutItemInBag(ContainerIDToInventoryID(b))
+				end
+				if b ~= 0 or (b == 0 and c ~= 0) then
+					Sheduler1:shedule(function()
+						self:restoreBagItems(b, i + 1)
+					end)
+					Sheduler1:stop("cond", nil, function()
+						if StaticPopup1:IsShown() then
+							StaticPopup1Button1:Click()
+						end
+						if not GetContainerItemLink(c, s) then
+							return true
+						end
+					end)
+				end
+			else
+				self:restoreBagItems(b, i + 1)
+			end
+		end)
+		Sheduler1:stop("cond", nil, function()
+			if ItemSocketingFrame:IsShown() then
+				CloseSocketInfo()
+			end
+			if not ItemSocketingFrame:IsShown() then
+				return true
+			end
+		end)
+	end
+end
+
+function Restorer:restoreBagItems(b, i)
+	if b == 101 then
+		message("Inventory restore complete.")
+		self:_on_restoreFinished()
+		return
+	end
+	if b > self._db.inventory.NumBankSlots + 4 and b ~= 100 then
+		self:restoreBagItems(100, 1)
+		return
+	end
+	if not self._db.inventory["Bag"..b] then
+		self:restoreBagItems(b + 1, 1)
+		return
+	end
+	
+	if i > #self._db.inventory["Bag"..b] then
+		self:restoreBagItems(b + 1, 1)
+		return
+	end
+	if self._db.inventory["Bag"..b][i] == nil or self._db.inventory["Bag"..b][i].bag then
+		self:restoreBagItems(b, i + 1)
+		return
+	end
+	
+	local itemLink = self._db.inventory["Bag"..b][i].link
+	local BagType = GetBagType(itemLink)
+	local c, s = NextSlot(BagType)
+	
+	SendChatMessage(".additem "..itemLink.." "..self._db.inventory["Bag"..b][i].count)
+	local eid, gid1, gid2, gid3 = strmatch(itemLink, "item:%d+:?(%d*):?(%d*):?(%d*):?(%d*)")
+	gid1 = tonumber(gid1)
+	gid2 = tonumber(gid2)
+	gid3 = tonumber(gid3)
+	
+	Sheduler1:shedule(function()
+		if self._db.inventory["Bag"..b][i].soulbound then
+			local inv_type = select(9, GetItemInfo(strmatch(itemLink, "item:(%d+)")))
+			local invID = InvTypes[inv_type]
+			PickupContainerItem(c, s)
+			EquipCursorItem(invID)
+			Sheduler1:shedule(function()
+				PickupInventoryItem(invID)
+				PutItemInBackpack()
+				Sheduler1:shedule(function()
+					self:restoreItemGems(b, i, c, s, gid1, gid2, gid3)
+				end)
+				Sheduler1:stop("cond", nil, function()
+					if GetContainerItemLink(c, s) then
+						return true
+					end
+				end)
+			end)
+			Sheduler1:stop("cond", nil, function()
+				if StaticPopup1:IsShown() then
+					StaticPopup1Button1:Click()
+				end
+				if GetInventoryItemLink("player", invID) then
+					return true
+				end
+			end)
+		else
+			self:restoreItemGems(b, i, c, s, gid1, gid2, gid3)
+		end
+	end)
+	Sheduler1:stop("cond", nil, function()
+		if GetContainerItemLink(c, s) then
+			return true
+		end
+	end)
+end
+
+function Restorer:restoreBags(b)
+	if b > self._db.inventory.NumBankSlots + 4 then
+		self:restoreBagItems(-1, 1)
+		return
+	end
+	if not self._db.inventory["Bag"..b] then
+		self:restoreBags(b + 1)
+		return
+	end
+
+	local invID = ContainerIDToInventoryID(b)
+	local c, s = NextSlot()
+	SendChatMessage(".additem "..self._db.inventory["Bag"..b].link)
+	Sheduler1:shedule(function()
+		PickupContainerItem(c, s)
+		PutItemInBag(invID)
+		Sheduler1:shedule(function()
+			self:restoreBags(b + 1)
+		end)
+		Sheduler1:stop("cond", nil, function()
+			if StaticPopup1:IsShown() then
+				StaticPopup1Button1:Click()
+			end
+			if GetInventoryItemLink("player", invID) then
+				return true
+			end
+		end)
+	end)
+	Sheduler1:stop("cond", nil, function()
+		if GetContainerItemLink(c, s) then
+			return true
+		end
+	end)
+end
+
+function Restorer:restoreSoulboundBags(sb)
+	if #self._db.inventory["SoulboundBags"] == 0 or sb > #self._db.inventory["SoulboundBags"] then
+		self:restoreBags(1)
+		return
+	end
+	if sb > 28 then
+		-- send rest soulbound bags via mail
+		self:restoreBags(1)
+		return
+	end
+	
+	local bs = NextBankSlot()
+	local c, s = NextSlot()
+	SendChatMessage(".additem "..self._db.inventory.SoulboundBags[sb].link)
+	Sheduler1:shedule(function()
+		PickupContainerItem(c, s)
+		PutItemInBag(20)
+		Sheduler1:shedule(function()
+			PickupBagFromSlot(20)
+			PutItemInBag(bs + 39)
+			Sheduler1:shedule(function()
+				self:restoreSoulboundBags(sb + 1)
+			end)
+			Sheduler1:stop("cond", nil, function()
+				if GetInventoryItemLink("player", bs + 39) then
+					return true
+				end
+			end)
+		end)
+		Sheduler1:stop("cond", nil, function()
+			if StaticPopup1:IsShown() then
+				StaticPopup1Button1:Click()
+			end
+			if GetInventoryItemLink("player", 20) then
+				return true
+			end
+		end)
+	end)
+	Sheduler1:stop("cond", nil, function()
+		if GetContainerItemLink(c, s) then
+			return true
+		end
+	end)
+end
+
 function Restorer:restoreInventory(warnings, callbackObj, successCallback, errorCallback)
-    self:_registerOutput(callbackObj, successCallback, errorCallback)
-
-    local db = self._db.inventory
-
-    -- Restore bags first
-    local cmd = ""
-    for k_bag, v_bag in pairs(db) do
-        if v_bag.link then
-            local id = self:_parseItemLink(v_bag.link)
-            cmd = cmd..tostring(id).." "
-        end
-    end
-    cmdProc:SendChatMessage(string.format(".send items %%t \"Bags\" \"Bags\" %s", cmd))
-
-    -- Restore equipped
-    self:_restoreBagItems(db.Bag100, "Equipped")
-
-    -- Restore bags
-    if warnings.onebag.isRestoreOneBagOnly then
-        self:_restoreBagItems(db.Bag0)    -- backpack
-    else
-        -- Restore items in all bags
-        for k_bag, v_bag in pairs(db) do
-            if k_bag ~= "Bag100" then
-                self:_restoreBagItems(v_bag)
-            end
-        end
-    end
-
-    -- Flush remaining items
-    self:_sendItemsForRestore()
-
-    self:_on_restoreFinished()
+	self:_registerOutput(callbackObj, successCallback, errorCallback)
+	
+	if not IsAddOnLoaded("Blizzard_ItemSocketingUI") then
+		LoadAddOn("Blizzard_ItemSocketingUI")
+	end
+	
+	for i =1, self._db.inventory.NumBankSlots - GetNumBankSlots() do
+		PurchaseSlot()
+	end
+	
+	self:restoreSoulboundBags(1)
 end
 
 
