@@ -503,4 +503,11 @@
 			</OnEvent>
 		</Scripts>
 	</Frame>
+	<GameTooltip name="ScanningTooltip" inherits="GameTooltipTemplate">
+		<Scripts>
+			<Onload>
+				self:SetOwner(WorldFrame, "ANCHOR_NONE");
+			</Onload>
+		</Scripts>
+	</GameTooltip>
 </Ui>

@@ -21,27 +21,22 @@
     <Script file="data\skills.lua"/>
     <Script file="data\class_spells.lua"/>
     <Script file="data\init.lua"/>
+    <Script file="data\gems.lua"/>
+    <Script file="data\inv_types.lua"/>
 
     <Script file="addon.lua"/>
     
     <Include file="Components.xml"/>
-    <Script file="Components.lua"/>
-    <Script file="LogArea.lua"/>
     <Script file="Sheduler.lua"/>
     <Script file="CommandProcessor.lua"/>
 
     <Script file="modules\PickUp.lua"/>
     
-    <Script file="datastore.lua"/>
-    <Script file="chardump.lua"/>
     <Script file="dumper.lua"/>
     <Script file="restorer.lua"/>
     <Include file="FrameDump.xml"/>
-    <Script file="FrameDump.lua"/>
     <Include file="FrameRestore.xml"/>
-    <Script file="FrameRestore.lua"/>
     <Include file="FrameMain.xml"/>
-    <Script file="FrameMain.lua"/>
 
     <Script file="main.lua"/>
 </Ui>

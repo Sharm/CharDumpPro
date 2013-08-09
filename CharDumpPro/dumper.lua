@@ -117,18 +117,23 @@ function Dumper:createRecord()
 	local realmName = GetRealmName()
 	local name = UnitName("player")
 
-    if Addon.db.global[realmName.." - "..name] then
+    --[[if Addon.db.global[realmName.." - "..name] then
         Addon.db.global[realmName.." - "..name].mainInfo.realmName = realmName
         Addon.db.global[realmName.." - "..name].mainInfo.name = name
     else
-	    Addon.db.global[realmName.." - "..name] = {}
+	    Addon.db.global[realmName.." - "..name] = {}]]
 	    Addon.db.global[realmName.." - "..name] = {
 		    mainInfo = {
 			    realmName = realmName,
 			    name = name
+		    },
+		    inventory = {
+			["Bag-1"] = {size = 28},
+			["Bag0"] = {size = 16},
+			["SoulboundBags"] = {}
 		    }
 	    }
-    end
+    --end
 	
 	self._db = Addon.db.global[realmName.." - "..name]
 end
@@ -179,24 +184,54 @@ end
 -- Inventory
 -- =================
 
+local function IsSoulbound(bag, slot, itemLink)
+	local s, b = nil
+	ScanningTooltip:ClearLines()
+	if bag ~= -1 then
+		ScanningTooltip:SetBagItem(bag, slot)
+	else
+		ScanningTooltip:SetInventoryItem("player", slot + 39)
+	end
+	if ScanningTooltipTextLeft2:GetText() == _G["ITEM_SOULBOUND"] then
+		ScanningTooltip:ClearLines()
+		ScanningTooltip:SetHyperlink(itemLink)
+		if ScanningTooltipTextLeft2:GetText() == _G["ITEM_BIND_ON_EQUIP"] then
+			s = 1
+			if select(9, GetItemInfo(strmatch(itemLink, "item:(%d+)"))) == "INVTYPE_BAG" then
+				b = 1
+			end
+		end
+	end
+	return s, b
+end
+
 function Dumper:dumpInventory()
+	local msg = ""
+	if not BankFrame:IsShown() then
+		msg = "Open bank window.\n"
+	end
+	if GetContainerNumFreeSlots(0) < 8 then
+		msg = msg.."Leave at least 8 empty slots in your backpack.\n"
+	end
+	if msg ~= "" then
+		message(msg)
+		btnDumpInventory.textObj:SetNormalText("")
+		return false
+	end
+
 	self:createRecord()
 
-	local inventorySave = {}
+	local inventorySave = self._db.inventory
 	local itemLink
 	local allcount = 0
+	local NumBankSlots = GetNumBankSlots()
+	inventorySave.NumBankSlots = NumBankSlots
 
-	for bagNum = 0, 4 do
+	for bagNum = -1, 4 + NumBankSlots do
 		local bagString = "Bag"..bagNum
 		itemLink = nil
 
-		if bagNum == 0 then
-			-- Backpack (bag 0)
-			inventorySave[bagString] = {
-				link = nil,
-				size = GetContainerNumSlots(bagNum)
-			}
-		else
+		if bagNum > 0 then
 			local bagNum_ID = ContainerIDToInventoryID(bagNum)
 			itemLink = GetInventoryItemLink("player", bagNum_ID)
 			if itemLink then
@@ -208,24 +243,67 @@ function Dumper:dumpInventory()
 			end
 		end
 
-		if bagNum == 0 or itemLink then -- if bag exists
+		if bagNum == -1 or bagNum == 0 or itemLink then -- if bag exists
 			for bagItem = 1, inventorySave[bagString].size do
 				itemLink = GetContainerItemLink(bagNum, bagItem)
 				if itemLink then
 					local _, count = GetContainerItemInfo(bagNum, bagItem)
+					local s, b = IsSoulbound(bagNum, bagItem, itemLink)
 					inventorySave[bagString][#inventorySave[bagString] + 1] = {
 						link = itemLink,
-						count = count and count > 1 and count or nil
+						count = count and count > 1 and count or 1,
+						soulbound = s,
+						bag = b
 					}
+					if b then
+						inventorySave["SoulboundBags"][#inventorySave["SoulboundBags"] + 1] = {
+							link = itemLink,
+							c = bagNum,
+							--s = bagItem
+						}
+					end
 					allcount = allcount + 1
 				end
 			end
 		end
 	end
+	
+	for b = -1, inventorySave.NumBankSlots + 4 do
+		if inventorySave["Bag"..b] then
+		if #inventorySave["Bag"..b] > 0 then
+		for s = inventorySave["Bag"..b].size, 1, -1 do
+			if inventorySave["Bag"..b][s] then
+			itemID1 = strmatch(inventorySave["Bag"..b][s].link, "item:(%d+)")
+			local itemStackCount = select(8, GetItemInfo(itemID1))
+			if itemStackCount > 1 then
+			for lb = inventorySave.NumBankSlots + 4, b, -1 do
+				if inventorySave["Bag"..lb] then
+				for ls = 1, inventorySave["Bag"..lb].size do
+					if (lb > b or (lb == b and ls < s)) and inventorySave["Bag"..lb][ls] then
+						itemID2 = strmatch(inventorySave["Bag"..lb][ls].link, "item:(%d+)")
+						if itemID1 == itemID2 and inventorySave["Bag"..lb][ls].count < itemStackCount and inventorySave["Bag"..b][s] ~= nil then
+							local free = itemStackCount - inventorySave["Bag"..lb][ls].count
+							if inventorySave["Bag"..b][s].count <= free then
+								inventorySave["Bag"..lb][ls].count = inventorySave["Bag"..lb][ls].count + inventorySave["Bag"..b][s].count
+								inventorySave["Bag"..b][s] = nil
+							else
+								inventorySave["Bag"..lb][ls].count = itemStackCount
+								inventorySave["Bag"..b][s].count = inventorySave["Bag"..b][s].count - free
+							end
+						end
+					end
+				end
+				end
+			end
+			end
+			end
+		end
+		end
+		end
+	end
 
 	-- Save equipped items as bag 100
 	inventorySave.Bag100 = {
-		link = nil,
 		size = 20
 	}
 	for invNum = 1, 19 do
@@ -234,13 +312,12 @@ function Dumper:dumpInventory()
 			local count = GetInventoryItemCount("player", invNum)
 			inventorySave.Bag100[#inventorySave.Bag100 + 1] = {
 				link = itemLink,
-				count = count and count > 1 and count or nil
+				count = count and count > 1 and count or 1,
+				s = invNum
 			}
 			allcount = allcount + 1
 		end
 	end
-
-	self._db.inventory = inventorySave
 
 	return true, "Saved "..allcount.." items prototypes"
 end

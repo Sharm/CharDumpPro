@@ -224,8 +224,23 @@ function btnRestoreMainInfo_handleWarnings(self)
 end
 
 function btnRestoreInventory_handleWarnings(self)
+	local msg = ""
+	if not BankFrame:IsShown() then
+		msg = "Open bank window.\n"
+	end
+	local NumFreeSlots = GetContainerNumFreeSlots(0)
+	if NumFreeSlots < 8 then
+		msg = msg.."Leave at least 8 empty slots in your backpack.\n"
+	end
+	if GetInventoryItemLink("player", 20) then
+		msg = msg.."Remove first bag (the rightmost one) from its slot.\n"
+	end
+	if msg ~= "" then
+		message(msg)
+		return false
+	end
     -- Option for restore just one main bag
-    if not self._warnings.onebag.accepted then
+    --[[if not self._warnings.onebag.accepted then
         ModalDialogRestoreInventory:SetOptions({
             OnOkay = function() 
                 self._warnings.onebag.accepted = true
@@ -235,7 +250,7 @@ function btnRestoreInventory_handleWarnings(self)
         })
         ModalDialogRestoreInventory:ShowOnParent(frameRestore)
         return false
-    end
+    end]]
 
     return true
 end

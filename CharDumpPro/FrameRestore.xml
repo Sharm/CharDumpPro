@@ -1,5 +1,5 @@
 ﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="FrameDump.lua" />
+	<Script file="FrameRestore.lua" />
 	<Frame name="frameRestore" virtual="true" parent="">
 		<Size>
 			<AbsDimension x="482" y="400" />
@@ -286,13 +286,13 @@
 				<DisabledTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
 				<HighlightTexture file="" alphaMode="ADD" />
 			</Button>
-			<Button name="btnRestoreInventory" inherits="UIPanelButtonTemplate" text="Restore">
+			<Button name="btnRestoreInventory" inherits="UIPanelButtonTemplate" text="Restore" hidden="true">
 				<Size>
 					<AbsDimension x="65" y="25" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="162" y="-87" />
+						<Offset x="80" y="-87" /><!--162-->
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -516,11 +516,49 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<Button name="ClearTargetBtn" inherits="SecureActionButtonTemplate" text="Restore">
+				<Attributes>
+					<Attribute name="type" type="string" value="target"/>
+					<Attribute name="unit" type="string" value="none"/>
+				</Attributes>
+				<Size x="64" y="25"/>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="162" y="-87" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:Disable();
+						self:HookScript("OnClick", function() btnRestoreInventory:Click() end);
+						btnRestoreInventory:HookScript("OnClick", function()
+							if btnRestoreInventory:IsEnabled() == 1 then
+								self:Enable();
+							else
+								self:Disable();
+							end
+						end);
+						hooksecurefunc("btnRestore_getInfo", function(self)
+							if self == btnRestoreInventory then
+								if self:IsEnabled() == 1 then
+									ClearTargetBtn:Enable();
+								else
+									ClearTargetBtn:Disable();
+								end
+							end
+						end);
+					</OnLoad>
+				</Scripts>
+				<NormalFont inherits="GameFontNormal"/>
+				<HighlightFont inherits="GameFontHighlight"/>
+				<DisabledFont inherits="GameFontDisable"/>
+				<NormalTexture inherits="UIPanelButtonUpTexture"/>
+				<PushedTexture inherits="UIPanelButtonDownTexture"/>
+				<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
+				<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
+			</Button>
 		</Frames>
 		<Scripts>
-			<OnEvent>
-				frameRestore_OnEvent()
-			</OnEvent>
 			<OnShow>
 				frameRestore_OnShow()
 			</OnShow>
