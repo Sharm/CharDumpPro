@@ -105,9 +105,23 @@ local Specializations = {
     }
 }
 
-Dumper = { 
-	_db = nil, -- reference to save table for current char
-}
+Dumper = {}
+
+function Dumper:create(castSpellThroughInterface)
+    local object = {} 
+    setmetatable(object, self) 
+    self.__index = self
+
+    ---- Declaration
+    object._db = nil -- reference to save table for current char
+    ----
+    
+    ---- Constructor
+
+    ----
+
+    return object
+end
 
 function Dumper:createRecord()
     if self._db then

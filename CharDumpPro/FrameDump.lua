@@ -1,6 +1,6 @@
 ﻿-- Author: for.sharm@gmail.com
 
-local dumper = Dumper
+local dumper = Dumper:create(frameDump_castSpellThroughInterface)
 
 function btnDump_Constructor(self)
 	function self:init()
