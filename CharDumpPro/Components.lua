@@ -3,6 +3,12 @@
 -- =============
 -- ModalDialog
 -- =============
+-- Options:
+--   OnOkay   | function
+--   OnCancel | function
+--   width    | number
+--   height   | number
+--   isOneBtn | boolean  | Only `Okay` btn will be visible, OnCancel ignored
 
 function ModalDialog_Constructor(self)
 
@@ -13,13 +19,28 @@ function ModalDialog_Constructor(self)
 
     function self:SetOptions(options)
         self._options = options
+
+        options.isOneBtn = options.isOneBtn or false
+        if not options.isOneBtn then
+            _G[self:GetName().."Okay"]:SetPoint("TOPLEFT", 22, -132)
+            self.btnCancel = CreateFrame("Button", self:GetName().."Cancel", self, "UIPanelButtonTemplate")
+            self.btnCancel:SetWidth(75)
+            self.btnCancel:SetHeight(23)
+            self.btnCancel:SetPoint("BOTTOMLEFT", 103, 10)
+            self.btnCancel:SetText("Cancel")
+            self.btnCancel:Enable()
+            self.btnCancel:SetScript("OnClick", function() ModalDialogBtn_OnClick(self.btnCancel) end)
+        end
         
         _G[self:GetName().."Okay"].callback = options.OnOkay
-        _G[self:GetName().."Cancel"].callback = options.OnCancel
+        if _G[self:GetName().."Cancel"] then
+            _G[self:GetName().."Cancel"].callback = options.OnCancel
+        end
+
         self:SetWidth(options.width or self:GetWidth())
         self:SetHeight(options.height or self:GetHeight())
 
-        if self.handleOptions then
+        if self.handleOptions then -- for allow handle custom otions in subclass objects
             self:handleOptions(options)
         end
     end
@@ -36,6 +57,15 @@ function ModalDialog_Constructor(self)
 	self.texture:SetBlendMode("Blend")
 	self.texture:SetAllPoints(true);
 	self.texture:SetTexture(0,0,0,0.6)
+
+    -- Create buttons
+    self.btnOkay = CreateFrame("Button", self:GetName().."Okay", self, "UIPanelButtonTemplate")
+    self.btnOkay:SetWidth(75)
+    self.btnOkay:SetHeight(23)
+    self.btnOkay:SetPoint("BOTTOMLEFT", 60, 10)
+    self.btnOkay:SetText("Okay")
+    self.btnOkay:Enable()
+    self.btnOkay:SetScript("OnClick", function() ModalDialogBtn_OnClick(self.btnOkay) end)
 end
 
 function ModalDialog_OnShow(self)
