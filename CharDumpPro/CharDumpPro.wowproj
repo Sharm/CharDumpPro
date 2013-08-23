@@ -53,9 +53,6 @@
     <Content Include="main.lua">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="datastore.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="CharDumpPro.toc">
       <SubType>TableOfContents</SubType>
     </Content>

@@ -1,4 +1,6 @@
 ﻿-- Author: for.sharm@gmail.com
+local debug = false
+local debug_blocked = false
 
 Sheduler = {
 
@@ -34,7 +36,9 @@ Sheduler = {
             func = func,
             arg = {...}
         }
-        --Addon:Print("Shedule func "..tostring(info.func))
+        if debug then
+            Addon:Print("Shedule func "..tostring(info.func))
+        end
         table.insert(self._sheduledFunctions, info)
     end,
 
@@ -54,7 +58,6 @@ Sheduler = {
             time = 0
         }
     end,
-
     _onUpdate = function(frame, elapsed)
         self = frame.obj
 
@@ -64,7 +67,9 @@ Sheduler = {
             -- Check conditions
             for k,v in pairs(self._conditions) do
                 if v and v.timeout then
-                    --Addon:Print(k.." "..table.tostring(v))
+                    if debug then
+                        Addon:Print(k.." "..table.tostring(v))
+                    end
                     v.time = v.time + elapsed
                     if v.time > v.timeout then
                         v = nil
@@ -72,7 +77,10 @@ Sheduler = {
                     end
                 end
                 if v then
-                    --Addon:Print("Blocked by "..k)
+                    if debug and not debug_blocked then
+                        debug_blocked = true
+                        Addon:Print("Blocked by "..k)
+                    end
                     return
                 end
             end
@@ -81,7 +89,10 @@ Sheduler = {
                 return
             end
 
-            --Addon:Print("Exec "..tostring(self._sheduledFunctions[1].func))
+            if debug then
+                Addon:Print("Exec "..tostring(self._sheduledFunctions[1].func))
+                debug_blocked = false
+            end
                 
             self._sheduledFunctions[1].func(unpack(self._sheduledFunctions[1].arg))
             table.remove(self._sheduledFunctions, 1)
