@@ -18,6 +18,8 @@ end
 
 function frameDump_Init()
     ErrorFontString_init(textTools)
+    
+    dumper:resetRecord()
 
 	-- link dump rows
 	btnDumpMainInfo:init()

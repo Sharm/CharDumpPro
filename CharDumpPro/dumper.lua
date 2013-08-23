@@ -121,18 +121,24 @@ function Dumper:createRecord()
         Addon.db.global[realmName.." - "..name].mainInfo.realmName = realmName
         Addon.db.global[realmName.." - "..name].mainInfo.name = name
     else
-	    Addon.db.global[realmName.." - "..name] = {}
-	    Addon.db.global[realmName.." - "..name] = {
-		    mainInfo = {
-			    realmName = realmName,
-			    name = name
-		    }
-	    }
+	    resetRecord()
     end
 	
 	self._db = Addon.db.global[realmName.." - "..name]
 end
 
+function Dumper:resetRecord()
+    local realmName = GetRealmName()
+	local name = UnitName("player")
+
+    Addon.db.global[realmName.." - "..name] = {}
+    Addon.db.global[realmName.." - "..name] = {
+	    mainInfo = {
+		    realmName = realmName,
+		    name = name
+	    }
+    }
+end
 -- =================
 -- Main info
 -- =================
