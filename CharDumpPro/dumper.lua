@@ -122,6 +122,7 @@ function Dumper:create(castSpellThroughInterface)
     object._recCount = 0
     object._profCount = 0
     object._asycErrorText = nil
+    object._castSpellThroughInterface = castSpellThroughInterface
     ----
     
     ---- Constructor
@@ -605,6 +606,7 @@ function Dumper:_dumpRecipesForSkill(baseSpellInfo)
         -- -- Can't execute `CastSpellByName` as trigger on event (Blizzard taint protection)
         -- -- CastSpellByName(baseSpellInfo.spellName, "player")
         sheduler:stop("SkillWindowOpened")
+        self._castSpellThroughInterface(baseSpellInfo.spellName)
 
     end, self)
 

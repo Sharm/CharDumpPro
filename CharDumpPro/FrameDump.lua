@@ -142,3 +142,16 @@ function btnToolResetProf_OnClick()
 
     textTools:SetNormalText("Abadoned "..abadoned.." professions")
 end
+
+
+function frameDump_castSpellThroughInterface(spellName)
+    ModalDialogText:SetOptions({
+        OnOkay = function() 
+            CastSpellByName(spellName, "player")                 
+        end,
+        Text = "Please press `Okay` to continue...",
+        isOneBtn = true,
+        height = 110
+    })
+    ModalDialogText:ShowOnParent(frameDump)
+end
