@@ -577,6 +577,7 @@ end
 
 
 function Dumper:dumpRecipes()
+function Dumper:dumpRecipesAsync(callbackObj, callbackFunc, castSpellThroughInterface)
 	self:createRecord()
 
     if not self._db.skills then
