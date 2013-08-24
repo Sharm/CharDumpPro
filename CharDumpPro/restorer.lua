@@ -157,7 +157,7 @@ function Restorer:getMainInfoInfo()
         ["Realmlist"] = _isValidString(db.realmlist, 1),
         ["Class"] = _isValidString(db.class, 3),
         ["Level"] = _isValidInteger(db.level, 0, 71), -- For 2.4.3
-        ["Race"] = _isValidString(db.race, 3),
+        ["Race"] = _isValidString(db.race, 2),
         ["HonorableKills"] = _isValidInteger(db.honorableKills, -1),
         ["Honor"] = _isValidInteger(db.honor, -1),
         ["Arena"] = _isValidInteger(db.arenapoints, -1),
