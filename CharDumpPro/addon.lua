@@ -1,6 +1,6 @@
 ﻿-- Author: for.sharm@gmail.com
 
-VERSION = "v1.3dev"
+VERSION = "v1.3"
 ADDONNAME = "CharDump.PRO "..VERSION
 DUMP_ENGINE_VERSION = "1"
 

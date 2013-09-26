@@ -72,6 +72,20 @@
 					</FontHeight>
 					<Color a="0.5" r="1" g="0.82" b="0" />
 				</FontString>
+				<FontString font="Fonts\FRIZQT__.TTF" text="Powered by letswow.ru">
+					<Size>
+						<AbsDimension x="137" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="187" y="-24" />
+						</Anchor>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="9" />
+					</FontHeight>
+					<Color a="0.8" r="1" g="0.82" b="0" />
+				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
@@ -96,7 +110,7 @@
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT">
-						<Offset x="64" y="-8" />
+						<Offset x="52" y="-8" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -105,28 +119,13 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="tabRestore" inherits="HighlightTab" text="Restore character">
-				<Size>
-					<AbsDimension x="130" y="32" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset x="329" y="-8" />
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						tab_OnClick(self, tabDump)
-					</OnClick>
-				</Scripts>
-			</Button>
 			<Frame name="header">
 				<Size>
-					<AbsDimension x="294" y="66" />
+					<AbsDimension x="364" y="66" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOP">
-						<Offset y="11" />
+						<Offset y="14" />
 					</Anchor>
 				</Anchors>
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Header" edgeFile="">
@@ -138,34 +137,35 @@
 					<Layer level="OVERLAY">
 						<FontString name="headerText" inherits="GameFontNormal" text="CD-Pro">
 							<Size>
-								<AbsDimension x="131" y="20" />
+								<AbsDimension x="175" y="20" />
 							</Size>
 							<Anchors>
 								<Anchor point="CENTER">
-									<Offset x="-2" y="12" />
+									<Offset y="12" />
 								</Anchor>
 							</Anchors>
 							<FontHeight>
 								<AbsValue val="15" />
 							</FontHeight>
 						</FontString>
-						<FontString font="Fonts\FRIZQT__.TTF" text="Powered by letswow.ru">
-							<Size>
-								<AbsDimension x="137" y="20" />
-							</Size>
-							<Anchors>
-								<Anchor point="TOPLEFT">
-									<Offset x="78" y="-34" />
-								</Anchor>
-							</Anchors>
-							<FontHeight>
-								<AbsValue val="9" />
-							</FontHeight>
-							<Color a="0.8" r="1" g="0.82" b="0" />
-						</FontString>
 					</Layer>
 				</Layers>
 			</Frame>
+			<Button name="tabRestore" inherits="HighlightTab" text="Restore character">
+				<Size>
+					<AbsDimension x="130" y="32" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="339" y="-9" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						tab_OnClick(self, tabDump)
+					</OnClick>
+				</Scripts>
+			</Button>
 		</Frames>
 		<Scripts>
 			<OnDragStart>
