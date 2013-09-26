@@ -490,19 +490,19 @@ function Dumper:_dumpRecipesForTradeSkill(baseSpellInfo)
 	UIDropDownMenu_SetSelectedID(TradeSkillInvSlotDropDown, 1)
 
 	-- Expand all headers
-	for i = GetNumTradeSkills(), 1, -1 do
-		local _, tradeType = GetTradeSkillInfo(i)
-		if tradeType == "header" then
+	for i = 1000, 1, -1 do -- 1000 hardcoded, coz of bugged GetNumTradeSkills(), which sometimes return wrong value
+		local skillName, tradeType = GetTradeSkillInfo(i)
+		if skillName and tradeType == "header" then
 			ExpandTradeSkillSubClass(i)
 		end
 	end
 
 	-- Scan through all recipes
     local count = 0
-    for i = 1, GetNumTradeSkills() do
+    for i = 1, 1000 do -- 1000 hardcoded, coz of bugged GetNumTradeSkills(), which sometimes return wrong value
 		local skillName, tradeType = GetTradeSkillInfo(i)
 		-- Ignore all trade skill headers
-		if (tradeType ~= "header") then
+		if (skillName and tradeType ~= "header") then
             count = count + 1
             local spellId = string.match(GetTradeSkillRecipeLink(i), ".*Henchant:(%d+).*")
             table.insert(self._db.recipes, tonumber(spellId))
