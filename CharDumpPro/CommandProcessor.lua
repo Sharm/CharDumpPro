@@ -45,7 +45,7 @@ function CommProc:SendChatMessage(text)
         local myname = UnitName("player")
         local targetname = UnitName("target")
         if myname ~= targetname then
-            self:_error("ERROR: Target self first!")
+            self:_error("Target self first!")
             return
         end
 
