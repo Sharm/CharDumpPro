@@ -40,13 +40,13 @@
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentText" inherits="GameFontNormal" text="FontString1">
+				<FontString name="$parentText" inherits="GameFontNormal" text="FontString1" justifyV="TOP">
 					<Size>
-						<AbsDimension x="168" y="47" />
+						<AbsDimension x="168" y="116" />
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
-							<Offset x="16" y="-21" />
+							<Offset x="16" y="-19" />
 						</Anchor>
 					</Anchors>
 				</FontString>
