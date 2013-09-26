@@ -31,25 +31,17 @@ function frameDump_Init()
     btnDumpSpells:init()
 end
 
-function btnDump_OnAsyncCallback(self, success, info)
-    if success then
+function btnDump_OnClick(self)
+	self.checkObj:Disable()
+	self.textObj:SetNormalText("Proceeding...")
+
+	local success, info = dumper[self.dumpFunction](dumper)
+	if success then
 		self.checkObj:Enable()
 		self.textObj:SetNormalText("Success! ("..info..")")
 	else
 		self.textObj:SetErrorText("Failed! ("..info..")")
 	end
-end
-
-function btnDump_OnClick(self)
-	self.checkObj:Disable()
-	self.textObj:SetNormalText("Proceeding...")
-
-    if type(dumper[self.dumpFunction.."Async"]) == "function" then
-        dumper[self.dumpFunction.."Async"](dumper, self, btnDump_OnAsyncCallback)
-    else
-	    local success, info = dumper[self.dumpFunction](dumper)
-        btnDump_OnAsyncCallback(self, success, info)
-    end
 end
 
 function btnDumpAll_OnClick()
@@ -141,17 +133,4 @@ function btnToolResetProf_OnClick()
     end
 
     textTools:SetNormalText("Abadoned "..abadoned.." professions")
-end
-
-
-function frameDump_castSpellThroughInterface(spellName)
-    ModalDialogText:SetOptions({
-        OnOkay = function() 
-            CastSpellByName(spellName, "player")                 
-        end,
-        Text = "Please press `Okay` to continue...",
-        isOneBtn = true,
-        height = 110
-    })
-    ModalDialogText:ShowOnParent(frameDump)
 end

@@ -1,7 +1,5 @@
 ﻿-- Author: for.sharm@gmail.com
 
-local sheduler = Sheduler:create(0.2)
-
 Classes = {
     [1] = "WARRIOR",
     [2] = "PALADIN",
@@ -116,13 +114,6 @@ function Dumper:create(castSpellThroughInterface)
 
     ---- Declaration
     object._db = nil -- reference to save table for current char
-    object._callbackObj = nil
-    object._callbackFunc = nil
-    object._asycError = false
-    object._recCount = 0
-    object._profCount = 0
-    object._asycErrorText = nil
-    object._castSpellThroughInterface = castSpellThroughInterface
     ----
     
     ---- Constructor
@@ -162,22 +153,6 @@ function Dumper:resetRecord()
 	    }
     }
 end
-
-function Dumper:registerAsyncCallback(callbackObj, callbackFunc)
-    self._callbackObj = callbackObj
-    self._callbackFunc = callbackFunc
-    self._asyncError = false
-end
-
-function Dumper:asyncCallback(success, info)
-    self._callbackFunc(self._callbackObj, success, info)
-end
-
-function Dumper:asyncError(info)
-    self._asycError = true
-    self._asycErrorText = info
-end
-
 -- =================
 -- Main info
 -- =================
@@ -579,109 +554,52 @@ function Dumper:_dumpRecipesForCraft(baseSpellInfo)
     return true, count
 end
 
-function Dumper:TRADE_SKILL_SHOW()
-    sheduler:continue("SkillWindowOpened")
-
-    Addon:UnregisterEvent("TRADE_SKILL_SHOW")
-    Addon:UnregisterEvent("CRAFT_SHOW")
-end
-
-function Dumper:TRADE_SKILL_CLOSE()
-    sheduler:continue("SkillWindowClosed")
-
-    Addon:UnregisterEvent("TRADE_SKILL_CLOSE")
-    Addon:UnregisterEvent("CRAFT_CLOSE")
-end
 
 function Dumper:_dumpRecipesForSkill(baseSpellInfo)
 
-    sheduler:shedule(function()
-        CloseTradeSkill()
-        CloseCraft()
-
-        Addon:RegisterEvent("TRADE_SKILL_SHOW", function() self:TRADE_SKILL_SHOW() end)
-        Addon:RegisterEvent("CRAFT_SHOW", function() self:TRADE_SKILL_SHOW() end)
-
-        -- Open recipes window
-        -- -- Can't execute `CastSpellByName` as trigger on event (Blizzard taint protection)
-        -- -- CastSpellByName(baseSpellInfo.spellName, "player")
-        sheduler:stop("SkillWindowOpened")
-        self._castSpellThroughInterface(baseSpellInfo.spellName)
-
-    end, self)
-
-    sheduler:shedule(function()
-        if self._asyncError then
-            return
-        end
-
-        local isCraft = baseSpellInfo.skillId == 333 -- Enchanting
-
-        local ok, count, info = false, 0, ""
-        if isCraft then
-            ok, count, info = self:_dumpRecipesForCraft(baseSpellInfo)
-        else
-            ok, count, info = self:_dumpRecipesForTradeSkill(baseSpellInfo)
-        end
-
-        Addon:RegisterEvent("TRADE_SKILL_CLOSE", function() self:TRADE_SKILL_CLOSE() end)
-        Addon:RegisterEvent("CRAFT_CLOSE", function() self:CRAFT_CLOSE() end)
-        -- Close recipes window
-        sheduler:stop("SkillWindowClosed")
-        CloseTradeSkill()
-        CloseCraft()
-
-        self:onOneSkillDumped(ok, count, info)
+    -- Open recipes window
+    CastSpellByName(baseSpellInfo.spellName, "player")
     
-    end, self)
+    local isCraft = baseSpellInfo.skillId == 333 -- Enchanting
+
+    local ok, count, info = false, 0, ""
+    if isCraft then
+        ok, count, info = self:_dumpRecipesForCraft(baseSpellInfo)
+    else
+        ok, count, info = self:_dumpRecipesForTradeSkill(baseSpellInfo)
+    end
+        
+    -- Close recipes window
+    CastSpellByName(baseSpellInfo.spellName, "player")
+    
+    return ok, count, info
 end    
 
 
-function Dumper:onOneSkillDumped(ok, count, info)
-    if self._asyncError then
-        return
-    end
-
-    if not ok then
-        self:asyncError(info)
-        return
-    end
-
-    self._recCount = self._recCount + count
-    self._profCount = self._profCount + 1
-end
-
-function Dumper:dumpRecipesAsync(callbackObj, callbackFunc, castSpellThroughInterface)
-    self:createRecord()
-    self:registerAsyncCallback(callbackObj, callbackFunc)
-
-    self._recCount = 0
-    self._profCount = 0
+function Dumper:dumpRecipes()
+	self:createRecord()
 
     if not self._db.skills then
-        self:asyncCallback(false, "Dump skills first!")
-        return
+        return false, "Dump skills first!"
     end
 
     self._db.recipes = {}
 
+    local profCount, recCount = 0, 0
     for charSkillId, charSkillInfo in pairs(self._db.skills) do    -- go through character skills
         for i, baseSpellInfo in pairs(BaseProfessionSpells) do     -- go through all ingame professions for found name
             if charSkillId == baseSpellInfo.skillId then
-                self:_dumpRecipesForSkill(baseSpellInfo, castSpellThroughInterface)
+                local ok, count, info = self:_dumpRecipesForSkill(baseSpellInfo)
+                if not ok then 
+                    return ok, info
+                end
+                recCount = recCount + count
+                profCount = profCount + 1
             end
         end
     end
 
-    sheduler:shedule(function()
-        if not self._asyncError then
-            self:asyncCallback(true, "Saved "..self._recCount.." recipes for "..self._profCount.." professions")
-        else
-            self:asyncCallback(false, self._asycErrorText)
-        end
-    end, self)
-
-    -- asynchronus recipe dump started, wait for finish and asyncCallback
+    return true, "Saved "..recCount.." recipes for "..profCount.." professions"
 end
 
 -- =================
