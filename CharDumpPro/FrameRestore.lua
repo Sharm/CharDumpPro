@@ -43,7 +43,11 @@ end
 local firstShow = true
 function frameRestore_OnShow()
     UIDropDownMenu_Initialize(boxChooseCharacter, boxChooseCharacter_dropDown_init)
-    UIDropDownMenu_SetWidth(140, boxChooseCharacter)
+    if Addon.isWotlk then
+        UIDropDownMenu_SetWidth(boxChooseCharacter, 140)
+    else
+        UIDropDownMenu_SetWidth(140, boxChooseCharacter)
+    end
     if firstShow or not UIDropDownMenu_GetSelectedID(boxChooseCharacter) then
         firstShow = false
         boxChooseCharacter.notResetRestoredBtns = true

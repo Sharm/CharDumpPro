@@ -9,6 +9,8 @@ Addon:RegisterChatCommand("cd", function()
 end)
 
 function Addon:OnInitialize()
+    self.isWotlk = select(4, GetBuildInfo()) > 20400 and select(4, GetBuildInfo()) < 40000
+
     self.db = LibStub("AceDB-3.0"):New("CharDumpDB")
     self.db.global.options = self.db.global.options or {}
 
