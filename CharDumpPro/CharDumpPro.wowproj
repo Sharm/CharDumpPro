@@ -7,7 +7,7 @@
     <ProjectGuid>{b948ec7e-6faa-4875-9cd2-d5190cb16a21}</ProjectGuid>
     <AssemblyName>WowAddon1</AssemblyName>
     <RootNamespace>WowAddon1</RootNamespace>
-    <WowPath>D:\Games\WoW 2.4.3</WowPath>
+    <WowPath>D:\Games\WoW 3.3.5a</WowPath>
     <AddonTitle>CharDumpPro</AddonTitle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
