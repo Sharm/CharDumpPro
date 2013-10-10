@@ -19,14 +19,12 @@ function CommProc:create(sheduler)
     object._callbackObj = nil
     ----
 
-    object:enableErrorCatching()
     return object
 end
 
 function CommProc:registerOutput(callbackObj, errorCallback)
     self._errorCallback = errorCallback
     self._callbackObj = callbackObj
-    self:enableErrorCatching()
 end
 
 function CommProc:enableErrorCatching()
@@ -70,6 +68,7 @@ end
 
 function CommProc:_error(text)
     self._isError = true
+    self:disableErrorCatching()
     self._errorCallback(self._callbackObj, text)
 end
 

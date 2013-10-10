@@ -1,4 +1,9 @@
 ###Changelog:
+**v1.4**
+
+Bugs:
+ * Fixed chat message catching, #22
+
 **v1.3**
  * Checkbox position for enable/disable mailbox button now saved after logout
  * Correct calculate of skills ranks on restore, closes #19

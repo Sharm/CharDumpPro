@@ -102,6 +102,7 @@ function Restorer:_registerOutput(callbackObj, successCallback, errorCallback)
     self.successCallback = successCallback
     self.callbackObj = callbackObj
     cmdProc:registerOutput(callbackObj, errorCallback)
+    cmdProc:enableErrorCatching() -- really doesn't relative to register output messages, must be moved someday...
 end
 function Restorer:_on_restoreFinished()
     cmdProc:sheduleSuccessFunction(self.callbackObj, self.successCallback)
