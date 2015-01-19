@@ -19,7 +19,7 @@ local blizzfunctions = {
 	--GetGlyphSocketInfo,
 	--GetNumCompanions,
 	--GetCompanionInfo,
-	--GetAchievementInfo,
+	GetAchievementInfo,
 	GetFactionInfo,
 	GetInventoryItemLink,
 	GetInventoryItemCount,
@@ -130,12 +130,12 @@ function private.GetCritterData()
 	end
 	return retTbl;
 end
-
--- Achievements.
+]]
+Achievements.
 function private.GetAchievements()
 	local retTbl = {}
-	for i,j in pairs(CHDMP.AchievementIds) do
-		IDNumber,Name,Points,Completed,Month,Day,Year,Description,Flags,Image,RewardText = GetAchievementInfo(j)
+	for _,j in pairs(CHDMP.AchievementIds) do
+		IDNumber,_,_,Completed,Month,Day,Year,_,_,_,_ = GetAchievementInfo(j)
 		if IDNumber and Completed then
 			local posixtime = time{year=2000+Year,month=Month,day=Day};
 			if posixtime then
@@ -145,7 +145,7 @@ function private.GetAchievements()
 	end
 	return retTbl;
 end
-]]
+
 --[[
 -- Achievements Progress.
 function private.GetAchievementsProgress()
@@ -292,7 +292,7 @@ function private.CreateCharDump()
 	--private.dmp.mount = private.trycall(private.GetMountData,private.ErrLog) or {};
 	private.dmp.skill = private.trycall(private.GetSkillData,private.ErrLog) or {};
 	private.dmp.rep = private.trycall(private.GetRepData,private.ErrLog) or {};
-	--private.dmp.achievement = private.trycall(private.GetAchievements,private.ErrLog) or {};
+	private.dmp.achievement = private.trycall(private.GetAchievements,private.ErrLog) or {};
 	--private.dmp.achievementprogress = private.trycall(private.GetAchievementsProgress,private.ErrLog) or {};
 end
 
@@ -458,7 +458,7 @@ function private.LoadCharData()
 				SendChatMessage(".modify arena "..tbl["arenapoints"], "SAY", nil, nil);
 				SendChatMessage(".levelup "..tbl["level"]-1, "SAY", nil, nil);
 			elseif section=="achievement" then
-				for _ , achiev in pairs(tbl) do
+				for id , _ in pairs(tbl) do
 					if achiev ~= nil then
 						SendChatMessage(".achievement add "..achiev["id"], "SAY", nil, nil);
 					end
