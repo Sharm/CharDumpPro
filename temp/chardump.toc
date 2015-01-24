@@ -1,0 +1,6 @@
+## Title: |cFF00FF00 CharDump|r
+##Chardump
+## SavedVariables: CHDMP_DATA
+
+datastore.lua
+OdysseumCharDump.lua
